@@ -4,15 +4,15 @@ export const Register = () => {
     return (
         <>
             <div class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-                <div class="w-full max-w-lg space-y-8">
+                <div class="w-full max-w-xl space-y-8">
                     <div className="mt-10 sm:mt-0">
-                        <div className="md:grid md:grid-cols-3 md:gap-6">
                             <div className="md:col-span-1">
-                                <div className="px-4 sm:px-0">
-                                    <h3 className="text-lg font-medium leading-6 text-gray-900">User Information</h3>
-                                    <p className="mt-1 text-sm text-gray-600">Use the email address you used to sign-up for Discord.</p>
+                                <div className="px-4 sm:px-0 text-center">
+                                    <h3 className="text-3xl font-medium leading-6 text-gray-900">Register</h3>
+                                    <p className="mt-3 text-sm text-gray-600">Use the email address you used to sign-up for Discord</p>
                                 </div>
                             </div>
+                        <div className="md:grid md:grid-cols-2 md:gap-6 mt-5">
                             <div className="mt-5 md:col-span-2 md:mt-0">
                                 <form action="#" method="POST">
                                     <div className="overflow-hidden shadow sm:rounded-md">
@@ -117,12 +117,6 @@ export const Register = () => {
                                     </div>
                                 </form>
                             </div>
-                        </div>
-                    </div>
-
-                    <div className="hidden sm:block" aria-hidden="true">
-                        <div className="py-5">
-                            <div className="border-t border-gray-200" />
                         </div>
                     </div>
                 </div>
