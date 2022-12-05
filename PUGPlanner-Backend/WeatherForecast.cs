@@ -8,6 +8,6 @@ namespace PUGPlanner_Backend
 
         public int TemperatureF => TemperatureC * 3;
 
-        public string? Summary { get; set; }
+        public string Summary { get; set; }
     }
 }
