@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "../managers/UserManager";
 
 export const Login = () => {
@@ -31,7 +31,7 @@ export const Login = () => {
                     <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
                     <p className="mt-2 text-center text-sm text-gray-600">
                         Or
-                        <a href="/register" className="font-medium text-indigo-600 hover:text-indigo-500"> register for a new account</a>
+                        <Link to={"/register"} className="font-medium text-indigo-600 hover:text-indigo-500"> register for a new account</Link>
                     </p>
                 </div>
                 <form className="mt-8 space-y-6" onSubmit={handleLogin}>
