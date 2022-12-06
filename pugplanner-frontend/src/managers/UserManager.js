@@ -1,3 +1,5 @@
+import { postOption } from "./FetchOptions";
+
 const apiUrl = "https://localhost:7066"
 
 /**
@@ -5,7 +7,7 @@ const apiUrl = "https://localhost:7066"
  * @param {string} email 
  * @returns User object or undefined if user not found
  */
-export const login = (email) => {
+export const login = email => {
     return fetch(`${apiUrl}/api/user/get?email=${email}`)
     .then((r) => r.json())
       .then((userProfile) => {
@@ -25,6 +27,17 @@ export const login = (email) => {
   export const logout = () => {
         localStorage.clear()
   };
+
+  /**
+   * POST new user to database
+   * @param {UserProfile} userBody 
+   * @returns GET new user object from database
+   */
+  export const registerUser = async userBody => {
+    const response = await fetch(`${apiUrl}/user`, postOption(userBody))
+    const user = await response.json();
+    return user;
+  }
   
   /**
    * Parses current user from localStorage
