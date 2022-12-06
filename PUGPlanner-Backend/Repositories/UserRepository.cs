@@ -8,10 +8,10 @@ namespace PUGPlanner_Backend.Repositories
         public UserRepository(IConfiguration configuration) : base(configuration) { }
 
         /// <summary>
-        /// Get a User by their email address
+        /// Queries the UserProfile table by email
         /// </summary>
         /// <param name="email"></param>
-        /// <returns></returns>
+        /// <returns>User object</returns>
         public User GetByEmail(string email)
         {
             using (var conn = Connection)
@@ -22,8 +22,12 @@ namespace PUGPlanner_Backend.Repositories
                     cmd.CommandText = @"
                         SELECT up.Id, up.FirstName, up.LastName, 
                                up.Email, up.CreateDateTime, up.Admin,
-                               up.PrimaryPosition, up.SecondaryPosition
+                               up.PrimaryPositionId, up.SecondaryPositionId,
+                               p.[Name] as PrimaryPositionName,
+                               p2.[Name] as SecondaryPositionName
                           FROM [UserProfile] up
+                              JOIN [Position] p ON up.PrimaryPositionId = p.id
+                              JOIN [Position] p2 ON up.SecondaryPositionId = p2.id
                          WHERE Email = @email";
 
                     DbUtils.AddParameter(cmd, "@email", email);
@@ -40,10 +44,15 @@ namespace PUGPlanner_Backend.Repositories
                             FirstName = DbUtils.GetString(reader, "FirstName"),
                             LastName = DbUtils.GetString(reader, "LastName"),
                             Email = DbUtils.GetString(reader, "Email"),
-                            PrimaryPosition = DbUtils.GetInt(reader, "PrimaryPosition"),
-                            SecondaryPosition = DbUtils.GetInt(reader, "SecondaryPosition"),
+                            PrimaryPosition = DbUtils.GetInt(reader, "PrimaryPositionId"),
+                            SecondaryPosition = DbUtils.GetInt(reader, "SecondaryPositionId"),
                             CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
-                            Admin = reader.GetBoolean(reader.GetOrdinal("IsActive"))
+                            Admin = reader.GetBoolean(reader.GetOrdinal("Admin")),
+                            Position = new Position()
+                            {
+                                Primary = DbUtils.GetString(reader,"PrimaryPositionName"),
+                                Secondary = DbUtils.GetString(reader,"SecondaryPositionName"),
+                            }
                         };
                     }
                     reader.Close();

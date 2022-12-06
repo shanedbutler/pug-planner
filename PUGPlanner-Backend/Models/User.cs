@@ -21,14 +21,14 @@ namespace PUGPlanner_Backend.Models
 
         public DateTime CreateDateTime { get; set; }
 
-        public bool Admin { get; set; }
-
         [Required]
         public int PrimaryPosition { get; set; }
 
         [Required]
         public int SecondaryPosition { get; set; }
 
+        public bool Admin { get; set; }
+        public Position Position { get; set; }
         public string FullName
         {
             get
