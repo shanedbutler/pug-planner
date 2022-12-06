@@ -1,4 +1,5 @@
-﻿using PUGPlanner_Backend.Models;
+﻿using Microsoft.Data.SqlClient;
+using PUGPlanner_Backend.Models;
 using PUGPlanner_Backend.Utils;
 
 namespace PUGPlanner_Backend.Repositories
@@ -37,29 +38,39 @@ namespace PUGPlanner_Backend.Repositories
                     var reader = cmd.ExecuteReader();
                     if (reader.Read())
                     {
-                        userProfile = new User()
-                        {
-                            Id = DbUtils.GetInt(reader, "Id"),
-                            //FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId"),
-                            FirstName = DbUtils.GetString(reader, "FirstName"),
-                            LastName = DbUtils.GetString(reader, "LastName"),
-                            Email = DbUtils.GetString(reader, "Email"),
-                            PrimaryPosition = DbUtils.GetInt(reader, "PrimaryPositionId"),
-                            SecondaryPosition = DbUtils.GetInt(reader, "SecondaryPositionId"),
-                            CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
-                            Admin = reader.GetBoolean(reader.GetOrdinal("Admin")),
-                            Position = new Position()
-                            {
-                                Primary = DbUtils.GetString(reader,"PrimaryPositionName"),
-                                Secondary = DbUtils.GetString(reader,"SecondaryPositionName"),
-                            }
-                        };
+                        userProfile = NewUserFromReader(reader);
                     }
                     reader.Close();
 
                     return userProfile;
                 }
             }
+        }
+
+        /// <summary>
+        /// Instantiates a new User object through the SQL Data Reader
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns>User object</returns>
+        private User NewUserFromReader (SqlDataReader reader)
+        {
+            return new User()
+            {
+                Id = DbUtils.GetInt(reader, "Id"),
+                //FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId"),
+                FirstName = DbUtils.GetString(reader, "FirstName"),
+                LastName = DbUtils.GetString(reader, "LastName"),
+                Email = DbUtils.GetString(reader, "Email"),
+                PrimaryPosition = DbUtils.GetInt(reader, "PrimaryPositionId"),
+                SecondaryPosition = DbUtils.GetInt(reader, "SecondaryPositionId"),
+                CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+                Admin = reader.GetBoolean(reader.GetOrdinal("Admin")),
+                Position = new Position()
+                {
+                    Primary = DbUtils.GetString(reader, "PrimaryPositionName"),
+                    Secondary = DbUtils.GetString(reader, "SecondaryPositionName"),
+                }
+            };
         }
 
     }
