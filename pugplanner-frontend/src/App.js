@@ -9,7 +9,7 @@ function App() {
 
     return (
         <Router>
-            {!localStorage.getItem("user")
+            {!localStorage.getItem("userProfile")
                 ?
                 <>
                     <AuthNav />
