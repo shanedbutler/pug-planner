@@ -61,16 +61,42 @@ namespace PUGPlanner_Backend.Repositories
                 FirstName = DbUtils.GetString(reader, "FirstName"),
                 LastName = DbUtils.GetString(reader, "LastName"),
                 Email = DbUtils.GetString(reader, "Email"),
-                PrimaryPosition = DbUtils.GetInt(reader, "PrimaryPositionId"),
-                SecondaryPosition = DbUtils.GetInt(reader, "SecondaryPositionId"),
+                PrimaryPositionId = DbUtils.GetInt(reader, "PrimaryPositionId"),
+                SecondaryPositionId = DbUtils.GetInt(reader, "SecondaryPositionId"),
                 CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
                 Admin = reader.GetBoolean(reader.GetOrdinal("Admin")),
-                Position = new Position()
+                Position = new UserPosition()
                 {
                     Primary = DbUtils.GetString(reader, "PrimaryPositionName"),
                     Secondary = DbUtils.GetString(reader, "SecondaryPositionName"),
                 }
             };
+        }
+
+        public void Add(User user)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO UserProfile (FirstName, LastName, Email, CreateDateTime, 
+                                                                  PrimaryPositionId, SecondaryPositionId, Admin)
+                                        OUTPUT INSERTED.ID
+                                        VALUES (@FirstName, @LastName, @Email, @CreateDateTime, 
+                                                 @PrimaryPositionId, @SecondaryPositionId, @Admin)";
+                    //DbUtils.AddParameter(cmd, "@FirebaseUserId", userProfile.FirebaseUserId);
+                    DbUtils.AddParameter(cmd, "@FirstName", user.FirstName);
+                    DbUtils.AddParameter(cmd, "@LastName", user.LastName);
+                    DbUtils.AddParameter(cmd, "@Email", user.Email);
+                    DbUtils.AddParameter(cmd, "@CreateDateTime", DateTime.Now);
+                    DbUtils.AddParameter(cmd, "@PrimaryPositionId", user.PrimaryPositionId);
+                    DbUtils.AddParameter(cmd, "@SecondaryPositionId", user.SecondaryPositionId);
+                    DbUtils.AddParameter(cmd, "Admin", false);
+
+                    user.Id = (int)cmd.ExecuteScalar();
+                }
+            }
         }
 
     }
