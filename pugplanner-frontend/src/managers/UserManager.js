@@ -29,12 +29,12 @@ export const login = email => {
   };
 
   /**
-   * POST new user to database
+   * 
    * @param {UserProfile} userBody 
    * @returns GET new user object from database
    */
   export const registerUser = async userBody => {
-    const response = await fetch(`${apiUrl}/user`, postOption(userBody))
+    const response = await fetch(`${apiUrl}/api/user`, postOption(userBody))
     const user = await response.json();
     return user;
   }

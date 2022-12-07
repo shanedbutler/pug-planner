@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchPositions } from "../managers/PositionManager";
-import { registerUser } from "../managers/UserManager";
+import { login, registerUser } from "../managers/UserManager";
 
 export const Register = () => {
 
@@ -34,7 +34,7 @@ export const Register = () => {
                 primaryPositionId: parseInt(primaryRef.current.value),
                 secondaryPositionId: parseInt(secondaryRef.current.value),
             };
-            registerUser(newUser).then(user => console.log(user));
+            registerUser(newUser).then(user => login(user.email)).then(() => navigate("/"));   
         }
     };
 
@@ -64,7 +64,7 @@ export const Register = () => {
                         </div>
                         <div className="md:grid md:grid-cols-2 md:gap-6 mt-5">
                             <div className="mt-5 md:col-span-2 md:mt-0">
-                                <form onClick={handleSubmit}>
+                                <form onSubmit={handleSubmit}>
                                     <div className="overflow-hidden shadow sm:rounded-md">
                                         <div className="bg-white px-4 py-5 sm:p-6">
                                             <div className="grid grid-cols-6 gap-6">
