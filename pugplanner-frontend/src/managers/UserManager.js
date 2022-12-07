@@ -11,10 +11,15 @@ const apiUrl = "https://localhost:7066"
 export const login = email => {
   return fetch(`${apiUrl}/api/user/get?email=${email}`)
     .then((r) => r.json())
-    .then((userProfile) => {
-      if (userProfile.id) {
-        localStorage.setItem("userProfile", JSON.stringify(userProfile));
-        return userProfile
+    .then((user) => {
+      if (user.id) {
+        localStorage.setItem("userProfile", JSON.stringify({
+          id: user.id,
+          fullName: user.fullName,
+          email: user.email,
+          admin: user.admin
+        }));
+        return user
       }
       else {
         return undefined
