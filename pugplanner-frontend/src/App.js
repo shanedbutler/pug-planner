@@ -1,27 +1,30 @@
-import React from 'react';
-import { BrowserRouter as Router } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import { Login } from "./auth/Login";
+import { Register } from "./auth/Register";
+import { MainContent } from './format/MainContent';
 import { AppNav } from './nav/AppNav';
-import { AuthNav } from './nav/AuthNav';
 import { ApplicationViews } from './views/ApplicationViews';
-import { AuthViews } from './views/AuthViews';
+import { Authorized } from "./views/Authorized";
 
-function App() {
+export const App = () => {
 
     return (
-        <Router>
-            {!localStorage.getItem("userProfile")
-                ?
-                <>
-                    <AuthNav />
-                    <AuthViews />
-                </>
-                :
-                <>
-                    <AppNav />
-                    <ApplicationViews />
-                </>}
-        </Router>
-    );
-}
+        <Routes>
 
-export default App;
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+
+            <Route path="*" element={
+                <Authorized>
+                    <>
+                        <AppNav />
+                        <MainContent>
+                            <ApplicationViews />
+                        </MainContent>
+                    </>
+                </Authorized>
+            } />
+            
+        </Routes>
+    )
+}
