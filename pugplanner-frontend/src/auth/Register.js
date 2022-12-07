@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchPositions } from "../managers/PositionManager";
 import { login, registerUser } from "../managers/UserManager";
+import { AuthNav } from "../nav/AuthNav";
 
 export const Register = () => {
 
@@ -34,7 +35,7 @@ export const Register = () => {
                 primaryPositionId: parseInt(primaryRef.current.value),
                 secondaryPositionId: parseInt(secondaryRef.current.value),
             };
-            registerUser(newUser).then(user => login(user.email)).then(() => navigate("/"));   
+            registerUser(newUser).then(user => login(user.email)).then(() => navigate("/"));
         }
     };
 

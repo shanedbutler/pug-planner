@@ -1,17 +1,18 @@
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
-const navigation = [
-    { name: 'Login', href: '/login', current: true },
-    { name: 'Register', href: '/register', current: false },
-    { name: 'About', href: '#', current: false },
-]
-
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
-
 export const AuthNav = () => {
+
+    const navigation = [
+        { name: 'Login', href: '/login', current: true },
+        { name: 'Register', href: '/register', current: false },
+        { name: 'About', href: '#', current: false },
+    ]
+
+    function classNames(...classes) {
+        return classes.filter(Boolean).join(' ')
+    }
+
     return (
         <Disclosure as="nav" className="bg-gray-800">
             {({ open }) => (
