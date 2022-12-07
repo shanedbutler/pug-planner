@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PUGPlanner_Backend.Repositories;
+using PUGPlanner_Backend.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,7 +16,8 @@ namespace PUGPlanner_Backend.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpGet("GetByEmail")]
+        // GET: api/<UserController>/Get?email=string
+        [HttpGet("Get")]
         public IActionResult GetByEmail(string email)
         {
             var user = _userRepository.GetByEmail(email);
@@ -25,6 +27,16 @@ namespace PUGPlanner_Backend.Controllers
                 return NotFound();
             }
             return Ok(user);
+        }
+
+        // POST api/<UserController>
+        // GETs back newly created object via GetByEmail
+        [HttpPost]
+        public IActionResult Post(User user)
+        {
+            _userRepository.Add(user);
+
+            return CreatedAtAction("GetByEmail", new {email = user.Email}, user);
         }
 
         //// GET: api/<UserController>
