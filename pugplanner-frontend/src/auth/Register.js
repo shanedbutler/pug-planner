@@ -77,6 +77,7 @@ export const Register = () => {
                                                         name="first-name"
                                                         id="first-name"
                                                         autoComplete="given-name"
+                                                        required
                                                         ref={firstNameRef}
                                                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                                     />
@@ -91,6 +92,7 @@ export const Register = () => {
                                                         name="last-name"
                                                         id="last-name"
                                                         autoComplete="family-name"
+                                                        required
                                                         ref={lastNameRef}
                                                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                                     />
@@ -105,6 +107,7 @@ export const Register = () => {
                                                         name="email-address"
                                                         id="email-address"
                                                         autoComplete="email"
+                                                        required
                                                         ref={emailRef}
                                                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                                     />
