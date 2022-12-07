@@ -1,37 +1,56 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { CurrentUserAvatar, getCurrentUser } from '../managers/UserManager'
-import Avatar from 'boring-avatars'
+import { CurrentUserAvatar, getCurrentUser, logout } from '../managers/UserManager'
+import { useNavigate } from 'react-router-dom'
 
 export const AppNav = () => {
 
+    const navigate = useNavigate();
+
     const [user, setUser] = useState({});
 
-    // const user = {
-    //   name: 'Tom Cook',
-    //   email: 'tom@example.com',
-    //   imageUrl:
-    //     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    // }
-    const navigation = [
-        { name: 'Dashboard', href: '#', current: true },
-        { name: 'Sign-Ups', href: '#', current: false },
-    ]
+    // Main nav bar handlers
+    const navToDashboard = () => navigate("/")
+    const navToSignUps= () => navigate("/sign-ups")
+    const navToEventAdmin = () => navigate("/event-admin")
+    const navToPlayerAdmin = () => navigate("/player-admin")
+
+    // User menu handlers
+    const navToProfile = () => navigate("/profile");
+    const navToSettings = () => navigate("/settings");
+    const handleLogout = () => {
+        logout();
+        navigate("/login");
+    };
+
+    let navigation = [];
+    if (user.admin) {
+        navigation = [
+            { name: 'Dashboard', onClick: navToDashboard, current: true },
+            { name: 'Sign-Ups', onClick: navToSignUps, current: false },
+            { name: 'Event Admin', onClick: navToEventAdmin, current: false},
+            { name: 'Player Admin', onClick: navToPlayerAdmin, current: false}
+        ]
+    }
+    else {
+        navigation = [
+            { name: 'Dashboard', href: '#', current: true },
+            { name: 'Sign-Ups', href: '#', current: false },
+        ]
+    }
     const userNavigation = [
-        { name: 'Your Profile', href: '#' },
-        { name: 'Settings', href: '#' },
-        { name: 'Logout', href: '#' },
+        { name: 'Your Profile', onClick: navToProfile },
+        { name: 'Settings', onClick: navToSettings },
+        { name: 'Logout', onClick: handleLogout },
     ]
 
     function classNames(...classes) {
         return classes.filter(Boolean).join(' ')
     }
 
-
     useEffect(() => {
-        setUser(getCurrentUser())
-        // isCurrentUserAdmin() ? setAdmin(true) : setAdmin(false)
+        setUser(getCurrentUser());
     }, []);
     return (
         <>
@@ -39,34 +58,37 @@ export const AppNav = () => {
         This example requires updating your template:
 
         ```
-        <html class="h-full bg-gray-100">
+        <html class="h-full bg-stone-100">
         <body class="h-full">
         ```
       */}
             <div className="min-h-full">
-                <Disclosure as="nav" className="bg-gray-800">
+                <Disclosure as="nav" className="bg-red-100">
                     {({ open }) => (
                         <>
                             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                                 <div className="flex h-16 items-center justify-between">
                                     <div className="flex items-center">
-                                        <div className="flex-shrink-0">
-                                            <img
+                                        <div className="flex-shrink-0 border-double border-4 border-stone-500 px-3">
+                                            <p className="text-stone-800 font-bold text-lg">
+                                            PUP
+                                            </p>
+                                            {/* <img
                                                 className="h-8 w-8"
                                                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                                                 alt="Your Company"
-                                            />
+                                            /> */}
                                         </div>
                                         <div className="hidden md:block">
                                             <div className="ml-10 flex items-baseline space-x-4">
                                                 {navigation.map((item) => (
                                                     <a
                                                         key={item.name}
-                                                        href={item.href}
+                                                        onClick={item.onClick}
                                                         className={classNames(
                                                             item.current
-                                                                ? 'bg-gray-900 text-white'
-                                                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                                ? 'bg-yellow-200 text-black'
+                                                                : 'text-stone-900 hover:bg-green-100 hover:text-stone-900',
                                                             'px-3 py-2 rounded-md text-sm font-medium'
                                                         )}
                                                         aria-current={item.current ? 'page' : undefined}
@@ -81,7 +103,7 @@ export const AppNav = () => {
                                         <div className="ml-4 flex items-center md:ml-6">
                                             <button
                                                 type="button"
-                                                className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                                className="rounded-full bg-red-200 p-1 text-stone-700 hover:text-black hover:bg-red-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800"
                                             >
                                                 <span className="sr-only">View notifications</span>
                                                 <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -90,7 +112,7 @@ export const AppNav = () => {
                                             {/* Profile dropdown */}
                                             <Menu as="div" className="relative ml-3">
                                                 <div>
-                                                    <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                                    <Menu.Button className="flex max-w-xs items-center rounded-full bg-red-100 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800">
                                                         <span className="sr-only">Open user menu</span>
                                                         <CurrentUserAvatar />
                                                     </Menu.Button>
@@ -110,9 +132,10 @@ export const AppNav = () => {
                                                                 {({ active }) => (
                                                                     <a
                                                                         href={item.href}
+                                                                        onClick={item.onClick}
                                                                         className={classNames(
-                                                                            active ? 'bg-gray-100' : '',
-                                                                            'block px-4 py-2 text-sm text-gray-700'
+                                                                            active ? 'bg-stone-100' : '',
+                                                                            'block px-4 py-2 text-sm text-stone-700'
                                                                         )}
                                                                     >
                                                                         {item.name}
@@ -127,7 +150,7 @@ export const AppNav = () => {
                                     </div>
                                     <div className="-mr-2 flex md:hidden">
                                         {/* Mobile menu button */}
-                                        <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                        <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-stone-800 hover:bg-yellow-100 hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800">
                                             <span className="sr-only">Open main menu</span>
                                             {open ? (
                                                 <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -147,7 +170,7 @@ export const AppNav = () => {
                                             as="a"
                                             href={item.href}
                                             className={classNames(
-                                                item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                item.current ? 'bg-yellow-200 text-black' : 'text-stone-900 hover:bg-green-100 hover:text-black',
                                                 'block px-3 py-2 rounded-md text-base font-medium'
                                             )}
                                             aria-current={item.current ? 'page' : undefined}
@@ -156,18 +179,18 @@ export const AppNav = () => {
                                         </Disclosure.Button>
                                     ))}
                                 </div>
-                                <div className="border-t border-gray-700 pt-4 pb-3">
+                                <div className="border-t border-stone-800 pt-4 pb-3">
                                     <div className="flex items-center px-5">
                                         <div className="flex-shrink-0">
                                             <CurrentUserAvatar />
                                         </div>
                                         <div className="ml-3">
                                             <div className="text-base font-medium leading-none text-white">{user.name}</div>
-                                            <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
+                                            <div className="text-sm font-medium leading-none text-stone-400">{user.email}</div>
                                         </div>
                                         <button
                                             type="button"
-                                            className="ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                            className="ml-auto flex-shrink-0 rounded-full bg-yellow-200 p-1 text-stone-600 hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800"
                                         >
                                             <span className="sr-only">View notifications</span>
                                             <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -179,7 +202,7 @@ export const AppNav = () => {
                                                 key={item.name}
                                                 as="a"
                                                 href={item.href}
-                                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                                                className="block rounded-md px-3 py-2 text-base font-medium text-stone-600 hover:bg-green-100 hover:text-black"
                                             >
                                                 {item.name}
                                             </Disclosure.Button>
@@ -190,21 +213,6 @@ export const AppNav = () => {
                         </>
                     )}
                 </Disclosure>
-
-                <header className="bg-white shadow">
-                    <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
-                        <h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-                    </div>
-                </header>
-                <main>
-                    <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-                        {/* Replace with your content */}
-                        <div className="px-4 py-6 sm:px-0">
-                            <div className="h-96 rounded-lg border-4 border-dashed border-gray-200" />
-                        </div>
-                        {/* /End replace */}
-                    </div>
-                </main>
             </div>
         </>
     )
