@@ -22,8 +22,9 @@ namespace PUGPlanner_Backend.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT up.Id, up.FirstName, up.LastName, 
-                               up.Email, up.CreateDateTime, up.Admin,
+                               up.Email, up.CreateDateTime, up.[Admin],
                                up.PrimaryPositionId, up.SecondaryPositionId,
+                               up.EmergencyName, up.EmergencyPhone,
                                p.[Name] as PrimaryPositionName,
                                p2.[Name] as SecondaryPositionName
                           FROM [UserProfile] up
@@ -65,6 +66,8 @@ namespace PUGPlanner_Backend.Repositories
                 SecondaryPositionId = DbUtils.GetInt(reader, "SecondaryPositionId"),
                 CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
                 Admin = reader.GetBoolean(reader.GetOrdinal("Admin")),
+                EmergencyName = DbUtils.GetString(reader, "EmergencyName"),
+                EmergencyPhone = DbUtils.GetString(reader, "EmergencyPhone"),
                 Position = new UserPosition()
                 {
                     Primary = DbUtils.GetString(reader, "PrimaryPositionName"),
@@ -81,10 +84,12 @@ namespace PUGPlanner_Backend.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"INSERT INTO UserProfile (FirstName, LastName, Email, CreateDateTime, 
-                                                                  PrimaryPositionId, SecondaryPositionId, Admin)
+                                                                 PrimaryPositionId, SecondaryPositionId, Admin,
+                                                                 EmergencyName, EmergencyPhone)
                                         OUTPUT INSERTED.ID
                                         VALUES (@FirstName, @LastName, @Email, @CreateDateTime, 
-                                                 @PrimaryPositionId, @SecondaryPositionId, @Admin)";
+                                                @PrimaryPositionId, @SecondaryPositionId, @Admin,
+                                                @EmergencyName, @EmergencyPhone)";
                     //DbUtils.AddParameter(cmd, "@FirebaseUserId", userProfile.FirebaseUserId);
                     DbUtils.AddParameter(cmd, "@FirstName", user.FirstName);
                     DbUtils.AddParameter(cmd, "@LastName", user.LastName);
@@ -92,7 +97,9 @@ namespace PUGPlanner_Backend.Repositories
                     DbUtils.AddParameter(cmd, "@CreateDateTime", DateTime.Now);
                     DbUtils.AddParameter(cmd, "@PrimaryPositionId", user.PrimaryPositionId);
                     DbUtils.AddParameter(cmd, "@SecondaryPositionId", user.SecondaryPositionId);
-                    DbUtils.AddParameter(cmd, "Admin", false);
+                    DbUtils.AddParameter(cmd, "@Admin", false);
+                    DbUtils.AddParameter(cmd, "@EmergencyName", user.EmergencyName);
+                    DbUtils.AddParameter(cmd, "@EmergencyPhone", user.EmergencyPhone);
 
                     user.Id = (int)cmd.ExecuteScalar();
                 }

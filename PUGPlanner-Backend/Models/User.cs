@@ -16,7 +16,7 @@ namespace PUGPlanner_Backend.Models
 
         [Required]
         [DataType(DataType.EmailAddress)]
-        [MaxLength(255)]
+        [MaxLength(50)]
         public string Email { get; set; }
 
         public DateTime CreateDateTime { get; set; }
@@ -28,6 +28,14 @@ namespace PUGPlanner_Backend.Models
         public int SecondaryPositionId { get; set; }
 
         public bool Admin { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string EmergencyName { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string EmergencyPhone { get; set; }
         public UserPosition Position { get; set; }
         public string FullName
         {

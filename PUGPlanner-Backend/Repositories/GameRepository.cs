@@ -20,9 +20,9 @@ namespace PUGPlanner_Backend.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT g.Id, g.Title, g.Address,
-                               g.GameDate, g.SignupDate,
-                               g.PlayerCount, g.UserProfileId
+                        SELECT g.Id, g.Title, g.Location, g.Address,
+                               g.Description, g.GameDate, g.SignupDate,
+                               g.MaxPlayers, g.UserProfileId
                         FROM Game g";
 
                     List<Game> games = new List<Game>();
@@ -51,10 +51,12 @@ namespace PUGPlanner_Backend.Repositories
             {
                 Id = DbUtils.GetInt(reader, "Id"),
                 Title = DbUtils.GetString(reader, "Title"),
+                Location = DbUtils.GetString(reader, "Location"),
                 Address = DbUtils.GetString(reader, "Address"),
+                Description = DbUtils.GetString(reader, "Description"),
                 GameDate = DbUtils.GetDateTime(reader, "GameDate"),
                 SignupDate = DbUtils.GetDateTime(reader, "SignupDate"),
-                PlayerCount = DbUtils.GetInt(reader, "PlayerCount"),
+                MaxPlayers = DbUtils.GetInt(reader, "MaxPlayers"),
             };
         }
 

@@ -11,8 +11,15 @@ namespace PUGPlanner_Backend.Models
         public string Title { get; set; }
 
         [Required]
+        [MaxLength(50)]
+        public string Location { get; set; }
+
+        [Required]  
         [MaxLength(255)]
         public string Address { get; set; }
+        [Required]
+        [MaxLength(255)]
+        public string Description { get; set; }
 
         [Required]
         public DateTime GameDate { get; set; }
@@ -21,6 +28,6 @@ namespace PUGPlanner_Backend.Models
         public DateTime SignupDate { get; set; }
 
         [Required]
-        public int PlayerCount { get; set; }
+        public int MaxPlayers { get; set; }
     }
 }
