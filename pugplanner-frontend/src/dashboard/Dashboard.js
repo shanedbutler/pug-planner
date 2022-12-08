@@ -1,9 +1,18 @@
+import { useEffect, useState } from "react";
+import { GameCard } from "../game/GameCard";
+import { fetchGames } from "../managers/GameManager";
+
 export const Dashboard = () => {
-    
-    
+
+    const [games, setGames] = useState([]);
+
+    useEffect(() => {
+        fetchGames().then(games => setGames(games));
+    }, []);
+
     return (
-    <>
-        Dashboard content should include cards for up-coming events that the user is on the roster / waitlist for and up-coming sign-up events
-    </>
+        <>
+        {games.map(game => <GameCard game={ game } />)}
+        </>
     )
 }

@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { Login } from "./auth/Login";
 import { Register } from "./auth/Register";
+import { Dashboard } from "./dashboard/Dashboard";
 import { MainContent } from './format/MainContent';
 import { AppNav } from './nav/AppNav';
 import { ApplicationViews } from './views/ApplicationViews';
@@ -18,13 +19,12 @@ export const App = () => {
                 <Authorized>
                     <>
                         <AppNav />
-                        <MainContent>
-                            <ApplicationViews />
-                        </MainContent>
+                        <ApplicationViews />
+                        {/* <Dashboard /> */}
                     </>
                 </Authorized>
             } />
-            
+
         </Routes>
     )
 }

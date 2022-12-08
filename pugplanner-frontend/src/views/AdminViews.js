@@ -1,4 +1,4 @@
-import { Route } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import { Dashboard } from "../dashboard/Dashboard"
 
 export const AdminViews = () => {
@@ -9,6 +9,8 @@ export const AdminViews = () => {
     // <Route path="/player-management" element={<UserAdmin />} />
 
     return (
-        <Route path="/" element={<Dashboard />} />
+        <Routes>
+            <Route path="/" element={<Dashboard />} />
+        </Routes>
     )
 }
