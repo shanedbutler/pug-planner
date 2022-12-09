@@ -29,8 +29,8 @@ namespace PUGPlanner_Backend.Models
 
         [Required]
         public int MaxPlayers { get; set; }
-        public string GameDateString => GameDate.ToString("dddd, dd MMMM yyyy");
-        public string SignupDateString => SignupDate.ToString("dddd, dd MMMM yyyy");
+        public string GameDateString => GameDate.ToString("dddd, dd MMMM yyyy @ hh:mm tt");
+        public string SignupDateString => SignupDate.ToString("dddd, dd MMMM yyyy @ hh:mm tt");
 
     }
 }
