@@ -25,7 +25,7 @@ namespace PUGPlanner_Backend.Repositories
                                g.MaxPlayers, g.UserProfileId
                         FROM Game g";
 
-                    List<Game> games = new List<Game>();
+                    List<Game> games = new();
 
                     var reader = cmd.ExecuteReader();
 
@@ -36,6 +36,38 @@ namespace PUGPlanner_Backend.Repositories
                     reader.Close();
 
                     return games;
+                }
+            }
+        }
+
+
+        public Game Get(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT g.Id, g.Title, g.Location, g.Address,
+                               g.Description, g.GameDate, g.SignupDate,
+                               g.MaxPlayers, g.UserProfileId
+                        FROM Game g
+                        WHERE g.id = @Id";
+
+                    cmd.Parameters.AddWithValue("@Id", id);
+
+                    var reader = cmd.ExecuteReader();
+
+                    Game game = null;
+
+                    if (reader.Read())
+                    {
+                        game = NewGameFromReader(reader);
+                    }
+                    reader.Close();
+
+                    return game;
                 }
             }
         }
