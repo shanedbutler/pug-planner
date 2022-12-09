@@ -1,6 +1,12 @@
+import { useNavigate } from "react-router-dom"
 
 export const GameCard = ({ game }) => {
 
+    const navigate = useNavigate();
+
+    const handleDetailClick = () => {
+        navigate(`/game/${game.id}`)
+    };
 
     return (
         <div className="px-5 pt-6 last:pb-6">
@@ -16,44 +22,43 @@ export const GameCard = ({ game }) => {
                                 <dt className="text-sm font-medium text-gray-500">Location</dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{game.location}</dd>
                             </div>
-                            <div className="bg-gray-50 px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <div className="bg-white px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-500">Host</dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">Victor Quintero</dd>
                             </div>
                             <div className="bg-gray-50 px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-500">Roster</dt>
-                                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">5 out of {game.maxPlayers} players signed-up</dd>
-                            </div>
-                            <div className="bg-gray-50 px-4 pt-3 pb-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-500">About</dt>
-                                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                    {game.description}
-                                </dd>
+                                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{game.description}</dd>
                             </div>
-                            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-500">Actions</dt>
-                                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                    <ul role="list">
-                                        <li className="flex items-center justify-end py-2 pl-2 pr-3 text-sm">
-                                            <button
-                                                type="submit"
-                                                className="rounded-md border border-transparent bg-rose-100 py-2 px-4 mr-2 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
-                                            >
-                                                Register
-                                            </button>
-                                            <button
-                                                className="rounded-md border border-transparent bg-lime-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-lime-200 focus:bg-lime-200"
-                                            >
-                                                Details
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </dd>
-                            </div>
-                        </dl>
+                            <div className="bg-white px-4 pt-3 pb-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt className="text-sm font-medium text-gray-500">Player slots</dt>
+                                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">10 / {game.maxPlayers}</dd>
                     </div>
-                </div>
+                    <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt className="text-sm font-medium text-gray-500">Actions</dt>
+                        <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                            <ul role="list">
+                                <li className="flex items-center justify-end py-2 pl-2 pr-3 text-sm">
+                                    <button
+                                        type="submit"
+                                        className="rounded-md border border-transparent bg-rose-100 py-2 px-4 mr-2 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
+                                    >
+                                        Register
+                                    </button>
+                                    <button
+                                        className="rounded-md border border-transparent bg-lime-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-lime-200 focus:bg-lime-200"
+                                        onClick={handleDetailClick}
+                                    >
+                                        Details
+                                    </button>
+                                </li>
+                            </ul>
+                        </dd>
+                    </div>
+                </dl>
             </div>
         </div>
+            </div >
+        </div >
     )
 }
