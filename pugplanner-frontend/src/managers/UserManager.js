@@ -43,7 +43,7 @@ export const registerUser = async userBody => {
   const response = await fetch(`${apiUrl}/api/user`, postOption(userBody))
   const user = await response.json();
   return user;
-}
+};
 
 /**
  * Parses current user from localStorage
@@ -51,7 +51,6 @@ export const registerUser = async userBody => {
  */
 export const getCurrentUser = () => {
   const currentUser = localStorage.getItem("userProfile");
-
   return JSON.parse(currentUser);
 };
 
@@ -61,9 +60,7 @@ export const getCurrentUser = () => {
 */
 export const isCurrentUserAdmin = () => {
   const currentUser = localStorage.getItem("userProfile");
-
   const parsedUser = JSON.parse(currentUser);
-
   return parsedUser.admin
 };
 
@@ -72,9 +69,7 @@ export const isCurrentUserAdmin = () => {
  * @returns Avatar Component
  */
 export const CurrentUserAvatar = () => {
-
   const userFullName = getCurrentUser().fullName
-
   return (
     <Avatar
       size={40}
@@ -83,4 +78,17 @@ export const CurrentUserAvatar = () => {
       colors={["#F88F89", "#EEC276", "#FBF6D0", "#79C3AA", "#DDB8D9"]}
     />
   )
-}
+};
+
+/**
+ * Fetches all users that are on a game roster
+ * @param {int} gameId 
+ * @returns An array of user objects
+ */
+export const fetchRoster = async (gameId) => {
+  const response = await fetch(`${apiUrl}/api/user/getRoster?gameId=${gameId}`)
+  const roster = await response.json();
+  return roster;
+};
+//To be used by component in game details feat branch:
+//fetchRoster(game.id).then(roster => setRoster(roster));

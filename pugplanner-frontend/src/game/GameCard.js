@@ -1,6 +1,10 @@
+import { postUserToRoster } from "../managers/RosterManager";
 
 export const GameCard = ({ game }) => {
 
+    const handleSignup = () => {
+        postUserToRoster(game.id);
+    };
 
     return (
         <div className="px-5 pt-6 last:pb-6">
@@ -36,8 +40,8 @@ export const GameCard = ({ game }) => {
                                     <ul role="list">
                                         <li className="flex items-center justify-end py-2 pl-2 pr-3 text-sm">
                                             <button
-                                                type="submit"
                                                 className="rounded-md border border-transparent bg-rose-100 py-2 px-4 mr-2 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
+                                                onClick={handleSignup}
                                             >
                                                 Register
                                             </button>
