@@ -1,9 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import { postUserToRoster } from "../managers/RosterManager";
 
 export const GameCard = ({ game }) => {
 
-    const handleSignup = () => {
+    const navigate = useNavigate();
+
+    const handleRegister = () => {
         postUserToRoster(game.id);
+    };
+
+    const handleDetails = () => {
+        navigate(`/game/${game.id}`);
     };
 
     return (
@@ -40,15 +47,16 @@ export const GameCard = ({ game }) => {
                                     <ul role="list">
                                         <li className="flex items-center justify-end py-2 pl-2 pr-3 text-sm">
                                             <button
-                                                className="rounded-md border border-transparent bg-rose-100 py-2 px-4 mr-2 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
-                                                onClick={handleSignup}
-                                            >
-                                                Register
-                                            </button>
-                                            <button
-                                                className="rounded-md border border-transparent bg-lime-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-lime-200 focus:bg-lime-200"
+                                                className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-200 focus:bg-lime-200"
+                                                onClick={handleDetails}
                                             >
                                                 Details
+                                            </button>
+                                            <button
+                                                className="rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
+                                                onClick={handleRegister}
+                                            >
+                                                Register
                                             </button>
                                         </li>
                                     </ul>
