@@ -29,10 +29,23 @@ namespace PUGPlanner_Backend.Controllers
             return Ok(user);
         }
 
+        // GET: api/<UserController>/Get?gameid=int
+        [HttpGet("GetRoster")]
+        public IActionResult GetRoster(int gameId)
+        {
+            var users = _userRepository.GetByRosterGameId(gameId);
+
+            if (users == null)
+            {
+                return NotFound();
+            }
+            return Ok(users);
+        }
+
         // POST api/<UserController>
         // GETs back newly created object via GetByEmail
         [HttpPost]
-        public IActionResult Post(User user)
+        public IActionResult Create(User user)
         {
             _userRepository.Add(user);
 
