@@ -15,6 +15,14 @@ namespace PUGPlanner_Backend.Controllers
             _rosterRepository = rosterRepository;
         }
 
+        [HttpGet("GetCount")]
+        public IActionResult GetCount(int gameId) 
+        {
+            var count = _rosterRepository.getCount(gameId);
+
+            return Ok(count);
+        }
+
         // POST: api/<RosterController>
         [HttpPost]
         public IActionResult Create(Roster roster)

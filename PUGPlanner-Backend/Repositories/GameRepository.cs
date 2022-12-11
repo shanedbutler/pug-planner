@@ -33,7 +33,6 @@ namespace PUGPlanner_Backend.Repositories
                     {
                         games.Add(NewGameFromReader(reader));
                     }
-                    reader.Close();
 
                     return games;
                 }

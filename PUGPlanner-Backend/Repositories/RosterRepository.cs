@@ -7,6 +7,48 @@ namespace PUGPlanner_Backend.Repositories
     {
         public RosterRepository(IConfiguration configuration) : base(configuration) { }
 
+        /// <summary>
+        /// Queries the Roster table by gameId and counts entries.
+        /// Returned object includes currentl player count and max players through join.
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <returns>Game Roster Count object</returns>
+        public GameRosterCount getCount(int gameId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT Game.Id as 'GameId', MaxPlayers, Count(GameId) as PlayerCount
+                          FROM Game LEFT JOIN GameRoster
+                            ON Game.Id = GameRoster.GameId
+                         GROUP BY Game.Id, MaxPlayers
+                         HAVING Game.Id = @gameId";
+
+                    DbUtils.AddParameter(cmd, "@gameId", gameId);
+
+                    GameRosterCount gameRosterCount = null;
+
+                    var reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        gameRosterCount = new GameRosterCount()
+                        {
+                            GameId = DbUtils.GetInt(reader, "GameId"),
+                            CurrentPlayers = DbUtils.GetInt(reader, "PlayerCount"),
+                            MaxPlayers = DbUtils.GetInt(reader, "MaxPlayers"),
+                        };
+                    }
+                    reader.Close();
+
+                    return gameRosterCount;
+                }
+            }
+        }
+
         public void Add(Roster roster)
         {
             using (var conn = Connection)
@@ -42,7 +84,7 @@ namespace PUGPlanner_Backend.Repositories
 
                     cmd.ExecuteNonQuery();
                 }
-             }
+            }
         }
 
     }
