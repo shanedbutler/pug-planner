@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { postUserToRoster } from "../managers/RosterManager";
+import { fetchGameRosterCount, postUserToRoster } from "../managers/RosterManager";
 import { RegistrationModal } from "../modals/RegistrationModal";
 
 export const GameCard = ({ game }) => {
 
     const navigate = useNavigate();
 
-    const [modalOpen, setModalOpen] = useState(false)
+    const [rosterCount, setRosterCount] = useState({});
+    const [modalOpen, setModalOpen] = useState(false);
 
     const handleRegister = () => {
         postUserToRoster(game.id);
@@ -17,6 +18,10 @@ export const GameCard = ({ game }) => {
     const handleDetails = () => {
         navigate(`/game/${game.id}`);
     };
+
+    useEffect(() => {
+        fetchGameRosterCount(game.id).then(countObj => setRosterCount(countObj));
+    }, []);
 
     return (
         <>
@@ -39,7 +44,7 @@ export const GameCard = ({ game }) => {
                                 </div>
                                 <div className="bg-gray-50 px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt className="text-sm font-medium text-gray-500">Roster</dt>
-                                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">5 out of {game.maxPlayers} players signed-up</dd>
+                                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{rosterCount.currentPlayers} out of {game.maxPlayers} players signed-up</dd>
                                 </div>
                                 <div className="bg-gray-50 px-4 pt-3 pb-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt className="text-sm font-medium text-gray-500">About</dt>
