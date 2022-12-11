@@ -12,7 +12,7 @@ export const Dashboard = () => {
 
     return (
         <>
-        {games.map(game => <GameCard game={ game } />)}
+        {games.map(game => <GameCard key={game.id} game={ game } />)}
         </>
     )
 }
