@@ -8,7 +8,7 @@ export const GameDetails = () => {
 
     const { id } = useParams();
     const [game, setGame] = useState({});
-    const [roster, setRoster] = useState({});
+    const [roster, setRoster] = useState([]);
 
     // TODO: Attach admin user to game object
 
@@ -33,7 +33,7 @@ export const GameDetails = () => {
                             </div>
                             <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-500">Host</dt>
-                                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{game.adminUser.fullName}</dd>
+                                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{game.adminUser?.fullName}</dd>
                             </div>
                             <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-500">Host contact</dt>
@@ -51,7 +51,7 @@ export const GameDetails = () => {
                                 <dt className="text-sm font-medium text-gray-500">Detailed roster</dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                     <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
-                                        {roster.map(player => <RosterItem key={player.id} player={player} />)}
+                                        {roster.map((player, i) => <RosterItem key={player.id} player={player} i={i} />)}
                                     </ul>
                                 </dd>
                             </div>
