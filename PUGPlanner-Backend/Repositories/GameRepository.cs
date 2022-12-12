@@ -22,8 +22,17 @@ namespace PUGPlanner_Backend.Repositories
                     cmd.CommandText = @"
                         SELECT g.Id, g.Title, g.Location, g.Address,
                                g.Description, g.GameDate, g.SignupDate,
-                               g.MaxPlayers, g.UserProfileId
-                        FROM Game g";
+                               g.MaxPlayers, g.UserProfileId,
+                               up.Id, up.FirstName, up.LastName, 
+                               up.Email, up.CreateDateTime, up.[Admin],
+                               up.PrimaryPositionId, up.SecondaryPositionId,
+                               up.EmergencyName, up.EmergencyPhone,
+                               p.[Name] as PrimaryPositionName,
+                               p2.[Name] as SecondaryPositionName
+                        FROM Game g
+                            LEFT JOIN UserProfile up ON g.UserProfileId = up.Id
+                            JOIN [Position] p ON up.PrimaryPositionId = p.id
+                            JOIN [Position] p2 ON up.SecondaryPositionId = p2.id";
 
                     List<Game> games = new();
 
@@ -50,8 +59,17 @@ namespace PUGPlanner_Backend.Repositories
                     cmd.CommandText = @"
                         SELECT g.Id, g.Title, g.Location, g.Address,
                                g.Description, g.GameDate, g.SignupDate,
-                               g.MaxPlayers, g.UserProfileId
+                               g.MaxPlayers, g.UserProfileId,
+                               up.Id, up.FirstName, up.LastName, 
+                               up.Email, up.CreateDateTime, up.[Admin],
+                               up.PrimaryPositionId, up.SecondaryPositionId,
+                               up.EmergencyName, up.EmergencyPhone,
+                               p.[Name] as PrimaryPositionName,
+                               p2.[Name] as SecondaryPositionName
                         FROM Game g
+                            LEFT JOIN UserProfile up ON g.UserProfileId = up.Id
+                            JOIN [Position] p ON up.PrimaryPositionId = p.id
+                            JOIN [Position] p2 ON up.SecondaryPositionId = p2.id
                         WHERE g.id = @Id";
 
                     cmd.Parameters.AddWithValue("@Id", id);
@@ -88,6 +106,24 @@ namespace PUGPlanner_Backend.Repositories
                 GameDate = DbUtils.GetDateTime(reader, "GameDate"),
                 SignupDate = DbUtils.GetDateTime(reader, "SignupDate"),
                 MaxPlayers = DbUtils.GetInt(reader, "MaxPlayers"),
+                AdminUser = new User()
+                {
+                    Id = DbUtils.GetInt(reader, "UserProfileId"),
+                    FirstName = DbUtils.GetString(reader, "FirstName"),
+                    LastName = DbUtils.GetString(reader, "LastName"),
+                    Email = DbUtils.GetString(reader, "Email"),
+                    PrimaryPositionId = DbUtils.GetInt(reader, "PrimaryPositionId"),
+                    SecondaryPositionId = DbUtils.GetInt(reader, "SecondaryPositionId"),
+                    CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+                    Admin = reader.GetBoolean(reader.GetOrdinal("Admin")),
+                    EmergencyName = DbUtils.GetString(reader, "EmergencyName"),
+                    EmergencyPhone = DbUtils.GetString(reader, "EmergencyPhone"),
+                    Position = new UserPosition()
+                    {
+                        Primary = DbUtils.GetString(reader, "PrimaryPositionName"),
+                        Secondary = DbUtils.GetString(reader, "SecondaryPositionName"),
+                    }
+                }
             };
         }
 
