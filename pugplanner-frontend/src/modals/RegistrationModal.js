@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckCircleIcon } from '@heroicons/react/24/outline'
 
-export const RegistrationModal = ({ open, setOpen, handleDetails }) => {
+export const RegistrationModal = ({ open, setOpen, handleNav, onDetails }) => {
 
     return (
         <Transition.Root show={open} as={Fragment}>
@@ -49,22 +49,34 @@ export const RegistrationModal = ({ open, setOpen, handleDetails }) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="bg-gray-50 px-2 pt-3 pb-4 flex sm:px-6">
-                                    <button
-                                        type="button"
-                                        className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mx-auto text-sm font-medium text-gray-700 shadow-sm hover:bg-lime-200 focus:bg-lime-200 hover:text-black focus:text-black"
-                                        onClick={() => setOpen(false)}
-                                    >
-                                        Back to dashboard
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="rounded-md border border-transparent bg-red-100 py-2 px-4 mx-auto text-sm font-medium text-gray-700 shadow-sm hover:bg-red-200 focus:bg-red-200 hover:text-black focus:text-black"
-                                        onClick={handleDetails}
-                                    >
-                                        See game details
-                                    </button>
-                                </div>
+                                {onDetails ?
+                                    <div className="bg-gray-50 px-2 pt-3 pb-4 flex sm:px-6">
+                                        <button
+                                            type="button"
+                                            className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mx-auto text-sm font-medium text-gray-700 shadow-sm hover:bg-lime-200 focus:bg-lime-200 hover:text-black focus:text-black"
+                                            onClick={() => setOpen(false)}
+                                        >
+                                            Back to details
+                                        </button>
+                                    </div>
+                                    :
+                                    <div className="bg-gray-50 px-2 pt-3 pb-4 flex sm:px-6">
+                                        <button
+                                            type="button"
+                                            className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mx-auto text-sm font-medium text-gray-700 shadow-sm hover:bg-lime-200 focus:bg-lime-200 hover:text-black focus:text-black"
+                                            onClick={() => setOpen(false)}
+                                        >
+                                            Back to dashboard
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="rounded-md border border-transparent bg-red-100 py-2 px-4 mx-auto text-sm font-medium text-gray-700 shadow-sm hover:bg-red-200 focus:bg-red-200 hover:text-black focus:text-black"
+                                            onClick={handleNav}
+                                        >
+                                            See game details
+                                        </button>
+                                    </div>
+                                }
                             </Dialog.Panel>
                         </Transition.Child>
                     </div>
