@@ -82,7 +82,7 @@ export const AppNav = () => {
                                         <div className="hidden md:block">
                                             <div className="ml-10 flex items-baseline space-x-4">
                                                 {navigation.map((item) => (
-                                                    <a
+                                                    <div
                                                         key={item.name}
                                                         onClick={item.onClick}
                                                         className={classNames(
@@ -94,7 +94,7 @@ export const AppNav = () => {
                                                         aria-current={item.current ? 'page' : undefined}
                                                     >
                                                         {item.name}
-                                                    </a>
+                                                    </div>
                                                 ))}
                                             </div>
                                         </div>

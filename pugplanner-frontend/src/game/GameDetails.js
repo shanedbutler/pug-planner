@@ -15,7 +15,7 @@ export const GameDetails = () => {
     useEffect(() => {
         fetchGame(id).then(game => setGame(game));
         fetchRoster(id).then(roster => setRoster(roster));
-    }, []);
+    }, [id]);
 
     return (
         <div className="px-5 pt-6 last:pb-6">
@@ -50,7 +50,7 @@ export const GameDetails = () => {
                             <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt className="text-sm font-medium text-gray-500">Detailed roster</dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                    <ul role="list" className="divide-y divide-gray-200 rounded-md border border-gray-200">
+                                    <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
                                         {roster.map(player => <RosterItem key={player.id} player={player} />)}
                                     </ul>
                                 </dd>

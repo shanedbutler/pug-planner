@@ -21,7 +21,7 @@ export const GameCard = ({ game }) => {
 
     useEffect(() => {
         fetchGameRosterCount(game.id).then(countObj => setRosterCount(countObj));
-    }, []);
+    }, [game.id]);
 
     return (
         <>
@@ -38,7 +38,7 @@ export const GameCard = ({ game }) => {
                                     <dt className="text-sm font-medium text-gray-500">Location</dt>
                                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{game.location}</dd>
                                 </div>
-                                <div className="bg-gray-50 px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <div className="bg-white px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt className="text-sm font-medium text-gray-500">Host</dt>
                                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">Victor Quintero</dd>
                                 </div>
@@ -46,7 +46,7 @@ export const GameCard = ({ game }) => {
                                     <dt className="text-sm font-medium text-gray-500">Roster</dt>
                                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{rosterCount.currentPlayers} out of {game.maxPlayers} players signed-up</dd>
                                 </div>
-                                <div className="bg-gray-50 px-4 pt-3 pb-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <div className="bg-white px-4 pt-3 pb-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt className="text-sm font-medium text-gray-500">About</dt>
                                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                         {game.description}
@@ -55,7 +55,7 @@ export const GameCard = ({ game }) => {
                                 <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt className="text-sm font-medium text-gray-500">Actions</dt>
                                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        <ul role="list">
+                                        <ul>
                                             <li className="flex items-center justify-end py-2 pl-2 pr-3 text-sm">
                                                 <button
                                                     className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-200 focus:bg-lime-200"
