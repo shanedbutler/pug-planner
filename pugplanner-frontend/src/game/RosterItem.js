@@ -1,23 +1,35 @@
 import { UserAvatar } from '../managers/UserManager'
 
-export const RosterItem = ({ player, i }) => {
+export const RosterItem = ({ player, i, isWaitList }) => {
 
-    return (
-        <li className={`${(i % 2) ? "bg-gray-50" : "bg-white"} flex items-center justify-between py-3 pl-3 pr-4 text-sm`}>
-            <div className="flex w-0 flex-1 items-center">
-                <UserAvatar fullName={player.fullName} className="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
-            </div>
-            <div className="flex w-0 flex-1 items-center">
-                <div className="h-5 w-5 flex-shrink-0 text-slate-700">
+    if (!isWaitList) {
+        return (
+            <li className={`${(i % 2) ? "bg-gray-50" : "bg-white"} flex items-center justify-around py-3 px-4 text-sm`}>
+                <div className="flex items-center">
+                    <UserAvatar fullName={player.fullName} className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
+                </div>
+                <div className="font-medium text-slate-600 hover:text-slate-500">
                     {player.fullName}
                 </div>
-            </div>
-                <div className="font-medium text-indigo-600 hover:text-indigo-500">
+                <div className="ml-4">
+                    <span className="w-0">{player.position?.primary} / {player.position?.secondary}</span>
+                </div>
+            </li>
+        )
+    }
+    else {
+        return (
+            <li className={`${(i % 2) ? "bg-rose-100" : "bg-rose-50"} flex items-center justify-around py-3 px-4 text-sm`}>
+                <div className="flex items-center">
+                    <UserAvatar fullName={player.fullName} className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
+                </div>
+                <div className="font-medium text-slate-600 hover:text-slate-500">
                     {player.fullName}
                 </div>
-            <div className="ml-4">
-                <span className="ml-2 w-0">Central Midfielder</span>
-            </div>
-        </li>
-    )
+                <div className="ml-4">
+                    <span className="w-0">{player.position?.primary} / {player.position?.secondary}</span>
+                </div>
+            </li>
+        )
+    }
 }
