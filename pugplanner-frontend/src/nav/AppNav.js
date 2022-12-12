@@ -27,7 +27,7 @@ export const AppNav = () => {
     let navigation = [];
     if (user.admin) {
         navigation = [
-            { name: 'Dashboard', onClick: navToDashboard, current: true },
+            { name: 'Dashboard', onClick: navToDashboard, current: false },
             { name: 'Sign-Ups', onClick: navToSignUps, current: false },
             { name: 'Event Admin', onClick: navToEventAdmin, current: false},
             { name: 'Player Admin', onClick: navToPlayerAdmin, current: false}
@@ -35,7 +35,7 @@ export const AppNav = () => {
     }
     else {
         navigation = [
-            { name: 'Dashboard', href: '#', current: true },
+            { name: 'Dashboard', href: '#', current: false },
             { name: 'Sign-Ups', href: '#', current: false },
         ]
     }
