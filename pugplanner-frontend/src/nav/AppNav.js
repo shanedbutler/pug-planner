@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { CurrentUserAvatar, getCurrentUser, logout } from '../managers/UserManager'
+import { UserAvatar, getCurrentUser, logout } from '../managers/UserManager'
 import { useNavigate } from 'react-router-dom'
 
 export const AppNav = () => {
@@ -114,7 +114,7 @@ export const AppNav = () => {
                                                 <div>
                                                     <Menu.Button className="flex max-w-xs items-center rounded-full bg-red-100 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800">
                                                         <span className="sr-only">Open user menu</span>
-                                                        <CurrentUserAvatar />
+                                                        <UserAvatar fullName={user.fullName}/>
                                                     </Menu.Button>
                                                 </div>
                                                 <Transition
@@ -182,7 +182,7 @@ export const AppNav = () => {
                                 <div className="border-t border-stone-800 pt-4 pb-3">
                                     <div className="flex items-center px-5">
                                         <div className="flex-shrink-0">
-                                            <CurrentUserAvatar />
+                                            <UserAvatar fullName={user.fullName} />
                                         </div>
                                         <div className="ml-3">
                                             <div className="text-base font-medium leading-none text-white">{user.name}</div>
