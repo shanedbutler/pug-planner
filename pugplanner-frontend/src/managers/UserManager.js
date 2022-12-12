@@ -81,7 +81,7 @@ export const UserAvatar = ({ fullName }) => {
 };
 
 /**
- * Fetches all users that are on a game roster
+ * Gets all users that are on a game roster
  * @param {int} gameId 
  * @returns An array of user objects
  */
