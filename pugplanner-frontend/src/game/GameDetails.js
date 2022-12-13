@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchGame } from '../managers/GameManager';
-import { postUserToRoster } from '../managers/RosterManager';
-import { fetchRoster } from '../managers/UserManager';
+import { deleteUserFromRoster, postUserToRoster } from '../managers/RosterManager';
+import { fetchRoster, getCurrentUser } from '../managers/UserManager';
 import { RegistrationModal } from '../modals/RegistrationModal';
+import { UnregisterModal } from '../modals/UnregisterModal';
 import { RosterItem } from './RosterItem';
 
 export const GameDetails = () => {
@@ -11,20 +12,37 @@ export const GameDetails = () => {
     const { id } = useParams();
 
     const navigate = useNavigate();
-    const navToDashboard = () => navigate("/")
+    const navToDashboard = () => navigate("/");
 
     const [game, setGame] = useState({});
     const [roster, setRoster] = useState([]);
     const [isWaitList, setIsWaitList] = useState(false);
+    const [canRegister, setCanRegister] = useState(false);
+    const [canUnregister, setCanUnregister] = useState(false);
+    const [registrationNotOpen, setRegistrationNotOpen] = useState(false);
 
     const [startingRoster, setStartingRoster] = useState([]);
     const [waitList, setWaitList] = useState([]);
 
     const [modalOpen, setModalOpen] = useState(false);
+    const [unregisterModalOpen, setUnregisterModalOpen] = useState(false);
+
 
     const handleRegister = () => {
         postUserToRoster(game.id);
+        setCanRegister(false);
+        setCanUnregister(true);
         setModalOpen(true);
+    };
+
+    const handleUnregisterClick = () => {
+        setUnregisterModalOpen(true);
+    };
+
+    const handleUnregister = () => {
+        deleteUserFromRoster(game.id);
+        setCanUnregister(false);
+        setUnregisterModalOpen(false);
     };
 
     const handleModalNav = () => {
@@ -32,25 +50,32 @@ export const GameDetails = () => {
     };
 
     const fetchData = () => {
-        fetchGame(id).then(game => setGame(game));
-        fetchRoster(id).then(roster => setRoster(roster));
+        fetchGame(id).then(gameResponse => {
+            return fetchRoster(id).then(rosterResponse => {
+                checkDataToState(gameResponse, rosterResponse)
+            })
+        })
     };
 
     /**
+     * Sets state with checking done against data.
      * Checks if current roster count is over game's max-players.
      * If so, splits roster array into "starting roster" and wait-list arrays and sets them to state.
      */
-    const checkRosterCount = () => {
-        if (roster.length > game.maxPlayers) {
+    const checkDataToState = (gameObj, rosterArr) => {
+
+        setGame(gameObj);
+
+        if (rosterArr.length > gameObj.maxPlayers) {
 
             const startingRosterArray = [];
-            for (let i = 0; i < game.maxPlayers; i++) {
-                startingRosterArray.push(roster[i]);
+            for (let i = 0; i < gameObj.maxPlayers; i++) {
+                startingRosterArray.push(rosterArr[i]);
             }
 
             const waitListArray = [];
-            for (let i = game.maxPlayers; i < roster.length; i++) {
-                waitListArray.push(roster[i]);
+            for (let i = gameObj.maxPlayers; i < rosterArr.length; i++) {
+                waitListArray.push(rosterArr[i]);
             }
 
             setStartingRoster(startingRosterArray);
@@ -58,15 +83,35 @@ export const GameDetails = () => {
 
             setIsWaitList(true);
         }
+
+        else {
+            setRoster(rosterArr);
+        }
+
+        checkCanRegister(rosterArr, gameObj);
+    };
+
+    /**
+     * Checks if current user is already registered and if registration date status is open (-1)
+     */
+    const checkCanRegister = (rosterArr, gameObj) => {
+        const userId = getCurrentUser().id;
+        const isAlreadyRegistered = rosterArr.some(player => player.id === userId);
+
+        if (gameObj.signupDateStatus < 0 && !isAlreadyRegistered) {
+            setCanRegister(true);
+        }
+        else if (gameObj.signupDateStatus < 0 || isAlreadyRegistered) {
+            setCanUnregister(true);
+        }
+        else if (gameObj.signupDateStatus > 0) {
+            setRegistrationNotOpen(true);
+        }
     };
 
     useEffect(() => {
         fetchData();
-    }, [modalOpen]);
-
-    useEffect(() => {
-        checkRosterCount();
-    }, [game, roster]);
+    }, [modalOpen, unregisterModalOpen]);
 
     return (
         <>
@@ -99,7 +144,7 @@ export const GameDetails = () => {
                                     <dt className="text-sm font-medium text-gray-500">Player slots</dt>
                                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0"> {
                                         isWaitList ?
-                                            `${game.maxPlayers} / ${game.maxPlayers} plus ${waitList.length} wait-listed`
+                                            `${game.maxPlayers} / ${game.maxPlayers} + (${waitList.length} on waitlist)`
                                             :
                                             `${roster.length} / ${game.maxPlayers}`
                                     }
@@ -141,12 +186,29 @@ export const GameDetails = () => {
                                                 >
                                                     Back to dashboard
                                                 </button>
-                                                <button
-                                                    className="rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
-                                                    onClick={handleRegister}
-                                                >
-                                                    Register
-                                                </button>
+                                                {canRegister &&
+                                                    <button
+                                                        className="rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
+                                                        onClick={handleRegister}
+                                                    >
+                                                        {!isWaitList ? "Register" : "Join Waitlist"}
+                                                    </button>
+                                                }
+                                                {canUnregister &&
+                                                    <button
+                                                        className="rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
+                                                        onClick={handleUnregisterClick}
+                                                    >
+                                                        Unregister
+                                                    </button>
+                                                }
+                                                {registrationNotOpen &&
+                                                    <button
+                                                        className="disabled rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-sm"
+                                                    >
+                                                        Register
+                                                    </button>
+                                                }
                                             </li>
                                         </ul>
                                     </dd>
@@ -157,6 +219,7 @@ export const GameDetails = () => {
                 </div >
             </div >
             <RegistrationModal open={modalOpen} setOpen={setModalOpen} handleNav={handleModalNav} onDetails={true} />
+            <UnregisterModal open={unregisterModalOpen} setOpen={setUnregisterModalOpen} handleUnregister={handleUnregister} onDetails={true} />
         </>
     )
 }
