@@ -33,3 +33,14 @@ export const postUserToRoster = async (gameId) => {
     const rosterReturnedEntry = await response.json();
     return rosterReturnedEntry;
 };
+
+/**
+ * DELETEs from database all current users roster entries that match the gameId param
+ * @param {int} gameId 
+ */
+export const deleteUserFromRoster = async (gameId) => {
+
+    const userId = getCurrentUser().id;
+
+    await fetch(`${apiUrl}/api/roster/delete?userId=${userId}&gameId=${gameId}`, { method: "DELETE" })
+};
