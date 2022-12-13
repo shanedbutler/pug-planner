@@ -1,9 +1,11 @@
+import { LockClosedIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchGame } from '../managers/GameManager';
 import { deleteUserFromRoster, postUserToRoster } from '../managers/RosterManager';
 import { fetchRoster, getCurrentUser } from '../managers/UserManager';
 import { RegistrationModal } from '../modals/RegistrationModal';
+import { RegLockModal } from '../modals/RegLockModal';
 import { UnregisterModal } from '../modals/UnregisterModal';
 import { RosterItem } from './RosterItem';
 
@@ -26,6 +28,7 @@ export const GameDetails = () => {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [unregisterModalOpen, setUnregisterModalOpen] = useState(false);
+    const [regLockModalOpen, setRegLockModalOpen] = useState(false);
 
 
     const handleRegister = () => {
@@ -37,6 +40,10 @@ export const GameDetails = () => {
 
     const handleUnregisterClick = () => {
         setUnregisterModalOpen(true);
+    };
+
+    const handleRegLockClick = () => {
+        setRegLockModalOpen(true);
     };
 
     const handleUnregister = () => {
@@ -204,9 +211,11 @@ export const GameDetails = () => {
                                                 }
                                                 {registrationNotOpen &&
                                                     <button
-                                                        className="disabled rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-sm"
+                                                        className="disabled flex rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-slate-600 shadow-sm"
+                                                        onClick={handleRegLockClick}
                                                     >
-                                                        Register
+                                                        <LockClosedIcon className="h-5 w-4 mr-1 flex-shrink text-slate-600" aria-hidden="true" />
+                                                        <div>Registration</div>
                                                     </button>
                                                 }
                                             </li>
@@ -220,6 +229,7 @@ export const GameDetails = () => {
             </div >
             <RegistrationModal open={modalOpen} setOpen={setModalOpen} handleNav={handleModalNav} onDetails={true} />
             <UnregisterModal open={unregisterModalOpen} setOpen={setUnregisterModalOpen} handleUnregister={handleUnregister} onDetails={true} />
+            <RegLockModal open={regLockModalOpen} setOpen={setRegLockModalOpen} signUpTime={game.signupDateString} />
         </>
     )
 }
