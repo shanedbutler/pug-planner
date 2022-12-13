@@ -68,12 +68,12 @@ export const isCurrentUserAdmin = () => {
  * React component for current user's Boring Avatar
  * @returns Avatar Component
  */
-export const CurrentUserAvatar = () => {
-  const userFullName = getCurrentUser().fullName
+export const UserAvatar = ({ fullName }) => {
+
   return (
     <Avatar
       size={40}
-      name={userFullName}
+      name={fullName}
       variant="beam"
       colors={["#F88F89", "#EEC276", "#FBF6D0", "#79C3AA", "#DDB8D9"]}
     />
@@ -81,7 +81,7 @@ export const CurrentUserAvatar = () => {
 };
 
 /**
- * Fetches all users that are on a game roster
+ * Gets all users that are on a game roster
  * @param {int} gameId 
  * @returns An array of user objects
  */
@@ -90,5 +90,3 @@ export const fetchRoster = async (gameId) => {
   const roster = await response.json();
   return roster;
 };
-//To be used by component in game details feat branch:
-//fetchRoster(game.id).then(roster => setRoster(roster));

@@ -1,8 +1,8 @@
 import { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { CheckCircleIcon } from '@heroicons/react/24/outline'
+import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 
-export const RegistrationModal = ({ open, setOpen, handleNav, onDetails }) => {
+export const UnregisterModal = ({ open, setOpen, handleUnregister }) => {
 
     return (
         <Transition.Root show={open} as={Fragment}>
@@ -33,50 +33,38 @@ export const RegistrationModal = ({ open, setOpen, handleNav, onDetails }) => {
                         >
                             <Dialog.Panel className="relative transform overflow-hidden rounded-md max-w-sm bg-white text-center shadow-xl transition-all">
                                 <div className="bg-white px-7 py-4">
-                                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-lime-50">
-                                        <CheckCircleIcon className="h-7 w-7 text-lime-600" aria-hidden="true" />
+                                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-50">
+                                        <ExclamationCircleIcon className="h-7 w-7 text-red-600" aria-hidden="true" />
                                     </div>
                                     <div className="sm:flex sm:items-start">
                                         <div className="mt-3 text-center">
                                             <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                                                Registration successful
+                                                Are you sure you want to unregister?
                                             </Dialog.Title>
                                             <div className="mt-2">
                                                 <p className="text-sm text-gray-500">
-                                                    You have been placed on the game roster. Please see game details for more information.
+                                                    Upon confirmation you will be removed from the roster. If you change your mind and re-register, you will be placed at the bottom of the list.
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                {onDetails ?
                                     <div className="bg-gray-50 px-2 pt-3 pb-4 flex sm:px-6">
-                                        <button
-                                            type="button"
-                                            className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mx-auto text-sm font-medium text-gray-700 shadow-sm hover:bg-lime-200 focus:bg-lime-200 hover:text-black focus:text-black"
-                                            onClick={() => setOpen(false)}
-                                        >
-                                            Back to details
-                                        </button>
-                                    </div>
-                                    :
-                                    <div className="bg-gray-50 px-2 pt-3 pb-4 flex sm:px-6">
-                                        <button
-                                            type="button"
-                                            className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mx-auto text-sm font-medium text-gray-700 shadow-sm hover:bg-lime-200 focus:bg-lime-200 hover:text-black focus:text-black"
-                                            onClick={() => setOpen(false)}
-                                        >
-                                            Back to dashboard
-                                        </button>
                                         <button
                                             type="button"
                                             className="rounded-md border border-transparent bg-red-100 py-2 px-4 mx-auto text-sm font-medium text-gray-700 shadow-sm hover:bg-red-200 focus:bg-red-200 hover:text-black focus:text-black"
-                                            onClick={handleNav}
+                                            onClick={handleUnregister}
                                         >
-                                            See game details
+                                            Unregister
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mx-auto text-sm font-medium text-gray-700 shadow-sm hover:bg-lime-200 focus:bg-lime-200 hover:text-black focus:text-black"
+                                            onClick={() => setOpen(false)}
+                                        >
+                                            Cancel
                                         </button>
                                     </div>
-                                }
                             </Dialog.Panel>
                         </Transition.Child>
                     </div>

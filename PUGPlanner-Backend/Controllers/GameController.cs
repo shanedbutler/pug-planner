@@ -21,5 +21,12 @@ namespace PUGPlanner_Backend.Controllers
             return Ok(_gameRepository.Get());
         }
 
+        // GET: api/<GameController>
+        [HttpGet("Get/{id}")]
+        public IActionResult Get(int id)
+        {
+            return Ok(_gameRepository.Get(id));
+        }
+
     }
 }

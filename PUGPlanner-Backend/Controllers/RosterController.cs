@@ -15,6 +15,14 @@ namespace PUGPlanner_Backend.Controllers
             _rosterRepository = rosterRepository;
         }
 
+        [HttpGet("GetCount")]
+        public IActionResult GetCount(int gameId) 
+        {
+            var count = _rosterRepository.getCount(gameId);
+
+            return Ok(count);
+        }
+
         // POST: api/<RosterController>
         [HttpPost]
         public IActionResult Create(Roster roster)
@@ -22,6 +30,14 @@ namespace PUGPlanner_Backend.Controllers
             _rosterRepository.Add(roster);
 
             return Ok(roster);
+        }
+
+        // DELETE: api<RosterController>/Delete?userId={userId}&gameId={gameId}
+        [HttpDelete("Delete")]
+        public IActionResult Delete(int userId, int gameId)
+        {
+            _rosterRepository.Delete(userId, gameId);
+            return NoContent();
         }
     }
 }
