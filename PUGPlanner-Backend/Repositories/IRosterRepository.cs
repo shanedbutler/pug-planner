@@ -6,6 +6,6 @@ namespace PUGPlanner_Backend.Repositories
     {
         GameRosterCount getCount(int gameId);
         void Add(Roster roster);
-        void Delete(int id);
+        void Delete(int userId, int gameId);
     }
 }

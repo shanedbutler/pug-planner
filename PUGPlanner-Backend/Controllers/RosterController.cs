@@ -31,5 +31,13 @@ namespace PUGPlanner_Backend.Controllers
 
             return Ok(roster);
         }
+
+        // DELETE: api<RosterController>/Delete?userId={userId}&gameId={gameId}
+        [HttpDelete("Delete")]
+        public IActionResult Delete(int userId, int gameId)
+        {
+            _rosterRepository.Delete(userId, gameId);
+            return NoContent();
+        }
     }
 }

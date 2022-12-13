@@ -69,7 +69,7 @@ namespace PUGPlanner_Backend.Repositories
             }
         }
 
-        public void Delete(int id)
+        public void Delete(int userId, int gameId)
         {
             using (var conn = Connection)
             {
@@ -78,9 +78,10 @@ namespace PUGPlanner_Backend.Repositories
                 {
                     cmd.CommandText = @"
                         DELETE FROM GameRoster
-                        WHERE Id = @id";
+                        WHERE UserProfileId = @userId AND GameId = @gameId";
 
-                    DbUtils.AddParameter(cmd, "@id", id);
+                    DbUtils.AddParameter(cmd, "@userId", userId);
+                    DbUtils.AddParameter(cmd, "@gameId", gameId);
 
                     cmd.ExecuteNonQuery();
                 }
