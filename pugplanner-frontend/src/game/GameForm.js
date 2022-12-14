@@ -26,7 +26,7 @@ export const GameForm = () => {
             description: descriptionRef.current.value,
             gameDate: (gameDateRef.current.value + " " + gameTimeRef.current.value),
             signupDate: (signupDateRef.current.value + " " + signupTimeRef.current.value),
-            maxPlayers: maxPlayersRef.current.value
+            maxPlayers: parseInt(maxPlayersRef.current.value)
         };
 
         fetchPostGame(newGame).then(() => navigate("/"));
