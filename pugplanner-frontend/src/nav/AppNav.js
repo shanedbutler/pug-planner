@@ -151,12 +151,12 @@ export const AppNav = () => {
                             </div>
 
                             <Disclosure.Panel className="md:hidden">
-                                <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
+                                <div className="cursor-pointer space-y-1 px-2 pt-2 pb-3 sm:px-3">
                                     {navigation.map((item) => (
                                         <Disclosure.Button
                                             key={item.name}
-                                            as="a"
-                                            href={item.href}
+                                            as="div"
+                                            onClick={item.onClick}
                                             className={classNames(
                                                 item.current ? 'bg-yellow-200 text-black' : 'text-stone-900 hover:bg-violet-100 hover:text-black',
                                                 'block px-3 py-2 rounded-md text-base font-medium'
@@ -184,12 +184,12 @@ export const AppNav = () => {
                                             <BellIcon className="h-6 w-6" aria-hidden="true" />
                                         </button>
                                     </div>
-                                    <div className="mt-3 space-y-1 px-2">
+                                    <div className="cursor-pointer mt-3 space-y-1 px-2">
                                         {userNavigation.map((item) => (
                                             <Disclosure.Button
                                                 key={item.name}
-                                                as="a"
-                                                href={item.href}
+                                                as="div"
+                                                onClick={item.onClick}
                                                 className="block rounded-md px-3 py-2 text-base font-medium text-stone-600 hover:bg-violet-100 hover:text-black"
                                             >
                                                 {item.name}
