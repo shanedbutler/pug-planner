@@ -43,7 +43,7 @@ export const UnregisterModal = ({ open, setOpen, handleUnregister }) => {
                                             </Dialog.Title>
                                             <div className="mt-2">
                                                 <p className="text-sm text-gray-500">
-                                                    Upon confirmation you will be removed from the game list. If you change your mind and re-register, you will be placed at the bottom of the list.
+                                                    Upon clicking unregister you will be removed from the game list. If you decide to re-register you will be placed at the bottom of the list.
                                                 </p>
                                             </div>
                                         </div>

@@ -12,13 +12,10 @@ export const AppNav = () => {
 
     // Main nav bar handlers
     const navToDashboard = () => navigate("/")
-    const navToSignUps= () => navigate("/sign-ups")
-    const navToEventAdmin = () => navigate("/event-admin")
     const navToPlayerAdmin = () => navigate("/player-admin")
 
     // User menu handlers
     const navToProfile = () => navigate("/profile");
-    const navToSettings = () => navigate("/settings");
     const handleLogout = () => {
         logout();
         navigate("/login");
@@ -28,40 +25,28 @@ export const AppNav = () => {
     if (user.admin) {
         navigation = [
             { name: 'Dashboard', onClick: navToDashboard, current: false },
-            { name: 'Sign-Ups', onClick: navToSignUps, current: false },
-            { name: 'Event Admin', onClick: navToEventAdmin, current: false},
-            { name: 'Player Admin', onClick: navToPlayerAdmin, current: false}
-        ]
+            { name: 'Player Admin', onClick: navToPlayerAdmin, current: false }
+        ];
     }
     else {
         navigation = [
-            { name: 'Dashboard', href: '#', current: false },
-            { name: 'Sign-Ups', href: '#', current: false },
-        ]
+            { name: 'Dashboard', onClick: navToDashboard, current: false },
+        ];
     }
     const userNavigation = [
         { name: 'Your Profile', onClick: navToProfile },
-        { name: 'Settings', onClick: navToSettings },
         { name: 'Logout', onClick: handleLogout },
-    ]
+    ];
 
     function classNames(...classes) {
         return classes.filter(Boolean).join(' ')
-    }
+    };
 
     useEffect(() => {
         setUser(getCurrentUser());
     }, []);
     return (
         <>
-            {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-stone-100">
-        <body class="h-full">
-        ```
-      */}
             <div className="min-h-full">
                 <Disclosure as="nav" className="bg-red-100">
                     {({ open }) => (
@@ -69,9 +54,9 @@ export const AppNav = () => {
                             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                                 <div className="flex h-16 items-center justify-between">
                                     <div className="flex items-center">
-                                        <div className="flex-shrink-0 border-double border-4 border-stone-500 px-3">
-                                            <p className="text-stone-800 font-bold text-lg">
-                                            PUP
+                                        <div className="cursor-pointer flex-shrink-0 border-double border-4 border-stone-500 px-3" onClick={navToDashboard}>
+                                            <p className="text-stone-800 font-bold text-lg" >
+                                                PUP
                                             </p>
                                             {/* <img
                                                 className="h-8 w-8"
@@ -82,19 +67,19 @@ export const AppNav = () => {
                                         <div className="hidden md:block">
                                             <div className="ml-10 flex items-baseline space-x-4">
                                                 {navigation.map((item) => (
-                                                    <div
+                                                    <button
                                                         key={item.name}
                                                         onClick={item.onClick}
                                                         className={classNames(
                                                             item.current
                                                                 ? 'bg-yellow-200 text-black'
-                                                                : 'text-stone-900 hover:bg-green-100 hover:text-stone-900',
+                                                                : 'text-stone-900 hover:bg-violet-100 hover:text-black',
                                                             'px-3 py-2 rounded-md text-sm font-medium'
                                                         )}
                                                         aria-current={item.current ? 'page' : undefined}
                                                     >
                                                         {item.name}
-                                                    </div>
+                                                    </button>
                                                 ))}
                                             </div>
                                         </div>
@@ -114,7 +99,7 @@ export const AppNav = () => {
                                                 <div>
                                                     <Menu.Button className="flex max-w-xs items-center rounded-full bg-red-100 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800">
                                                         <span className="sr-only">Open user menu</span>
-                                                        <UserAvatar fullName={user.fullName}/>
+                                                        <UserAvatar fullName={user.fullName} />
                                                     </Menu.Button>
                                                 </div>
                                                 <Transition
@@ -127,19 +112,22 @@ export const AppNav = () => {
                                                     leaveTo="transform opacity-0 scale-95"
                                                 >
                                                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                                        {userNavigation.map((item) => (
+
+                                                            <div className="flex-shrink-0 block px-4 py-2 text-sm text-stone-700 bg-red-50">
+                                                                {user.fullName} {user.email}
+                                                            </div>
+                                                            {userNavigation.map((item) => (
                                                             <Menu.Item key={item.name}>
                                                                 {({ active }) => (
-                                                                    <a
-                                                                        href={item.href}
+                                                                    <div
                                                                         onClick={item.onClick}
                                                                         className={classNames(
-                                                                            active ? 'bg-stone-100' : '',
-                                                                            'block px-4 py-2 text-sm text-stone-700'
+                                                                            active ? 'bg-violet-50' : '',
+                                                                            'cursor-pointer block px-4 py-2 text-sm text-stone-700'
                                                                         )}
                                                                     >
                                                                         {item.name}
-                                                                    </a>
+                                                                    </div>
                                                                 )}
                                                             </Menu.Item>
                                                         ))}
@@ -163,14 +151,14 @@ export const AppNav = () => {
                             </div>
 
                             <Disclosure.Panel className="md:hidden">
-                                <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
+                                <div className="cursor-pointer space-y-1 px-2 pt-2 pb-3 sm:px-3">
                                     {navigation.map((item) => (
                                         <Disclosure.Button
                                             key={item.name}
-                                            as="a"
-                                            href={item.href}
+                                            as="div"
+                                            onClick={item.onClick}
                                             className={classNames(
-                                                item.current ? 'bg-yellow-200 text-black' : 'text-stone-900 hover:bg-green-100 hover:text-black',
+                                                item.current ? 'bg-yellow-200 text-black' : 'text-stone-900 hover:bg-violet-100 hover:text-black',
                                                 'block px-3 py-2 rounded-md text-base font-medium'
                                             )}
                                             aria-current={item.current ? 'page' : undefined}
@@ -185,24 +173,24 @@ export const AppNav = () => {
                                             <UserAvatar fullName={user.fullName} />
                                         </div>
                                         <div className="ml-3">
-                                            <div className="text-base font-medium leading-none text-white">{user.name}</div>
-                                            <div className="text-sm font-medium leading-none text-stone-400">{user.email}</div>
+                                            <div className="text-base font-medium leading-none mb-2 text-black">{user.fullName}</div>
+                                            <div className="text-sm font-medium leading-none text-stone-600">{user.email}</div>
                                         </div>
                                         <button
                                             type="button"
-                                            className="ml-auto flex-shrink-0 rounded-full bg-yellow-200 p-1 text-stone-600 hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800"
+                                            className="ml-auto flex-shrink-0 rounded-full bg-yellow-200 p-1 text-stone-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800"
                                         >
                                             <span className="sr-only">View notifications</span>
                                             <BellIcon className="h-6 w-6" aria-hidden="true" />
                                         </button>
                                     </div>
-                                    <div className="mt-3 space-y-1 px-2">
+                                    <div className="cursor-pointer mt-3 space-y-1 px-2">
                                         {userNavigation.map((item) => (
                                             <Disclosure.Button
                                                 key={item.name}
-                                                as="a"
-                                                href={item.href}
-                                                className="block rounded-md px-3 py-2 text-base font-medium text-stone-600 hover:bg-green-100 hover:text-black"
+                                                as="div"
+                                                onClick={item.onClick}
+                                                className="block rounded-md px-3 py-2 text-base font-medium text-stone-600 hover:bg-violet-100 hover:text-black"
                                             >
                                                 {item.name}
                                             </Disclosure.Button>
