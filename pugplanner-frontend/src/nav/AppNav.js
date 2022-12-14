@@ -12,7 +12,6 @@ export const AppNav = () => {
 
     // Main nav bar handlers
     const navToDashboard = () => navigate("/")
-    const navToEventAdmin = () => navigate("/event-admin")
     const navToPlayerAdmin = () => navigate("/player-admin")
 
     // User menu handlers
@@ -55,8 +54,8 @@ export const AppNav = () => {
                             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                                 <div className="flex h-16 items-center justify-between">
                                     <div className="flex items-center">
-                                        <div className="flex-shrink-0 border-double border-4 border-stone-500 px-3">
-                                            <p className="text-stone-800 font-bold text-lg">
+                                        <div className="cursor-pointer flex-shrink-0 border-double border-4 border-stone-500 px-3" onClick={navToDashboard}>
+                                            <p className="text-stone-800 font-bold text-lg" >
                                                 PUP
                                             </p>
                                             {/* <img
