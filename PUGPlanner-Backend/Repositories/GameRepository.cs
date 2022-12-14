@@ -48,7 +48,6 @@ namespace PUGPlanner_Backend.Repositories
             }
         }
 
-
         public Game Get(int id)
         {
             using (var conn = Connection)
@@ -125,6 +124,34 @@ namespace PUGPlanner_Backend.Repositories
                     }
                 }
             };
+        }
+
+        public void Add(Game game)
+        {
+           using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO Game (Title, Location, Address, Description,
+                                          GameDate, SignupDate, MaxPlayers, UserProfileId)
+                        OUTPUT INSERTED.ID
+                        VALUES (@Title, @Location, @Address, @Description,
+                                @GameDate, @SignupDate, @MaxPlayers, @UserProfileId)";
+
+                    DbUtils.AddParameter(cmd, "@Title", game.Title);
+                    DbUtils.AddParameter(cmd, "@Location", game.Location);
+                    DbUtils.AddParameter(cmd, "@Address", game.Address);
+                    DbUtils.AddParameter(cmd, "@Description", game.Description);
+                    DbUtils.AddParameter(cmd, "@GameDate", game.GameDate);
+                    DbUtils.AddParameter(cmd, "@SignupDate", game.SignupDate);
+                    DbUtils.AddParameter(cmd, "@MaxPlayers", game.MaxPlayers);
+                    DbUtils.AddParameter(cmd, "@UserProfileId", game.UserProfileId);
+
+                    game.Id = (int)cmd.ExecuteScalar();
+                }
+            }
         }
 
     }

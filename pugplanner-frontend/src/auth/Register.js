@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchPositions } from "../managers/PositionManager";
 import { login, registerUser } from "../managers/UserManager";
-import { AuthNav } from "../nav/AuthNav";
 
 export const Register = () => {
 

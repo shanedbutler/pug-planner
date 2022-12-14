@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PUGPlanner_Backend.Models;
 using PUGPlanner_Backend.Repositories;
 
 namespace PUGPlanner_Backend.Controllers
@@ -26,6 +27,16 @@ namespace PUGPlanner_Backend.Controllers
         public IActionResult Get(int id)
         {
             return Ok(_gameRepository.Get(id));
+        }
+
+        // POST api/<GameController>
+        // GETs back newly created ojbect via Get(id)
+        [HttpPost]
+        public IActionResult Create(Game game)
+        {
+            _gameRepository.Add(game);
+
+            return CreatedAtAction("Get", new {id = game.Id}, game);
         }
 
     }
