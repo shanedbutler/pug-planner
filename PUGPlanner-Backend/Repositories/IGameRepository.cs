@@ -6,6 +6,6 @@ namespace PUGPlanner_Backend.Repositories
     {
         List<Game> Get();
         Game Get(int id);
-
+        void Add(Game game);
     }
 }
