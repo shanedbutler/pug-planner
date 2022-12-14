@@ -1,7 +1,6 @@
 import { useRef } from "react"
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../managers/UserManager";
-import { AuthNav } from "../nav/AuthNav";
 
 export const Login = () => {
 
