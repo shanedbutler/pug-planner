@@ -38,6 +38,11 @@ namespace PUGPlanner_Backend.Models
         public string SignupDateString => SignupDate.ToString("dddd, dd MMMM yyyy @ hh:mm tt");
         public int SignupDateStatus => SignupDate.CompareTo(DateTime.Now);
         public int GameDateStatus => GameDate.CompareTo(DateTime.Now);
+        public string GameDateFormString => GameDate.ToString("yyyy-MM-dd");
+        public string GameTimeFormString => GameDate.ToString("HH:mm");
+        public string SignupDateFormString => SignupDate.ToString("yyyy-MM-dd");
+        public string SignupTimeFormString => SignupDate.ToString("HH:mm");
+            
         public User AdminUser { get; set; }
     }
 }
