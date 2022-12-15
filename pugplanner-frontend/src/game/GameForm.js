@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchPostGame } from "../managers/GameManager";
+import { getCurrentUser } from "../managers/UserManager";
 
 export const GameForm = () => {
 
@@ -24,9 +25,10 @@ export const GameForm = () => {
             location: locationRef.current.value,
             address: addressRef.current.value,
             description: descriptionRef.current.value,
-            gameDate: (gameDateRef.current.value + " " + gameTimeRef.current.value),
-            signupDate: (signupDateRef.current.value + " " + signupTimeRef.current.value),
-            maxPlayers: parseInt(maxPlayersRef.current.value)
+            gameDate: new Date(gameDateRef.current.value + "T" + gameTimeRef.current.value),
+            signupDate: new Date(signupDateRef.current.value + "T" + signupTimeRef.current.value),
+            maxPlayers: parseInt(maxPlayersRef.current.value),
+            userProfileId: getCurrentUser().id
         };
 
         fetchPostGame(newGame).then(() => navigate("/"));
@@ -44,7 +46,7 @@ export const GameForm = () => {
                     <div className="md:col-span-1">
                         <div className="px-4 sm:px-0 text-center">
                             <h3 className="text-3xl font-medium leading-6 text-gray-900">New Game</h3>
-                            <p className="mt-3 text-sm text-gray-600">Create a game event to be added to the dashboard</p>
+                            <p className="mt-3 text-sm text-gray-600">Create a public game event to be added to the dashboard</p>
                         </div>
                     </div>
                     <div className="md:grid md:grid-cols-2 md:gap-6 mt-5">
@@ -183,12 +185,12 @@ export const GameForm = () => {
                                     <div className="bg-gray-50 text-right py-3 px-3 sm:px-6">
                                         <button
                                             type="submit"
-                                            className="rounded-md border border-transparent bg-violet-600 py-2 px-4 mr-2 text-sm font-medium text-white shadow-sm hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+                                            className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-200 focus:bg-lime-200"
                                         >
                                             Create
                                         </button>
                                         <button
-                                            className="rounded-md border border-transparent bg-slate-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+                                            className="rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
                                             onClick={handleCancel}
                                         >
                                             Cancel
