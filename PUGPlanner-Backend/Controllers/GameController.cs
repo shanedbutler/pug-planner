@@ -39,5 +39,12 @@ namespace PUGPlanner_Backend.Controllers
             return CreatedAtAction("Get", new {id = game.Id}, game);
         }
 
+        [HttpPut]
+        public IActionResult Update(Game game)
+        {
+            _gameRepository.Update(game);
+
+            return NoContent();
+        }
     }
 }
