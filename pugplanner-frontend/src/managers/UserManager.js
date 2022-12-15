@@ -28,7 +28,7 @@ export const login = email => {
 };
 
 /**
- * Clears localStorage
+ * Removes user by clearing localStorage
  */
 export const logout = () => {
   localStorage.clear()
@@ -61,7 +61,7 @@ export const getCurrentUser = () => {
 export const isCurrentUserAdmin = () => {
   const currentUser = localStorage.getItem("userProfile");
   const parsedUser = JSON.parse(currentUser);
-  return parsedUser.admin
+  return parsedUser.admin;
 };
 
 /**

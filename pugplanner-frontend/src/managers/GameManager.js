@@ -1,4 +1,4 @@
-import { postOption } from "./FetchOptions";
+import { postOption, putOption } from "./FetchOptions";
 
 const apiUrl = "https://localhost:7066"
 
@@ -30,6 +30,17 @@ export const fetchGame = async (gameId) => {
  */
 export const fetchPostGame = async (gameBody) => {
     const response = await fetch(`${apiUrl}/api/game/`, postOption(gameBody));
+    const game = await response.json();
+    return game;
+};
+
+/**
+ * Put edited game to API and get it back
+ * @param {object} game 
+ * @returns A game object
+ */
+export const fetchPutGame = async (gameBody) => {
+    const response = await fetch(`${apiUrl}/api/game/`, putOption(gameBody));
     const game = await response.json();
     return game;
 };

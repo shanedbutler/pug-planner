@@ -154,5 +154,40 @@ namespace PUGPlanner_Backend.Repositories
             }
         }
 
+        public void Update(Game game)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE Game
+                            SET
+                                Title = @Title,
+                                Location = @Location,
+                                Address = @Address,
+                                Description = @Description,
+                                GameDate = @GameDate,
+                                SignupDate = @SignupDate,
+                                MaxPlayers = @MaxPlayers,
+                                UserProfileId = @UserProfileId
+                            WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Id", game.Id);
+                    DbUtils.AddParameter(cmd, "@Title", game.Title);
+                    DbUtils.AddParameter(cmd, "@Location", game.Location);
+                    DbUtils.AddParameter(cmd, "@Address", game.Address);
+                    DbUtils.AddParameter(cmd, "@Description", game.Description);
+                    DbUtils.AddParameter(cmd, "@GameDate", game.GameDate);
+                    DbUtils.AddParameter(cmd, "@SignupDate", game.SignupDate);
+                    DbUtils.AddParameter(cmd, "@MaxPlayers", game.MaxPlayers);
+                    DbUtils.AddParameter(cmd, "@UserProfileId", game.UserProfileId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
     }
 }
