@@ -193,7 +193,7 @@ export const GameEdit = () => {
                                                     id="max-players"
                                                     name="max-players"
                                                     required
-                                                    value={game.maxPlayers}
+                                                    placeholder={game.maxPlayers}
                                                     ref={maxPlayersRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                                 />
