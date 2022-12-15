@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchGame, fetchPostGame } from "../managers/GameManager";
+import { fetchGame, fetchPutGame } from "../managers/GameManager";
 import { getCurrentUser } from "../managers/UserManager";
 
 export const GameEdit = () => {
@@ -36,7 +36,8 @@ export const GameEdit = () => {
             userProfileId: getCurrentUser().id
         };
 
-        fetchPostGame(editedGame).then(() => navigate("/"));
+        fetchPutGame(editedGame);
+        navigate(`/game/${id}`);
     };
 
     const handleCancel = (e) => {
@@ -74,7 +75,7 @@ export const GameEdit = () => {
                                                     name="title"
                                                     id="title"
                                                     required
-                                                    value={game.title}
+                                                    defaultValue={game.title}
                                                     ref={titleRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                                 />
@@ -89,7 +90,7 @@ export const GameEdit = () => {
                                                     name="location"
                                                     id="location"
                                                     required
-                                                    value={game.location}
+                                                    defaultValue={game.location}
                                                     ref={locationRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                                 />
@@ -104,7 +105,7 @@ export const GameEdit = () => {
                                                     name="address"
                                                     id="address"
                                                     required
-                                                    value={game.address}
+                                                    defaultValue={game.address}
                                                     ref={addressRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                                 />
@@ -119,7 +120,7 @@ export const GameEdit = () => {
                                                     id="description"
                                                     name="description"
                                                     required
-                                                    value={game.description}
+                                                    defaultValue={game.description}
                                                     ref={descriptionRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                                 />
@@ -133,7 +134,7 @@ export const GameEdit = () => {
                                                     id="game-date"
                                                     name="game-date"
                                                     required
-                                                    value={game.gameDateFormString}
+                                                    defaultValue={game.gameDateFormString}
                                                     ref={gameDateRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                                 />
@@ -147,7 +148,7 @@ export const GameEdit = () => {
                                                     type="time"
                                                     id="game-time"
                                                     name="game-time"
-                                                    value={game.gameTimeFormString}
+                                                    defaultValue={game.gameTimeFormString}
                                                     required
                                                     ref={gameTimeRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
@@ -163,7 +164,7 @@ export const GameEdit = () => {
                                                     id="signup-date"
                                                     name="signup-date"
                                                     required
-                                                    value={game.signupDateFormString}
+                                                    defaultValue={game.signupDateFormString}
                                                     ref={signupDateRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                                 />
@@ -178,7 +179,7 @@ export const GameEdit = () => {
                                                     id="signup-time"
                                                     name="signup-time"
                                                     required
-                                                    value={game.signupTimeFormString    }
+                                                    defaultValue={game.signupTimeFormString}
                                                     ref={signupTimeRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                                 />
@@ -193,7 +194,7 @@ export const GameEdit = () => {
                                                     id="max-players"
                                                     name="max-players"
                                                     required
-                                                    placeholder={game.maxPlayers}
+                                                    defaultValue={game.maxPlayers}
                                                     ref={maxPlayersRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                                 />
