@@ -16,6 +16,19 @@ namespace PUGPlanner_Backend.Controllers
             _userRepository = userRepository;
         }
 
+        // GET: api/<UserController>/Get/5
+        [HttpGet("Get/{id}")]
+        public IActionResult Get(int id)
+        {
+            var user = _userRepository.Get(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+
         // GET: api/<UserController>/Get?email=string
         [HttpGet("Get")]
         public IActionResult GetByEmail(string email)
@@ -52,36 +65,5 @@ namespace PUGPlanner_Backend.Controllers
             return CreatedAtAction("GetByEmail", new {email = user.Email}, user);
         }
 
-        //// GET: api/<UserController>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET api/<UserController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //// POST api/<UserController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
-
-        //// PUT api/<UserController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<UserController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }
