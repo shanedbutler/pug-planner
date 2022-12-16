@@ -18,7 +18,7 @@ export const Dashboard = ({ isAdmin }) => {
 
     return (
         <div className="px-2 last:pb-6">
-            <div className="px-5 py-4 mx-auto max-w-lg">
+            <div className="px-5 py-5 mx-auto max-w-lg">
                 {isAdmin &&
                     <button
                         className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-4 pl-3 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-300 focus:bg-lime-300"
@@ -33,6 +33,3 @@ export const Dashboard = ({ isAdmin }) => {
         </div>
     )
 }
-
-//<div className="px-5 pt-6 last:pb-6">
-//<div className="mx-auto max-w-lg sm:px-6 lg:px-8">

@@ -75,16 +75,17 @@ export const GameCard = ({ game }) => {
                             <dt className="text-sm font-medium text-gray-500">Actions</dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                 <ul>
-                                    <li className="flex items-center justify-end py-2 pl-2 pr-3 text-sm">
+                                    <li className="flex items-center justify-end text-sm">
                                         <button
-                                            className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-200 focus:bg-lime-200"
+                                            className="rounded-md border border-transparent bg-rose-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm  hover:bg-rose-200 focus:bg-rose-200"
                                             onClick={handleDetails}
                                         >
                                             Details
                                         </button>
                                         <button
-                                            className="rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
+                                            className="rounded-md border border-transparent bg-lime-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-lime-200 focus:bg-lime-200"
                                             onClick={handleRegister}
+                                            hidden
                                         >
                                             Register
                                         </button>
