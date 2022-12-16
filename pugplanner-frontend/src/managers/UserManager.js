@@ -82,7 +82,7 @@ export const isCurrentUserAdmin = () => {
 export const UserAvatar = ({ fullName, scale }) => {
 
   if (scale == null) {
-    const scale = 40;
+    scale = 40;
   }
 
   return (
