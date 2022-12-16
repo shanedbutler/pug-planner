@@ -4,6 +4,17 @@ import { postOption } from "./FetchOptions";
 const apiUrl = "https://localhost:7066"
 
 /**
+ * Get fetch user from database by primary key id
+ * @param {int} in
+ * @returns User object
+ */
+export const fetchUser = async id => {
+  const response = await fetch(`${apiUrl}/api/user/get/${id}`); 
+  const user = await response.json();
+  return user;
+}
+
+/**
  * Get fetch user from database by email and sets user to localStorage
  * @param {string} email 
  * @returns User object or undefined if user not found
@@ -68,12 +79,17 @@ export const isCurrentUserAdmin = () => {
  * React component for current user's Boring Avatar
  * @returns Avatar Component
  */
-export const UserAvatar = ({ fullName }) => {
+export const UserAvatar = ({ fullName, scale }) => {
+
+  if (scale == null) {
+    const scale = 40;
+  }
 
   return (
     <Avatar
-      size={40}
+      size={scale}
       name={fullName}
+      square={false}
       variant="beam"
       colors={["#F88F89", "#EEC276", "#FBF6D0", "#79C3AA", "#DDB8D9"]}
     />
