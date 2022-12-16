@@ -9,7 +9,7 @@ const apiUrl = "https://localhost:7066"
  * @returns User object
  */
 export const fetchUser = async id => {
-  const response = await fetch(`${apiUrl}/api/user/get/${id}`); 
+  const response = await fetch(`${apiUrl}/api/user/get/${id}`);
   const user = await response.json();
   return user;
 }
@@ -79,20 +79,20 @@ export const isCurrentUserAdmin = () => {
  * React component for current user's Boring Avatar
  * @returns Avatar Component
  */
-export const UserAvatar = ({ fullName, scale }) => {
+export const UserAvatar = ({ fullName, id,  scale }) => {
 
   if (scale == null) {
     scale = 40;
   }
 
   return (
-    <Avatar
-      size={scale}
-      name={fullName}
-      square={false}
-      variant="beam"
-      colors={["#F88F89", "#EEC276", "#FBF6D0", "#79C3AA", "#DDB8D9"]}
-    />
+      <Avatar
+        size={scale}
+        name={fullName}
+        square={false}
+        variant="beam"
+        colors={["#F88F89", "#EEC276", "#FBF6D0", "#79C3AA", "#DDB8D9"]}
+      />
   )
 };
 

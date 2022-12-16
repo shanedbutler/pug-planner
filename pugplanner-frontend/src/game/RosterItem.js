@@ -1,14 +1,30 @@
+import { useNavigate } from 'react-router-dom'
 import { UserAvatar } from '../managers/UserManager'
 
 export const RosterItem = ({ player, i, isWaitList }) => {
 
+    const navigate = useNavigate();
+
+    const handleProfileNav = () => {
+        navigate(`/profile/${player.id}`);
+    }
+
     if (!isWaitList) {
         return (
             <li className={`${(i % 2) ? "bg-gray-50" : "bg-white"} flex items-center justify-around py-3 px-4 text-sm`}>
-                <div className="flex items-center">
-                    <UserAvatar fullName={player.fullName} className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
+                <div className="cursor-pointer flex items-center"
+                    onClick={handleProfileNav}
+                >
+                    <UserAvatar fullName={player.fullName}
+                        className=" h-5 w-5 flex-shrink-0"
+                        aria-hidden="true"
+
+                    />
                 </div>
-                <div className="font-medium text-slate-600 hover:text-slate-500">
+                <div
+                    className="cursor-pointer font-medium text-slate-600 hover:text-slate-500"
+                    onClick={handleProfileNav}
+                >
                     {player.fullName}
                 </div>
                 <div className="ml-4">
@@ -20,10 +36,19 @@ export const RosterItem = ({ player, i, isWaitList }) => {
     else {
         return (
             <li className={`${(i % 2) ? "bg-rose-100" : "bg-rose-50"} flex items-center justify-around py-3 px-4 text-sm`}>
-                <div className="flex items-center">
-                    <UserAvatar fullName={player.fullName} className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
+                <div className="cursor-pointer flex items-center"
+                    onClick={handleProfileNav}
+                >
+                    <UserAvatar fullName={player.fullName}
+                        className=" h-5 w-5 flex-shrink-0"
+                        aria-hidden="true"
+
+                    />
                 </div>
-                <div className="font-medium text-slate-600 hover:text-slate-500">
+                <div
+                    className="cursor-pointer font-medium text-slate-600 hover:text-slate-500"
+                    onClick={handleProfileNav}
+                >
                     {player.fullName}
                 </div>
                 <div className="ml-4">
