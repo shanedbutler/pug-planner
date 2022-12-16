@@ -15,7 +15,7 @@ export const AppNav = () => {
     const navToPlayerAdmin = () => navigate("/player-admin")
 
     // User menu handlers
-    const navToProfile = () => navigate("/profile");
+    const navToProfile = () => navigate(`/profile/${user.id}`);
     const handleLogout = () => {
         logout();
         navigate("/login");
@@ -64,7 +64,7 @@ export const AppNav = () => {
                                                 alt="Your Company"
                                             /> */}
                                         </div>
-                                        <div className="hidden md:block">
+                                        <div className="hidden sm:block">
                                             <div className="ml-10 flex items-baseline space-x-4">
                                                 {navigation.map((item) => (
                                                     <button
@@ -84,8 +84,8 @@ export const AppNav = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="hidden md:block">
-                                        <div className="ml-4 flex items-center md:ml-6">
+                                    <div className="hidden sm:block">
+                                        <div className="ml-4 flex items-center sm:ml-6">
                                             <button
                                                 type="button"
                                                 className="rounded-full bg-red-200 p-1 text-stone-700 hover:text-black hover:bg-red-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800"
@@ -136,7 +136,7 @@ export const AppNav = () => {
                                             </Menu>
                                         </div>
                                     </div>
-                                    <div className="-mr-2 flex md:hidden">
+                                    <div className="-mr-2 flex sm:hidden">
                                         {/* Mobile menu button */}
                                         <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-stone-800 hover:bg-yellow-100 hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800">
                                             <span className="sr-only">Open main menu</span>
@@ -150,7 +150,7 @@ export const AppNav = () => {
                                 </div>
                             </div>
 
-                            <Disclosure.Panel className="md:hidden">
+                            <Disclosure.Panel className="sm:hidden">
                                 <div className="cursor-pointer space-y-1 px-2 pt-2 pb-3 sm:px-3">
                                     {navigation.map((item) => (
                                         <Disclosure.Button
