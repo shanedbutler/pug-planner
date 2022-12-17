@@ -9,11 +9,51 @@ namespace PUGPlanner_Backend.Repositories
         public UserRepository(IConfiguration configuration) : base(configuration) { }
 
         /// <summary>
-        /// Queries the UserProfile table by email
+        /// Queries the UserProfile table by id
         /// </summary>
-        /// <param name="email"></param>
+        /// <param name="id"></param>
         /// <returns>User object</returns>
-        public User GetByEmail(string email)
+        public User Get(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT up.Id, up.FirstName, up.LastName, 
+                               up.Email, up.CreateDateTime, up.[Admin],
+                               up.PrimaryPositionId, up.SecondaryPositionId,
+                               up.EmergencyName, up.EmergencyPhone,
+                               p.[Name] as PrimaryPositionName,
+                               p2.[Name] as SecondaryPositionName
+                          FROM [UserProfile] up
+                              JOIN [Position] p ON up.PrimaryPositionId = p.id
+                              JOIN [Position] p2 ON up.SecondaryPositionId = p2.id
+                         WHERE up.Id = @id";
+
+                    DbUtils.AddParameter(cmd, "@id", id);
+
+                    User userProfile = null;
+
+                    var reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        userProfile = NewUserFromReader(reader);
+                    }
+                    reader.Close();
+
+                    return userProfile;
+                }
+            }
+        }
+
+            /// <summary>
+            /// Queries the UserProfile table by email
+            /// </summary>
+            /// <param name="email"></param>
+            /// <returns>User object</returns>
+            public User GetByEmail(string email)
         {
             using (var conn = Connection)
             {

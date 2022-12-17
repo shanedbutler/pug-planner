@@ -44,5 +44,7 @@ namespace PUGPlanner_Backend.Models
                 return $"{FirstName} {LastName}";
             }
         }
+        public string JoinYear => CreateDateTime.ToString("yyyy");
+
     }
 }
