@@ -12,8 +12,13 @@ export const Dashboard = ({ isAdmin }) => {
 
     const navToGameForm = () => navigate("/new-game")
 
+    const filterGames = (gamesArr) => {
+        const currentGames = gamesArr.filter(game => game.gameDateStatus > -1);
+        setGames(currentGames);
+    };
+
     useEffect(() => {
-        fetchGames().then(games => setGames(games));
+        fetchGames().then(games => filterGames(games));
     }, []);
 
     return (
