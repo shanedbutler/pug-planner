@@ -25,7 +25,7 @@ export const AppNav = () => {
     if (user.admin) {
         navigation = [
             { name: 'Dashboard', onClick: navToDashboard, current: false },
-            { name: 'Player Admin', onClick: navToPlayerAdmin, current: false }
+            // { name: 'Player Admin', onClick: navToPlayerAdmin, current: false }
         ];
     }
     else {
