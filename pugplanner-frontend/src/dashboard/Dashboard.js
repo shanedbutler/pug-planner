@@ -12,6 +12,10 @@ export const Dashboard = ({ isAdmin }) => {
 
     const navToGameForm = () => navigate("/new-game")
 
+    /**
+     * Filter out games that have had their game date past the current date
+     * @param {array} gamesArr 
+     */
     const filterGames = (gamesArr) => {
         const currentGames = gamesArr.filter(game => game.gameDateStatus > -1);
         setGames(currentGames);
