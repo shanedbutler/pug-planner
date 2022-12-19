@@ -1,10 +1,9 @@
-import { Route, Routes } from "react-router-dom"
-import { Dashboard } from "../dashboard/Dashboard"
-import { GameDetails } from "../game/GameDetails"
-import { PlayerProfile } from "../profile/PlayerProfile"
+import { Route, Routes } from 'react-router-dom';
+import { Dashboard } from '../dashboard/Dashboard';
+import { GameDetails } from '../game/GameDetails';
+import { PlayerProfile } from '../profile/PlayerProfile';
 
 export const PlayerViews = () => {
-
     //<Route path="/signup/:id" element={<SignUp />} />
 
     return (
@@ -13,5 +12,5 @@ export const PlayerViews = () => {
             <Route path="/game/:id" element={<GameDetails />} />
             <Route path="/profile/:id" element={<PlayerProfile />} />
         </Routes>
-    )
-}
+    );
+};

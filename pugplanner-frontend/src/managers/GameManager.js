@@ -1,6 +1,6 @@
-import { postOption, putOption } from "./FetchOptions";
+import { postOption, putOption } from './FetchOptions';
 
-const apiUrl = "https://localhost:7066"
+const apiUrl = 'https://localhost:7066';
 
 /**
  * Get all games from API
@@ -14,7 +14,7 @@ export const fetchGames = async () => {
 
 /**
  * Get single game from API by game id pk
- * @param {int} gameId 
+ * @param {int} gameId
  * @returns A game object
  */
 export const fetchGame = async (gameId) => {
@@ -25,7 +25,7 @@ export const fetchGame = async (gameId) => {
 
 /**
  * Post a new game to API and get it back
- * @param {object} game 
+ * @param {object} game
  * @returns A game object
  */
 export const fetchPostGame = async (gameBody) => {
@@ -36,7 +36,7 @@ export const fetchPostGame = async (gameBody) => {
 
 /**
  * Put edited game to API and get it back
- * @param {object} game 
+ * @param {object} game
  * @returns A game object
  */
 export const fetchPutGame = async (gameBody) => {

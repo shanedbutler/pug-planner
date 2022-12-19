@@ -1,10 +1,9 @@
-import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { fetchPostGame } from "../managers/GameManager";
-import { getCurrentUser } from "../managers/UserManager";
+import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { fetchPostGame } from '../managers/GameManager';
+import { getCurrentUser } from '../managers/UserManager';
 
 export const GameForm = () => {
-
     const navigate = useNavigate();
 
     const titleRef = useRef();
@@ -25,18 +24,22 @@ export const GameForm = () => {
             location: locationRef.current.value,
             address: addressRef.current.value,
             description: descriptionRef.current.value,
-            gameDate: new Date(gameDateRef.current.value + "T" + gameTimeRef.current.value),
-            signupDate: new Date(signupDateRef.current.value + "T" + signupTimeRef.current.value),
+            gameDate: new Date(
+                gameDateRef.current.value + 'T' + gameTimeRef.current.value
+            ),
+            signupDate: new Date(
+                signupDateRef.current.value + 'T' + signupTimeRef.current.value
+            ),
             maxPlayers: parseInt(maxPlayersRef.current.value),
-            userProfileId: getCurrentUser().id
+            userProfileId: getCurrentUser().id,
         };
 
-        fetchPostGame(newGame).then(() => navigate("/"));
+        fetchPostGame(newGame).then(() => navigate('/'));
     };
 
     const handleCancel = (e) => {
         e.preventDefault();
-        navigate("/");
+        navigate('/');
     };
 
     return (
@@ -45,8 +48,13 @@ export const GameForm = () => {
                 <div className="mt-10 sm:mt-0">
                     <div className="md:col-span-1">
                         <div className="px-4 sm:px-0 text-center">
-                            <h3 className="text-3xl font-medium leading-6 text-gray-900">New Game</h3>
-                            <p className="mt-3 text-sm text-gray-600">Create a public game event to be added to the dashboard</p>
+                            <h3 className="text-3xl font-medium leading-6 text-gray-900">
+                                New Game
+                            </h3>
+                            <p className="mt-3 text-sm text-gray-600">
+                                Create a public game event to be added to the
+                                dashboard
+                            </p>
                         </div>
                     </div>
                     <div className="md:grid md:grid-cols-2 md:gap-6 mt-5">
@@ -55,9 +63,11 @@ export const GameForm = () => {
                                 <div className="overflow-hidden shadow sm:rounded-md">
                                     <div className="bg-white px-4 py-5 sm:p-6">
                                         <div className="grid grid-cols-6 gap-6">
-
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="title"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Title
                                                 </label>
                                                 <input
@@ -71,7 +81,10 @@ export const GameForm = () => {
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="location"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Location Name
                                                 </label>
                                                 <input
@@ -85,7 +98,10 @@ export const GameForm = () => {
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-6">
-                                                <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="address"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Location Address
                                                 </label>
                                                 <input
@@ -99,7 +115,10 @@ export const GameForm = () => {
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-6">
-                                                <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="description"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Description
                                                 </label>
                                                 <textarea
@@ -112,7 +131,10 @@ export const GameForm = () => {
                                                 />
                                             </div>
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="game-date" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="game-date"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Game Date
                                                 </label>
                                                 <input
@@ -126,7 +148,10 @@ export const GameForm = () => {
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="game-time" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="game-time"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Game Time
                                                 </label>
                                                 <input
@@ -140,7 +165,10 @@ export const GameForm = () => {
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="signup-date" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="signup-date"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Signup Date
                                                 </label>
                                                 <input
@@ -154,7 +182,10 @@ export const GameForm = () => {
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="signup-time" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="signup-time"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Signup Time
                                                 </label>
                                                 <input
@@ -168,7 +199,10 @@ export const GameForm = () => {
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="max-players" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="max-players"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Max Players
                                                 </label>
                                                 <input
@@ -203,5 +237,5 @@ export const GameForm = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};

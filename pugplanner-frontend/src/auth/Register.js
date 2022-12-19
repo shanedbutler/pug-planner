@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { fetchPositions } from "../managers/PositionManager";
-import { login, registerUser } from "../managers/UserManager";
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { fetchPositions } from '../managers/PositionManager';
+import { login, registerUser } from '../managers/UserManager';
 
 export const Register = () => {
-
     const navigate = useNavigate();
 
     const [positions, setPositions] = useState([]);
@@ -19,14 +18,11 @@ export const Register = () => {
         e.preventDefault();
         let newUser = {};
 
-        if (primaryRef.current.value === "none") {
+        if (primaryRef.current.value === 'none') {
             //handlePrimaryRequired();
-        }
-        else if (secondaryRef.current.value === "none") {
+        } else if (secondaryRef.current.value === 'none') {
             //handleSecondaryRequired();
-        }
-
-        else {
+        } else {
             newUser = {
                 firstName: firstNameRef.current.value,
                 lastName: lastNameRef.current.value,
@@ -34,18 +30,20 @@ export const Register = () => {
                 primaryPositionId: parseInt(primaryRef.current.value),
                 secondaryPositionId: parseInt(secondaryRef.current.value),
             };
-            registerUser(newUser).then(user => login(user.email)).then(() => navigate("/"));
+            registerUser(newUser)
+                .then((user) => login(user.email))
+                .then(() => navigate('/'));
         }
     };
 
     const handleCancel = (e) => {
         e.preventDefault();
-        navigate("/login");
-    }
+        navigate('/login');
+    };
 
     const getPositions = () => {
-        fetchPositions().then(pos => setPositions(pos));
-    }
+        fetchPositions().then((pos) => setPositions(pos));
+    };
 
     useEffect(() => {
         getPositions();
@@ -58,8 +56,12 @@ export const Register = () => {
                     <div className="mt-10 sm:mt-0">
                         <div className="md:col-span-1">
                             <div className="px-4 sm:px-0 text-center">
-                                <h3 className="text-3xl font-medium leading-6 text-gray-900">Register</h3>
-                                <p className="mt-3 text-sm text-gray-600">All information is required</p>
+                                <h3 className="text-3xl font-medium leading-6 text-gray-900">
+                                    Register
+                                </h3>
+                                <p className="mt-3 text-sm text-gray-600">
+                                    All information is required
+                                </p>
                             </div>
                         </div>
                         <div className="md:grid md:grid-cols-2 md:gap-6 mt-5">
@@ -69,7 +71,10 @@ export const Register = () => {
                                         <div className="bg-white px-4 py-5 sm:p-6">
                                             <div className="grid grid-cols-6 gap-6">
                                                 <div className="col-span-6 sm:col-span-3">
-                                                    <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
+                                                    <label
+                                                        htmlFor="first-name"
+                                                        className="block text-sm font-medium text-gray-700"
+                                                    >
                                                         First name
                                                     </label>
                                                     <input
@@ -84,7 +89,10 @@ export const Register = () => {
                                                 </div>
 
                                                 <div className="col-span-6 sm:col-span-3">
-                                                    <label htmlFor="last-name" className="block text-sm font-medium text-gray-700">
+                                                    <label
+                                                        htmlFor="last-name"
+                                                        className="block text-sm font-medium text-gray-700"
+                                                    >
                                                         Last name
                                                     </label>
                                                     <input
@@ -99,7 +107,10 @@ export const Register = () => {
                                                 </div>
 
                                                 <div className="col-span-6 sm:col-span-6">
-                                                    <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">
+                                                    <label
+                                                        htmlFor="email-address"
+                                                        className="block text-sm font-medium text-gray-700"
+                                                    >
                                                         Email address
                                                     </label>
                                                     <input
@@ -114,7 +125,10 @@ export const Register = () => {
                                                 </div>
 
                                                 <div className="col-span-6 sm:col-span-6">
-                                                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                                    <label
+                                                        htmlFor="password"
+                                                        className="block text-sm font-medium text-gray-700"
+                                                    >
                                                         Password
                                                     </label>
                                                     <input
@@ -127,7 +141,10 @@ export const Register = () => {
                                                 </div>
 
                                                 <div className="col-span-6 sm:col-span-3">
-                                                    <label htmlFor="primaryPosition" className="block text-sm font-medium text-gray-700">
+                                                    <label
+                                                        htmlFor="primaryPosition"
+                                                        className="block text-sm font-medium text-gray-700"
+                                                    >
                                                         Primary Position
                                                     </label>
                                                     <select
@@ -136,15 +153,36 @@ export const Register = () => {
                                                         ref={primaryRef}
                                                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                     >
-                                                        <option value="none" hidden>Select...</option>
-                                                        {positions.map((position) => (
-                                                            <option key={position.id} value={position.id}>{position.name}</option>
-                                                        ))}
+                                                        <option
+                                                            value="none"
+                                                            hidden
+                                                        >
+                                                            Select...
+                                                        </option>
+                                                        {positions.map(
+                                                            (position) => (
+                                                                <option
+                                                                    key={
+                                                                        position.id
+                                                                    }
+                                                                    value={
+                                                                        position.id
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        position.name
+                                                                    }
+                                                                </option>
+                                                            )
+                                                        )}
                                                     </select>
                                                 </div>
 
                                                 <div className="col-span-6 sm:col-span-3">
-                                                    <label htmlFor="secondaryPosition" className="block text-sm font-medium text-gray-700">
+                                                    <label
+                                                        htmlFor="secondaryPosition"
+                                                        className="block text-sm font-medium text-gray-700"
+                                                    >
                                                         Secondary Position
                                                     </label>
                                                     <select
@@ -153,13 +191,30 @@ export const Register = () => {
                                                         ref={secondaryRef}
                                                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                                     >
-                                                        <option value="none" hidden>Select...</option>
-                                                        {positions.map((position) => (
-                                                            <option key={position.id} value={position.id}>{position.name}</option>
-                                                        ))}
+                                                        <option
+                                                            value="none"
+                                                            hidden
+                                                        >
+                                                            Select...
+                                                        </option>
+                                                        {positions.map(
+                                                            (position) => (
+                                                                <option
+                                                                    key={
+                                                                        position.id
+                                                                    }
+                                                                    value={
+                                                                        position.id
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        position.name
+                                                                    }
+                                                                </option>
+                                                            )
+                                                        )}
                                                     </select>
                                                 </div>
-
                                             </div>
                                         </div>
                                         <div className="bg-gray-50 text-right py-5 px-5 sm:px-6">
@@ -184,5 +239,5 @@ export const Register = () => {
                 </div>
             </div>
         </>
-    )
-}
+    );
+};

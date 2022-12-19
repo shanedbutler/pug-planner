@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { fetchGame, fetchPutGame } from "../managers/GameManager";
-import { getCurrentUser } from "../managers/UserManager";
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { fetchGame, fetchPutGame } from '../managers/GameManager';
+import { getCurrentUser } from '../managers/UserManager';
 
 export const GameEdit = () => {
-
     const { id } = useParams();
 
     const navigate = useNavigate();
@@ -30,10 +29,14 @@ export const GameEdit = () => {
             location: locationRef.current.value,
             address: addressRef.current.value,
             description: descriptionRef.current.value,
-            gameDate: new Date(gameDateRef.current.value + "T" + gameTimeRef.current.value),
-            signupDate: new Date(signupDateRef.current.value + "T" + signupTimeRef.current.value),
+            gameDate: new Date(
+                gameDateRef.current.value + 'T' + gameTimeRef.current.value
+            ),
+            signupDate: new Date(
+                signupDateRef.current.value + 'T' + signupTimeRef.current.value
+            ),
             maxPlayers: parseInt(maxPlayersRef.current.value),
-            userProfileId: getCurrentUser().id
+            userProfileId: getCurrentUser().id,
         };
 
         fetchPutGame(editedGame);
@@ -46,7 +49,7 @@ export const GameEdit = () => {
     };
 
     useEffect(() => {
-        fetchGame(id).then(game => setGame(game));
+        fetchGame(id).then((game) => setGame(game));
     }, []);
 
     return (
@@ -55,8 +58,12 @@ export const GameEdit = () => {
                 <div className="mt-10 sm:mt-0">
                     <div className="md:col-span-1">
                         <div className="px-4 sm:px-0 text-center">
-                            <h3 className="text-3xl font-medium leading-6 text-gray-900">Edit Game</h3>
-                            <p className="mt-3 text-sm text-gray-600">Edit game event information</p>
+                            <h3 className="text-3xl font-medium leading-6 text-gray-900">
+                                Edit Game
+                            </h3>
+                            <p className="mt-3 text-sm text-gray-600">
+                                Edit game event information
+                            </p>
                         </div>
                     </div>
                     <div className="md:grid md:grid-cols-2 md:gap-6 mt-5">
@@ -65,9 +72,11 @@ export const GameEdit = () => {
                                 <div className="overflow-hidden shadow sm:rounded-md">
                                     <div className="bg-white px-4 py-5 sm:p-6">
                                         <div className="grid grid-cols-6 gap-6">
-
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="title"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Title
                                                 </label>
                                                 <input
@@ -82,7 +91,10 @@ export const GameEdit = () => {
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="location"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Location Name
                                                 </label>
                                                 <input
@@ -97,7 +109,10 @@ export const GameEdit = () => {
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-6">
-                                                <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="address"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Location Address
                                                 </label>
                                                 <input
@@ -112,7 +127,10 @@ export const GameEdit = () => {
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-6">
-                                                <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="description"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Description
                                                 </label>
                                                 <textarea
@@ -120,13 +138,18 @@ export const GameEdit = () => {
                                                     id="description"
                                                     name="description"
                                                     required
-                                                    defaultValue={game.description}
+                                                    defaultValue={
+                                                        game.description
+                                                    }
                                                     ref={descriptionRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                                 />
                                             </div>
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="game-date" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="game-date"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Game Date
                                                 </label>
                                                 <input
@@ -134,21 +157,28 @@ export const GameEdit = () => {
                                                     id="game-date"
                                                     name="game-date"
                                                     required
-                                                    defaultValue={game.gameDateFormString}
+                                                    defaultValue={
+                                                        game.gameDateFormString
+                                                    }
                                                     ref={gameDateRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                                 />
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="game-time" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="game-time"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Game Time
                                                 </label>
                                                 <input
                                                     type="time"
                                                     id="game-time"
                                                     name="game-time"
-                                                    defaultValue={game.gameTimeFormString}
+                                                    defaultValue={
+                                                        game.gameTimeFormString
+                                                    }
                                                     required
                                                     ref={gameTimeRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
@@ -156,7 +186,10 @@ export const GameEdit = () => {
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="signup-date" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="signup-date"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Signup Date
                                                 </label>
                                                 <input
@@ -164,14 +197,19 @@ export const GameEdit = () => {
                                                     id="signup-date"
                                                     name="signup-date"
                                                     required
-                                                    defaultValue={game.signupDateFormString}
+                                                    defaultValue={
+                                                        game.signupDateFormString
+                                                    }
                                                     ref={signupDateRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                                 />
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="signup-time" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="signup-time"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Signup Time
                                                 </label>
                                                 <input
@@ -179,14 +217,19 @@ export const GameEdit = () => {
                                                     id="signup-time"
                                                     name="signup-time"
                                                     required
-                                                    defaultValue={game.signupTimeFormString}
+                                                    defaultValue={
+                                                        game.signupTimeFormString
+                                                    }
                                                     ref={signupTimeRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                                 />
                                             </div>
 
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="max-players" className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="max-players"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Max Players
                                                 </label>
                                                 <input
@@ -194,7 +237,9 @@ export const GameEdit = () => {
                                                     id="max-players"
                                                     name="max-players"
                                                     required
-                                                    defaultValue={game.maxPlayers}
+                                                    defaultValue={
+                                                        game.maxPlayers
+                                                    }
                                                     ref={maxPlayersRef}
                                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                                 />
@@ -222,5 +267,5 @@ export const GameEdit = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};

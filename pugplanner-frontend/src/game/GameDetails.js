@@ -2,7 +2,10 @@ import { LockClosedIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchGame } from '../managers/GameManager';
-import { deleteUserFromRoster, postUserToRoster } from '../managers/RosterManager';
+import {
+    deleteUserFromRoster,
+    postUserToRoster,
+} from '../managers/RosterManager';
 import { fetchRoster, getCurrentUser } from '../managers/UserManager';
 import { RegistrationModal } from '../modals/RegistrationModal';
 import { RegLockModal } from '../modals/RegLockModal';
@@ -10,11 +13,10 @@ import { UnregisterModal } from '../modals/UnregisterModal';
 import { RosterItem } from './RosterItem';
 
 export const GameDetails = ({ isAdmin }) => {
-
     const { id } = useParams();
 
     const navigate = useNavigate();
-    const navToDashboard = () => navigate("/");
+    const navToDashboard = () => navigate('/');
 
     const [game, setGame] = useState({});
     const [roster, setRoster] = useState([]);
@@ -31,7 +33,7 @@ export const GameDetails = ({ isAdmin }) => {
     const [regLockModalOpen, setRegLockModalOpen] = useState(false);
 
     const navToGameEdit = () => {
-        navigate(`/edit-game/${id}`)
+        navigate(`/edit-game/${id}`);
     };
 
     const handleRegister = () => {
@@ -56,15 +58,15 @@ export const GameDetails = ({ isAdmin }) => {
     };
 
     const handleModalNav = () => {
-        navigate("/");
+        navigate('/');
     };
 
     const fetchData = () => {
-        fetchGame(id).then(gameResponse => {
-            return fetchRoster(id).then(rosterResponse => {
-                checkDataToState(gameResponse, rosterResponse)
-            })
-        })
+        fetchGame(id).then((gameResponse) => {
+            return fetchRoster(id).then((rosterResponse) => {
+                checkDataToState(gameResponse, rosterResponse);
+            });
+        });
     };
 
     /**
@@ -73,11 +75,9 @@ export const GameDetails = ({ isAdmin }) => {
      * If so, splits roster array into "starting roster" and wait-list arrays and sets them to state.
      */
     const checkDataToState = (gameObj, rosterArr) => {
-
         setGame(gameObj);
 
         if (rosterArr.length > gameObj.maxPlayers) {
-
             const startingRosterArray = [];
             for (let i = 0; i < gameObj.maxPlayers; i++) {
                 startingRosterArray.push(rosterArr[i]);
@@ -92,9 +92,7 @@ export const GameDetails = ({ isAdmin }) => {
             setWaitList(waitListArray);
 
             setIsWaitList(true);
-        }
-
-        else {
+        } else {
             setRoster(rosterArr);
         }
 
@@ -106,15 +104,15 @@ export const GameDetails = ({ isAdmin }) => {
      */
     const checkCanRegister = (rosterArr, gameObj) => {
         const userId = getCurrentUser().id;
-        const isAlreadyRegistered = rosterArr.some(player => player.id === userId);
+        const isAlreadyRegistered = rosterArr.some(
+            (player) => player.id === userId
+        );
 
         if (gameObj.signupDateStatus < 0 && !isAlreadyRegistered) {
             setCanRegister(true);
-        }
-        else if (gameObj.signupDateStatus < 0 || isAlreadyRegistered) {
+        } else if (gameObj.signupDateStatus < 0 || isAlreadyRegistered) {
             setCanUnregister(true);
-        }
-        else if (gameObj.signupDateStatus > 0) {
+        } else if (gameObj.signupDateStatus > 0) {
             setRegistrationNotOpen(true);
         }
     };
@@ -130,73 +128,127 @@ export const GameDetails = ({ isAdmin }) => {
                     <div className="overflow-hidden bg-white shadow rounded-md">
                         <div className="flex justify-between px-4 py-5 sm:px-6">
                             <div>
-                                <h3 className="text-lg font-medium leading-6 text-gray-900">{game.title}</h3>
-                                <p className="mt-1 max-w-2xl text-sm text-gray-500">{game.gameDateString}</p>
+                                <h3 className="text-lg font-medium leading-6 text-gray-900">
+                                    {game.title}
+                                </h3>
+                                <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                                    {game.gameDateString}
+                                </p>
                             </div>
-                            {isAdmin &&
+                            {isAdmin && (
                                 <button
                                     title="Edit Game"
                                     className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-2 pl-3 mb-2 text-sm font-medium text-black shadow-sm hover:bg-lime-300 focus:bg-lime-300"
                                     onClick={navToGameEdit}
                                 >
-                                    <PencilSquareIcon className="h-5 w-5 mr-1 flex-shrink text-slate-600" aria-hidden="true" />
+                                    <PencilSquareIcon
+                                        className="h-5 w-5 mr-1 flex-shrink text-slate-600"
+                                        aria-hidden="true"
+                                    />
                                 </button>
-                            }
+                            )}
                         </div>
                         <div className="border-t border-gray-200">
                             <dl>
                                 <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt className="text-sm font-medium text-gray-500">Location</dt>
-                                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{game.location}</dd>
-                                </div>
-                                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt className="text-sm font-medium text-gray-500">Host</dt>
-                                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{game.adminUser?.fullName}</dd>
-                                </div>
-                                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt className="text-sm font-medium text-gray-500">Host contact</dt>
-                                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">(555) 245-2509</dd>
-                                </div>
-                                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt className="text-sm font-medium text-gray-500">About</dt>
-                                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{game.description}</dd>
-                                </div>
-                                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt className="text-sm font-medium text-gray-500">Player slots</dt>
+                                    <dt className="text-sm font-medium text-gray-500">
+                                        Location
+                                    </dt>
                                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                                        {isWaitList ?
-                                            `${game.maxPlayers} / ${game.maxPlayers} + (${waitList.length} on waitlist)`
-                                            :
-                                            `${roster.length} / ${game.maxPlayers}`
-                                        }
+                                        {game.location}
                                     </dd>
                                 </div>
                                 <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt className="text-sm font-medium text-gray-500">Detailed roster</dt>
+                                    <dt className="text-sm font-medium text-gray-500">
+                                        Host
+                                    </dt>
+                                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                        {game.adminUser?.fullName}
+                                    </dd>
+                                </div>
+                                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                    <dt className="text-sm font-medium text-gray-500">
+                                        Host contact
+                                    </dt>
+                                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                        (555) 245-2509
+                                    </dd>
+                                </div>
+                                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                    <dt className="text-sm font-medium text-gray-500">
+                                        About
+                                    </dt>
+                                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                        {game.description}
+                                    </dd>
+                                </div>
+                                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                    <dt className="text-sm font-medium text-gray-500">
+                                        Player slots
+                                    </dt>
+                                    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                                        {isWaitList
+                                            ? `${game.maxPlayers} / ${game.maxPlayers} + (${waitList.length} on waitlist)`
+                                            : `${roster.length} / ${game.maxPlayers}`}
+                                    </dd>
+                                </div>
+                                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                    <dt className="text-sm font-medium text-gray-500">
+                                        Detailed roster
+                                    </dt>
                                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                         <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
-                                            {isWaitList ?
-                                                startingRoster.map((player, i) => <RosterItem key={player.id} player={player} i={i} isWaitList={false} />)
-                                                :
-                                                roster.map((player, i) => <RosterItem key={player.id} player={player} i={i} isWaitList={false} />)
-                                            }
+                                            {isWaitList
+                                                ? startingRoster.map(
+                                                      (player, i) => (
+                                                          <RosterItem
+                                                              key={player.id}
+                                                              player={player}
+                                                              i={i}
+                                                              isWaitList={false}
+                                                          />
+                                                      )
+                                                  )
+                                                : roster.map((player, i) => (
+                                                      <RosterItem
+                                                          key={player.id}
+                                                          player={player}
+                                                          i={i}
+                                                          isWaitList={false}
+                                                      />
+                                                  ))}
                                         </ul>
                                     </dd>
                                 </div>
-                                {isWaitList &&
+                                {isWaitList && (
                                     <>
                                         <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                            <dt className="text-sm font-medium text-gray-500">Wait-list</dt>
+                                            <dt className="text-sm font-medium text-gray-500">
+                                                Wait-list
+                                            </dt>
                                             <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                                 <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
-                                                    {waitList.map((player, i) => <RosterItem key={player.id} player={player} i={i} isWaitList={true} />)}
+                                                    {waitList.map(
+                                                        (player, i) => (
+                                                            <RosterItem
+                                                                key={player.id}
+                                                                player={player}
+                                                                i={i}
+                                                                isWaitList={
+                                                                    true
+                                                                }
+                                                            />
+                                                        )
+                                                    )}
                                                 </ul>
                                             </dd>
                                         </div>
                                     </>
-                                }
+                                )}
                                 <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt className="text-sm font-medium text-gray-500">Actions</dt>
+                                    <dt className="text-sm font-medium text-gray-500">
+                                        Actions
+                                    </dt>
                                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                         <ul>
                                             <li className="flex items-center justify-end py-2 pl-2 pr-3 text-sm">
@@ -206,31 +258,40 @@ export const GameDetails = ({ isAdmin }) => {
                                                 >
                                                     Back to dashboard
                                                 </button>
-                                                {canRegister &&
+                                                {canRegister && (
                                                     <button
                                                         className="rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
                                                         onClick={handleRegister}
                                                     >
-                                                        {!isWaitList ? "Register" : "Join Waitlist"}
+                                                        {!isWaitList
+                                                            ? 'Register'
+                                                            : 'Join Waitlist'}
                                                     </button>
-                                                }
-                                                {canUnregister &&
+                                                )}
+                                                {canUnregister && (
                                                     <button
                                                         className="rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
-                                                        onClick={handleUnregisterClick}
+                                                        onClick={
+                                                            handleUnregisterClick
+                                                        }
                                                     >
                                                         Unregister
                                                     </button>
-                                                }
-                                                {registrationNotOpen &&
+                                                )}
+                                                {registrationNotOpen && (
                                                     <button
                                                         className="disabled flex rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-slate-600 shadow-sm"
-                                                        onClick={handleRegLockClick}
+                                                        onClick={
+                                                            handleRegLockClick
+                                                        }
                                                     >
-                                                        <LockClosedIcon className="h-5 w-4 mr-1 flex-shrink text-slate-600" aria-hidden="true" />
+                                                        <LockClosedIcon
+                                                            className="h-5 w-4 mr-1 flex-shrink text-slate-600"
+                                                            aria-hidden="true"
+                                                        />
                                                         <div>Registration</div>
                                                     </button>
-                                                }
+                                                )}
                                             </li>
                                         </ul>
                                     </dd>
@@ -238,11 +299,25 @@ export const GameDetails = ({ isAdmin }) => {
                             </dl>
                         </div>
                     </div>
-                </div >
-            </div >
-            <RegistrationModal open={modalOpen} setOpen={setModalOpen} handleNav={handleModalNav} onDetails={true} />
-            <UnregisterModal open={unregisterModalOpen} setOpen={setUnregisterModalOpen} handleUnregister={handleUnregister} onDetails={true} />
-            <RegLockModal open={regLockModalOpen} setOpen={setRegLockModalOpen} signUpTime={game.signupDateString} />
+                </div>
+            </div>
+            <RegistrationModal
+                open={modalOpen}
+                setOpen={setModalOpen}
+                handleNav={handleModalNav}
+                onDetails={true}
+            />
+            <UnregisterModal
+                open={unregisterModalOpen}
+                setOpen={setUnregisterModalOpen}
+                handleUnregister={handleUnregister}
+                onDetails={true}
+            />
+            <RegLockModal
+                open={regLockModalOpen}
+                setOpen={setRegLockModalOpen}
+                signUpTime={game.signupDateString}
+            />
         </>
-    )
-}
+    );
+};

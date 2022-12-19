@@ -20,5 +20,5 @@ export const AdminViews = () => {
             <Route path="/edit-game/:id" element={<GameEdit />} />
             <Route path="/profile/:id" element={<PlayerProfile isAdmin={isAdmin} />} />
         </Routes>
-    )
-}
+    );
+};

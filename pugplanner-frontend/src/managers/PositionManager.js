@@ -1,4 +1,4 @@
-const apiUrl = "https://localhost:7066"
+const apiUrl = 'https://localhost:7066';
 
 /**
  * Get positions from database
