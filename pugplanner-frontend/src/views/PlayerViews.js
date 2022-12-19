@@ -1,17 +1,16 @@
-import { Route, Routes } from "react-router-dom"
-import { Dashboard } from "../dashboard/Dashboard"
-import { GameDetails } from "../game/GameDetails"
-import { PlayerProfile } from "../profile/PlayerProfile"
+import { Route, Routes } from 'react-router-dom';
+import { Dashboard } from '../dashboard/Dashboard';
+import { GameDetails } from '../game/GameDetails';
+import { PlayerProfile } from '../profile/PlayerProfile';
 
 export const PlayerViews = () => {
+   //<Route path="/signup/:id" element={<SignUp />} />
 
-    //<Route path="/signup/:id" element={<SignUp />} />
-
-    return (
-        <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/game/:id" element={<GameDetails />} />
-            <Route path="/profile/:id" element={<PlayerProfile />} />
-        </Routes>
-    )
-}
+   return (
+      <Routes>
+         <Route path="/" element={<Dashboard />} />
+         <Route path="/game/:id" element={<GameDetails />} />
+         <Route path="/profile/:id" element={<PlayerProfile />} />
+      </Routes>
+   );
+};
