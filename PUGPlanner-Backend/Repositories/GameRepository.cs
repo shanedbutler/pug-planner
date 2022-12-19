@@ -32,7 +32,8 @@ namespace PUGPlanner_Backend.Repositories
                         FROM Game g
                             LEFT JOIN UserProfile up ON g.UserProfileId = up.Id
                             JOIN [Position] p ON up.PrimaryPositionId = p.id
-                            JOIN [Position] p2 ON up.SecondaryPositionId = p2.id";
+                            JOIN [Position] p2 ON up.SecondaryPositionId = p2.id
+                        ORDER BY g.GameDate ASC";
 
                     List<Game> games = new();
 

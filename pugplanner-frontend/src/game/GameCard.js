@@ -59,7 +59,7 @@ export const GameCard = ({ game }) => {
                             <dt className="text-sm font-medium text-gray-500">Roster</dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0"> {
                                 isWaitList ?
-                                    `${game.maxPlayers} / ${game.maxPlayers} + (${rosterCount.currentPlayers} on waitlist)`
+                                    `${game.maxPlayers} / ${game.maxPlayers} + (${rosterCount.currentPlayers - game.maxPlayers} on waitlist)`
                                     :
                                     `${rosterCount.currentPlayers} / ${game.maxPlayers}`
                             }
