@@ -7,7 +7,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Build and seed database with test data
 
-From the SQL folder, run the queries 1 and 2 in order to create, and seed the database.
+From the SQL-Server-Database folder, run the queries 1 and 2 in order to create and seed the database.
 
 ## To run back-end services in development mode
 
