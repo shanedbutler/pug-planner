@@ -22,7 +22,8 @@ namespace PUGPlanner_Backend.Repositories
                     cmd.CommandText = @"
                         SELECT g.Id, g.Title, g.Location, g.Address,
                                g.Description, g.GameDate, g.SignupDate,
-                               g.MaxPlayers, g.UserProfileId,
+                               g.MaxPlayers, g.Recurring,
+                               g.PrimaryHostId, g.SecondaryHostId,
                                up.Id, up.FirstName, up.LastName, 
                                up.Email, up.CreateDateTime, up.[Admin],
                                up.PrimaryPositionId, up.SecondaryPositionId,
@@ -30,7 +31,8 @@ namespace PUGPlanner_Backend.Repositories
                                p.[Name] as PrimaryPositionName,
                                p2.[Name] as SecondaryPositionName
                         FROM Game g
-                            LEFT JOIN UserProfile up ON g.UserProfileId = up.Id
+                            LEFT JOIN UserProfile up ON g.PrimaryHostId = up.Id
+                            LEFT JOIN UserProfile up2 ON g.SecondaryHostId = up2.Id
                             JOIN [Position] p ON up.PrimaryPositionId = p.id
                             JOIN [Position] p2 ON up.SecondaryPositionId = p2.id
                         ORDER BY g.GameDate ASC";
@@ -59,7 +61,8 @@ namespace PUGPlanner_Backend.Repositories
                     cmd.CommandText = @"
                         SELECT g.Id, g.Title, g.Location, g.Address,
                                g.Description, g.GameDate, g.SignupDate,
-                               g.MaxPlayers, g.UserProfileId,
+                               g.MaxPlayers, g.Recurring,
+                               g.PrimaryHostId, g.SecondaryHostId,
                                up.Id, up.FirstName, up.LastName, 
                                up.Email, up.CreateDateTime, up.[Admin],
                                up.PrimaryPositionId, up.SecondaryPositionId,
@@ -67,7 +70,8 @@ namespace PUGPlanner_Backend.Repositories
                                p.[Name] as PrimaryPositionName,
                                p2.[Name] as SecondaryPositionName
                         FROM Game g
-                            LEFT JOIN UserProfile up ON g.UserProfileId = up.Id
+                            LEFT JOIN UserProfile up ON g.PrimaryHostId = up.Id
+                            LEFT JOIN UserProfile up2 ON g.SecondaryHostId = up2.Id
                             JOIN [Position] p ON up.PrimaryPositionId = p.id
                             JOIN [Position] p2 ON up.SecondaryPositionId = p2.id
                         WHERE g.id = @Id";
@@ -106,9 +110,28 @@ namespace PUGPlanner_Backend.Repositories
                 GameDate = DbUtils.GetDateTime(reader, "GameDate"),
                 SignupDate = DbUtils.GetDateTime(reader, "SignupDate"),
                 MaxPlayers = DbUtils.GetInt(reader, "MaxPlayers"),
-                AdminUser = new User()
+                Recurring = DbUtils.GetBool(reader, "Recurring"),
+                PrimaryHost = new User()
                 {
-                    Id = DbUtils.GetInt(reader, "UserProfileId"),
+                    Id = DbUtils.GetInt(reader, "PrimaryHostId"),
+                    FirstName = DbUtils.GetString(reader, "FirstName"),
+                    LastName = DbUtils.GetString(reader, "LastName"),
+                    Email = DbUtils.GetString(reader, "Email"),
+                    PrimaryPositionId = DbUtils.GetInt(reader, "PrimaryPositionId"),
+                    SecondaryPositionId = DbUtils.GetInt(reader, "SecondaryPositionId"),
+                    CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+                    Admin = reader.GetBoolean(reader.GetOrdinal("Admin")),
+                    EmergencyName = DbUtils.GetString(reader, "EmergencyName"),
+                    EmergencyPhone = DbUtils.GetString(reader, "EmergencyPhone"),
+                    Position = new UserPosition()
+                    {
+                        Primary = DbUtils.GetString(reader, "PrimaryPositionName"),
+                        Secondary = DbUtils.GetString(reader, "SecondaryPositionName"),
+                    }
+                },
+                SecondaryHost = new User()
+                {
+                    Id = DbUtils.GetInt(reader, "SecondaryHostId"),
                     FirstName = DbUtils.GetString(reader, "FirstName"),
                     LastName = DbUtils.GetString(reader, "LastName"),
                     Email = DbUtils.GetString(reader, "Email"),
@@ -136,10 +159,10 @@ namespace PUGPlanner_Backend.Repositories
                 {
                     cmd.CommandText = @"
                         INSERT INTO Game (Title, Location, Address, Description,
-                                          GameDate, SignupDate, MaxPlayers, UserProfileId)
+                                          GameDate, SignupDate, MaxPlayers, Recurring, PrimaryHostId, SecondaryHostId)
                         OUTPUT INSERTED.ID
                         VALUES (@Title, @Location, @Address, @Description,
-                                @GameDate, @SignupDate, @MaxPlayers, @UserProfileId)";
+                                @GameDate, @SignupDate, @MaxPlayers, @Recurring, @PrimaryHostId, @SecondaryHostId)";
 
                     DbUtils.AddParameter(cmd, "@Title", game.Title);
                     DbUtils.AddParameter(cmd, "@Location", game.Location);
@@ -148,7 +171,9 @@ namespace PUGPlanner_Backend.Repositories
                     DbUtils.AddParameter(cmd, "@GameDate", game.GameDate);
                     DbUtils.AddParameter(cmd, "@SignupDate", game.SignupDate);
                     DbUtils.AddParameter(cmd, "@MaxPlayers", game.MaxPlayers);
-                    DbUtils.AddParameter(cmd, "@UserProfileId", game.UserProfileId);
+                    DbUtils.AddParameter(cmd, "@Recurring", game.Recurring);
+                    DbUtils.AddParameter(cmd, "@PrimaryHostId", game.PrimaryHostId);
+                    DbUtils.AddParameter(cmd, "@SecondaryHostId", game.SecondaryHostId);
 
                     game.Id = (int)cmd.ExecuteScalar();
                 }
@@ -172,7 +197,9 @@ namespace PUGPlanner_Backend.Repositories
                                 GameDate = @GameDate,
                                 SignupDate = @SignupDate,
                                 MaxPlayers = @MaxPlayers,
-                                UserProfileId = @UserProfileId
+                                Recurring = @Recurring,
+                                PrimaryHostId = @PrimaryHostId
+                                SecondaryHostId = @SecondaryHostId
                             WHERE Id = @Id";
 
                     DbUtils.AddParameter(cmd, "@Id", game.Id);
@@ -183,7 +210,9 @@ namespace PUGPlanner_Backend.Repositories
                     DbUtils.AddParameter(cmd, "@GameDate", game.GameDate);
                     DbUtils.AddParameter(cmd, "@SignupDate", game.SignupDate);
                     DbUtils.AddParameter(cmd, "@MaxPlayers", game.MaxPlayers);
-                    DbUtils.AddParameter(cmd, "@UserProfileId", game.UserProfileId);
+                    DbUtils.AddParameter(cmd, "@Recurring", game.Recurring);
+                    DbUtils.AddParameter(cmd, "@PrimaryHostId", game.PrimaryHostId);
+                    DbUtils.AddParameter(cmd, "@SecondaryHostId", game.SecondaryHostId);
 
                     cmd.ExecuteNonQuery();
                 }
