@@ -22,9 +22,10 @@ namespace PUGPlanner_Backend.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT up.Id, up.FirstName, up.LastName, 
-                               up.Email, up.CreateDateTime, up.[Admin],
+                               up.Email, up.Club, up.CreateDateTime, up.[Admin],
                                up.PrimaryPositionId, up.SecondaryPositionId,
                                up.EmergencyName, up.EmergencyPhone,
+                               up.PronounId,
                                p.[Name] as PrimaryPositionName,
                                p2.[Name] as SecondaryPositionName
                           FROM [UserProfile] up
@@ -62,14 +63,16 @@ namespace PUGPlanner_Backend.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT up.Id, up.FirstName, up.LastName, 
-                               up.Email, up.CreateDateTime, up.[Admin],
+                               up.Email, up.Club, up.CreateDateTime, up.[Admin],
                                up.PrimaryPositionId, up.SecondaryPositionId,
                                up.EmergencyName, up.EmergencyPhone,
+                               up.PronounId, pn.[Name] as PronounName,
                                p.[Name] as PrimaryPositionName,
                                p2.[Name] as SecondaryPositionName
                           FROM [UserProfile] up
-                              JOIN [Position] p ON up.PrimaryPositionId = p.id
-                              JOIN [Position] p2 ON up.SecondaryPositionId = p2.id
+                              LEFT JOIN Pronoun pn ON up.PronounId = pn.Id
+                              JOIN [Position] p ON up.PrimaryPositionId = p.Id
+                              JOIN [Position] p2 ON up.SecondaryPositionId = p2.Id
                          WHERE Email = @email";
 
                     DbUtils.AddParameter(cmd, "@email", email);
@@ -103,15 +106,17 @@ namespace PUGPlanner_Backend.Repositories
                     cmd.CommandText = @"
                         SELECT r.Id, r.GameId, r.UserProfileId,
                                up.Id, up.FirstName, up.LastName, 
-                               up.Email, up.CreateDateTime, up.[Admin],
+                               up.Email, up.Club, up.CreateDateTime, up.[Admin],
                                up.PrimaryPositionId, up.SecondaryPositionId,
                                up.EmergencyName, up.EmergencyPhone,
+                               up.PronounId, pn.[Name] as PronounName,
                                p.[Name] as PrimaryPositionName,
                                p2.[Name] as SecondaryPositionName
                         FROM GameRoster r
                             JOIN UserProfile up ON r.UserProfileId = up.Id
-                            JOIN [Position] p ON up.PrimaryPositionId = p.id
-                            JOIN [Position] p2 ON up.SecondaryPositionId = p2.id
+                            LEFT JOIN Pronoun pn ON up.PronounId = pn.Id
+                            JOIN [Position] p ON up.PrimaryPositionId = p.Id
+                            JOIN [Position] p2 ON up.SecondaryPositionId = p2.Id
                         WHERE GameId = @gameId";
 
                     DbUtils.AddParameter(cmd, "@gameId", gameId);
@@ -128,12 +133,18 @@ namespace PUGPlanner_Backend.Repositories
                             FirstName = DbUtils.GetString(reader, "FirstName"),
                             LastName = DbUtils.GetString(reader, "LastName"),
                             Email = DbUtils.GetString(reader, "Email"),
+                            Club = DbUtils.GetString(reader, "Club"),
                             PrimaryPositionId = DbUtils.GetInt(reader, "PrimaryPositionId"),
                             SecondaryPositionId = DbUtils.GetInt(reader, "SecondaryPositionId"),
                             CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
                             Admin = reader.GetBoolean(reader.GetOrdinal("Admin")),
+                            PronounId = DbUtils.GetNullableInt(reader, "PronounId"),
                             EmergencyName = DbUtils.GetString(reader, "EmergencyName"),
                             EmergencyPhone = DbUtils.GetString(reader, "EmergencyPhone"),
+                            Pronoun = new Pronoun()
+                            {
+                                Name = DbUtils.GetString(reader, "PronounName"),
+                            },
                             Position = new UserPosition()
                             {
                                 Primary = DbUtils.GetString(reader, "PrimaryPositionName"),
@@ -163,12 +174,18 @@ namespace PUGPlanner_Backend.Repositories
                 FirstName = DbUtils.GetString(reader, "FirstName"),
                 LastName = DbUtils.GetString(reader, "LastName"),
                 Email = DbUtils.GetString(reader, "Email"),
+                Club = DbUtils.GetString(reader, "Club"),
                 PrimaryPositionId = DbUtils.GetInt(reader, "PrimaryPositionId"),
                 SecondaryPositionId = DbUtils.GetInt(reader, "SecondaryPositionId"),
                 CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
-                Admin = reader.GetBoolean(reader.GetOrdinal("Admin")),
+                Admin = DbUtils.GetBool(reader, "Admin"),
+                PronounId = DbUtils.GetNullableInt(reader, "PronounId"),
                 EmergencyName = DbUtils.GetString(reader, "EmergencyName"),
                 EmergencyPhone = DbUtils.GetString(reader, "EmergencyPhone"),
+                Pronoun = new Pronoun()
+                {
+                    Name = DbUtils.GetString(reader, "PronounName"),
+                },
                 Position = new UserPosition()
                 {
                     Primary = DbUtils.GetString(reader, "PrimaryPositionName"),
@@ -186,19 +203,21 @@ namespace PUGPlanner_Backend.Repositories
                 {
                     cmd.CommandText = @"INSERT INTO UserProfile (FirstName, LastName, Email, CreateDateTime, 
                                                                  PrimaryPositionId, SecondaryPositionId, Admin,
-                                                                 EmergencyName, EmergencyPhone)
+                                                                 PronounId, EmergencyName, EmergencyPhone)
                                         OUTPUT INSERTED.ID
                                         VALUES (@FirstName, @LastName, @Email, @CreateDateTime, 
                                                 @PrimaryPositionId, @SecondaryPositionId, @Admin,
-                                                @EmergencyName, @EmergencyPhone)";
+                                                @PronounId, @EmergencyName, @EmergencyPhone)";
                     //DbUtils.AddParameter(cmd, "@FirebaseUserId", userProfile.FirebaseUserId);
                     DbUtils.AddParameter(cmd, "@FirstName", user.FirstName);
                     DbUtils.AddParameter(cmd, "@LastName", user.LastName);
                     DbUtils.AddParameter(cmd, "@Email", user.Email);
+                    DbUtils.AddParameter(cmd, "@Club", user.Club);
                     DbUtils.AddParameter(cmd, "@CreateDateTime", DateTime.Now);
                     DbUtils.AddParameter(cmd, "@PrimaryPositionId", user.PrimaryPositionId);
                     DbUtils.AddParameter(cmd, "@SecondaryPositionId", user.SecondaryPositionId);
                     DbUtils.AddParameter(cmd, "@Admin", false);
+                    DbUtils.AddParameter(cmd, "@PronounId", user.PronounId);
                     DbUtils.AddParameter(cmd, "@EmergencyName", user.EmergencyName);
                     DbUtils.AddParameter(cmd, "@EmergencyPhone", user.EmergencyPhone);
 
