@@ -48,7 +48,7 @@ SET IDENTITY_INSERT [UserProfile] OFF
 
 SET IDENTITY_INSERT [Game] ON
 INSERT INTO Game (Id, Title, [Location], [Address], [Description], GameDate, SignupDate, MaxPlayers, Recurring, PrimaryHostId, SecondaryHostId)
-VALUES (1, 'Griffith Park Soccer Field', '3343 Riverside Dr, Los Angeles, CA 90027', '2022-12-30 11:30', '2022-12-5 21:00', 11, 1, 1, 2);
+VALUES (1, 'Solano Canyon Turf Night', 'Griffith Park Soccer Field', '3343 Riverside Dr, Los Angeles, CA 90027', '2022-12-30 11:30', '2022-12-5 21:00', 11, 1, 1, 2);
 INSERT INTO Game (Id, Title, [Location], [Address], [Description], GameDate, SignupDate, MaxPlayers, PrimaryHostId, SecondaryHostId)
-VALUES (2, 'McAlister Field', '3000 S Hoover St, Los Angeles, CA 90089', '2023-1-08 18:00', '2023-1-15 9:00', 6, 0, 1, 3);
+VALUES (2, 'Weekend Morning Turf ', 'McAlister Field', '3000 S Hoover St, Los Angeles, CA 90089', '2023-1-08 18:00', '2023-1-15 9:00', 6, 0, 1, 3);
 SET IDENTITY_INSERT [Game] OFF
