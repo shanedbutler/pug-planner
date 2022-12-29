@@ -47,7 +47,7 @@ CREATE TABLE [UserProfile] (
   [CreateDateTime] datetime2 NOT NULL,
   [PrimaryPositionId] int NOT NULL,
   [SecondaryPositionId] int NOT NULL,
-  [PronounId] int NOT NULL,
+  [PronounId] int,
   [EmergencyName] nvarchar(50) NOT NULL,
   [EmergencyPhone] nvarchar(20) NOT NULL
 )
@@ -56,7 +56,7 @@ GO
 CREATE TABLE [Position] (
     [Id] int PRIMARY KEY IDENTITY NOT NULL,
     [Name] nvarchar(50) NOT NULL,
-    [ShortName] nvarchar(50) NOT NULL
+    [FullName] nvarchar(50) NOT NULL
 )
 GO
 
