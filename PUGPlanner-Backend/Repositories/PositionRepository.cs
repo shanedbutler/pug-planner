@@ -49,6 +49,7 @@ namespace PUGPlanner_Backend.Repositories
             {
                 Id = DbUtils.GetInt(reader, "Id"),
                 Name = DbUtils.GetString(reader, "Name"),
+                FullName = DbUtils.GetString(reader, "FullName")
             };
         }
 
