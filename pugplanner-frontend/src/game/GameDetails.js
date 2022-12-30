@@ -160,18 +160,22 @@ export const GameDetails = ({ isAdmin }) => {
                         </div>
                         <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                            <dt className="text-sm font-medium text-gray-500">
-                              Host
+                              Hosted by
                            </dt>
                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                              {game.adminUser?.fullName}
+                           {game.primaryHost?.fullName}
+                           <br/>
+                           {game.secondaryHost?.fullName}
                            </dd>
                         </div>
                         <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                            <dt className="text-sm font-medium text-gray-500">
-                              Host contact
+                              Contact
                            </dt>
                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                              (555) 245-2509
+                              {game.primaryHost?.firstName} @ {game.primaryHost?.phone}
+                              <br/>
+                              {game.secondaryHost?.firstName} @ {game.secondaryHost?.phone}
                            </dd>
                         </div>
                         <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
