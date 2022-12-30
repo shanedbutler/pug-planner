@@ -20,7 +20,7 @@ namespace PUGPlanner_Backend.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT p.Id, p.[Name]
+                        SELECT p.Id, p.[Name], p.FullName
                         FROM Position p";
 
                     List<Position> positions = new List<Position>();
