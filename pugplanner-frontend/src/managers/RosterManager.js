@@ -17,6 +17,19 @@ export const fetchGameRosterCount = async (gameId) => {
 };
 
 /**
+ * Gets count of user's appearances in the game roster table
+ * @param {int} userId
+ * @returns rosterUserCount object 
+ */
+export const fetchUserRosterCount = async (userId) => {
+   const response = await fetch(
+      `${apiUrl}/api/roster/getUserCount?userId=${userId}`
+   );
+   const rosterUserCount = await response.json();
+   return rosterUserCount;
+}
+
+/**
  * POSTs new roster entry to database
  * Entry is made for current user with passed in gameId
  * @param {int} gameId
