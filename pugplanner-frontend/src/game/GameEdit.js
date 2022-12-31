@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchGame, fetchPutGame } from '../managers/GameManager';
-import { getCurrentUser } from '../managers/UserManager';
+import { fetchUsers, getCurrentUser } from '../managers/UserManager';
 
 export const GameEdit = () => {
    const { id } = useParams();
@@ -9,6 +9,7 @@ export const GameEdit = () => {
    const navigate = useNavigate();
 
    const [game, setGame] = useState({});
+   const [users, setUsers] = useState([]);
 
    const titleRef = useRef();
    const locationRef = useRef();
@@ -19,6 +20,7 @@ export const GameEdit = () => {
    const signupDateRef = useRef();
    const signupTimeRef = useRef();
    const maxPlayersRef = useRef();
+   const secondaryHostRef = useRef();
 
    const handleSubmit = (e) => {
       e.preventDefault();
@@ -36,7 +38,8 @@ export const GameEdit = () => {
             signupDateRef.current.value + 'T' + signupTimeRef.current.value
          ),
          maxPlayers: parseInt(maxPlayersRef.current.value),
-         userProfileId: getCurrentUser().id,
+         primaryHostId: getCurrentUser().id,
+         secondaryHostId: secondaryHostRef.current.value
       };
 
       fetchPutGame(editedGame);
@@ -50,6 +53,7 @@ export const GameEdit = () => {
 
    useEffect(() => {
       fetchGame(id).then((game) => setGame(game));
+      fetchUsers().then((users) => setUsers(users));
    }, []);
 
    return (
@@ -143,6 +147,56 @@ export const GameEdit = () => {
                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                     />
                                  </div>
+
+                                 <div className="col-span-6 sm:col-span-3">
+                                    <label
+                                       htmlFor="max-players"
+                                       className="block text-sm font-medium text-gray-700"
+                                    >
+                                       Max Players
+                                    </label>
+                                    <input
+                                       type="number"
+                                       id="max-players"
+                                       name="max-players"
+                                       required
+                                       defaultValue={game.maxPlayers}
+                                       ref={maxPlayersRef}
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                    />
+                                 </div>
+
+                                 <div className="col-span-6 sm:col-span-3">
+                                       <label
+                                          htmlFor="secondaryHost"
+                                          className="block text-sm font-medium text-gray-700"
+                                       >
+                                          Co-Host
+                                       </label>
+                                       <select
+                                          id="secondaryHost"
+                                          name="secondaryHost"
+                                          ref={secondaryHostRef}
+                                          value={game.secondaryHostId}
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                          >
+                                          <option value="0" hidden>
+                                             Select...
+                                          </option>
+                                          <option value="0">
+                                             None
+                                          </option>
+                                          {users.map((user) => (
+                                             <option
+                                                key={user.id}
+                                                value={user.id}
+                                             >
+                                                {user.fullName}
+                                             </option>
+                                          ))}
+                                       </select>
+                                    </div>
+
                                  <div className="col-span-6 sm:col-span-3">
                                     <label
                                        htmlFor="game-date"
@@ -184,7 +238,7 @@ export const GameEdit = () => {
                                        htmlFor="signup-date"
                                        className="block text-sm font-medium text-gray-700"
                                     >
-                                       Signup Date
+                                       Sign-up Date
                                     </label>
                                     <input
                                        type="date"
@@ -202,7 +256,7 @@ export const GameEdit = () => {
                                        htmlFor="signup-time"
                                        className="block text-sm font-medium text-gray-700"
                                     >
-                                       Signup Time
+                                       Sign-up Time
                                     </label>
                                     <input
                                        type="time"
@@ -215,23 +269,6 @@ export const GameEdit = () => {
                                     />
                                  </div>
 
-                                 <div className="col-span-6 sm:col-span-3">
-                                    <label
-                                       htmlFor="max-players"
-                                       className="block text-sm font-medium text-gray-700"
-                                    >
-                                       Max Players
-                                    </label>
-                                    <input
-                                       type="number"
-                                       id="max-players"
-                                       name="max-players"
-                                       required
-                                       defaultValue={game.maxPlayers}
-                                       ref={maxPlayersRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
-                                    />
-                                 </div>
                               </div>
                            </div>
                            <div className="bg-gray-50 text-right py-3 px-3 sm:px-6">
