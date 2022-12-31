@@ -15,6 +15,16 @@ export const fetchUser = async (id) => {
 };
 
 /**
+ * Get fetch all users from database
+ * @returns Array of user objects
+ */
+export const fetchUsers = async () => {
+   const response = await fetch(`${apiUrl}/api/user/getall`);
+   const users = await response.json();
+   return users;
+};
+
+/**
  * Get fetch user from database by email and sets user to localStorage
  * @param {string} email
  * @returns User object or undefined if user not found
