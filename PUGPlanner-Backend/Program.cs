@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IPositionRepository, PositionRepository>();
+builder.Services.AddTransient<IPronounRepository, PronounRepository>();
 builder.Services.AddTransient<IGameRepository, GameRepository>();
 builder.Services.AddTransient<IRosterRepository, RosterRepository>();
 
