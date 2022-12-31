@@ -4,7 +4,8 @@ namespace PUGPlanner_Backend.Repositories
 {
     public interface IRosterRepository
     {
-        GameRosterCount getCount(int gameId);
+        GameRosterCount GetCount(int gameId);
+        UserRosterCount GetUserCount(int userId);
         void Add(Roster roster);
         void Delete(int userId, int gameId);
     }

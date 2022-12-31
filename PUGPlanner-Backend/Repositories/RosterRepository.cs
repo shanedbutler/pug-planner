@@ -9,11 +9,11 @@ namespace PUGPlanner_Backend.Repositories
 
         /// <summary>
         /// Queries the Roster table by gameId and counts entries.
-        /// Returned object includes currentl player count and max players through join.
+        /// Returned object includes current player count and max players through join.
         /// </summary>
         /// <param name="gameId"></param>
-        /// <returns>Game Roster Count object</returns>
-        public GameRosterCount getCount(int gameId)
+        /// <returns>GameRosterCount object</returns>
+        public GameRosterCount GetCount(int gameId)
         {
             using (var conn = Connection)
             {
@@ -46,6 +46,61 @@ namespace PUGPlanner_Backend.Repositories
 
                     return gameRosterCount;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Queries the Roster table by userId and counts entries.
+        /// Returned object inludes userId passed in, and number of "appearances" on roster table
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>UserRosterCount object</returns>
+        public UserRosterCount GetUserCount(int userId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT GameRoster.UserProfileId, Count(GameRoster.UserProfileId) as 'Appearences'
+                        FROM GameRoster
+                        GROUP BY GameRoster.UserProfileId
+                        HAVING GameRoster.UserProfileId = @userId";
+
+                    DbUtils.AddParameter(cmd, "@userId", userId);
+
+                    UserRosterCount userRosterCount = null;
+
+                    var reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        userRosterCount = new UserRosterCount()
+                        {
+                            UserProfileId = userId,
+                            Appearances = DbUtils.GetInt(reader, "Appearences"),
+                        };
+                    }
+                    reader.Close();
+
+                    if (userRosterCount != null)
+                    {
+                        return userRosterCount;
+                    }
+                    else
+                    {
+                        UserRosterCount userNoRosterCount = new UserRosterCount()
+                        {
+                            UserProfileId = userId,
+                            Appearances = 0,
+                        };
+
+                        return userNoRosterCount;
+                    }
+                }
+
             }
         }
 
