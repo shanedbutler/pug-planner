@@ -4,15 +4,15 @@ using PUGPlanner_Backend.Utils;
 
 namespace PUGPlanner_Backend.Repositories
 {
-    public class PositionRepository : BaseRepository, IPositionRepository
+    public class PronounRepository : BaseRepository, IPronounRepository
     {
-        public PositionRepository(IConfiguration configuration) : base(configuration) { }
+        public PronounRepository(IConfiguration configuration) : base(configuration) { }
 
         /// <summary>
-        /// Queries the Position table for all entries
+        /// Queries the Pronoun table for all entries
         /// </summary>
-        /// <returns>Position object list</returns>
-        public List<Position> Get()
+        /// <returns>Pronoun object list</returns>
+        public List<Pronoun> Get()
         {
             using (var conn = Connection)
             {
@@ -20,36 +20,35 @@ namespace PUGPlanner_Backend.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT p.Id, p.[Name], p.FullName
-                        FROM Position p";
+                        SELECT pn.Id, pn.[Name]
+                        FROM Pronoun pn";
 
-                    List<Position> positions = new List<Position>();
+                    List<Pronoun> pronouns = new List<Pronoun>();
 
                     var reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
-                        positions.Add(NewPositionFromReader(reader));
+                        pronouns.Add(NewPronounFromReader(reader));
                     }
                     reader.Close();
 
-                    return positions;
+                    return pronouns;
                 }
             }
         }
 
         /// <summary>
-        /// Instantiates a new Position object through the SQL Data Reader
+        /// Instantiates a new Pronoun object through the SQL Data Reader
         /// </summary>
         /// <param name="reader"></param>
-        /// <returns>Position object</returns>
-        private Position NewPositionFromReader(SqlDataReader reader)
+        /// <returns>Pronoun object</returns>
+        private Pronoun NewPronounFromReader(SqlDataReader reader)
         {
-            return new Position()
+            return new Pronoun()
             {
                 Id = DbUtils.GetInt(reader, "Id"),
                 Name = DbUtils.GetString(reader, "Name"),
-                FullName = DbUtils.GetString(reader, "FullName")
             };
         }
 

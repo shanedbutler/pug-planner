@@ -1,18 +1,44 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchPositions } from '../managers/PositionManager';
+import { fetchPronouns } from '../managers/PronounManager';
 import { login, registerUser } from '../managers/UserManager';
 
 export const Register = () => {
    const navigate = useNavigate();
 
    const [positions, setPositions] = useState([]);
+   const [pronouns, setPronouns] = useState([]);
+
+   const [isPhoneValid, setIsPhoneValid] = useState(true);
+   const [isEmgPhoneValid, setIsEmgPhoneValid] = useState(true);
 
    const firstNameRef = useRef();
    const lastNameRef = useRef();
    const emailRef = useRef();
+   const phoneRef = useRef();
    const primaryRef = useRef();
    const secondaryRef = useRef();
+   const pronounRef = useRef();
+   const clubRef = useRef();
+   const emergencyNameRef = useRef();
+   const emergencyPhoneRef = useRef();
+
+   const validatePhone = (phoneNum, field) => {
+      const regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+
+      if (!regex.test(phoneNum) && field === 'user') {
+         setIsPhoneValid(false);
+      } else {
+         setIsPhoneValid(true);
+      }
+
+      if (!regex.test(phoneNum) && field === 'emergency') {
+         setIsEmgPhoneValid(false);
+      } else {
+         setIsEmgPhoneValid(true);
+      }
+   };
 
    const handleSubmit = (e) => {
       e.preventDefault();
@@ -27,8 +53,13 @@ export const Register = () => {
             firstName: firstNameRef.current.value,
             lastName: lastNameRef.current.value,
             email: emailRef.current.value,
+            phone: phoneRef.current.value.replace(/\D/g, ''),
             primaryPositionId: parseInt(primaryRef.current.value),
             secondaryPositionId: parseInt(secondaryRef.current.value),
+            pronounId: parseInt(pronounRef.current.value),
+            club: clubRef.current.value,
+            emergencyName: emergencyNameRef.current.value,
+            emergencyPhone: emergencyPhoneRef.current.value.replace(/\D/g, ''),
          };
          registerUser(newUser)
             .then((user) => login(user.email))
@@ -41,12 +72,9 @@ export const Register = () => {
       navigate('/login');
    };
 
-   const getPositions = () => {
-      fetchPositions().then((pos) => setPositions(pos));
-   };
-
    useEffect(() => {
-      getPositions();
+      fetchPositions().then((pos) => setPositions(pos));
+      fetchPronouns().then((pro) => setPronouns(pro));
    }, []);
 
    return (
@@ -84,7 +112,7 @@ export const Register = () => {
                                           autoComplete="given-name"
                                           required
                                           ref={firstNameRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                        />
                                     </div>
 
@@ -106,7 +134,7 @@ export const Register = () => {
                                        />
                                     </div>
 
-                                    <div className="col-span-6 sm:col-span-6">
+                                    <div className="col-span-6 sm:col-span-3">
                                        <label
                                           htmlFor="email-address"
                                           className="block text-sm font-medium text-gray-700"
@@ -122,6 +150,34 @@ export const Register = () => {
                                           ref={emailRef}
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                        />
+                                    </div>
+
+                                    <div className="col-span-6 sm:col-span-3">
+                                       <label
+                                          htmlFor="phone"
+                                          className="block text-sm font-medium text-gray-700"
+                                       >
+                                          Phone
+                                       </label>
+                                       <input
+                                          type="tel"
+                                          name="phone"
+                                          id="phone"
+                                          required
+                                          ref={phoneRef}
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          onBlur={(e) =>
+                                             validatePhone(
+                                                phoneRef.current.value,
+                                                'user'
+                                             )
+                                          }
+                                       />
+                                       {!isPhoneValid && (
+                                          <div className="text-sm text-red-600">
+                                             Invalid format
+                                          </div>
+                                       )}
                                     </div>
 
                                     <div className="col-span-6 sm:col-span-6">
@@ -161,7 +217,7 @@ export const Register = () => {
                                                 key={position.id}
                                                 value={position.id}
                                              >
-                                                {position.name}
+                                                {position.fullName}
                                              </option>
                                           ))}
                                        </select>
@@ -169,14 +225,14 @@ export const Register = () => {
 
                                     <div className="col-span-6 sm:col-span-3">
                                        <label
-                                          htmlFor="secondaryPosition"
+                                          htmlFor="secondary-position"
                                           className="block text-sm font-medium text-gray-700"
                                        >
                                           Secondary Position
                                        </label>
                                        <select
-                                          id="secondaryPosition"
-                                          name="secondaryPosition"
+                                          id="secondary-position"
+                                          name="secondary-position"
                                           ref={secondaryRef}
                                           className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                        >
@@ -188,10 +244,102 @@ export const Register = () => {
                                                 key={position.id}
                                                 value={position.id}
                                              >
-                                                {position.name}
+                                                {position.fullName}
                                              </option>
                                           ))}
                                        </select>
+                                    </div>
+
+                                    <div className="col-span-6 sm:col-span-3">
+                                       <label
+                                          htmlFor="secondaryPosition"
+                                          className="block text-sm font-medium text-gray-700"
+                                       >
+                                          Pronouns
+                                       </label>
+                                       <select
+                                          id="pronouns"
+                                          name="pronouns"
+                                          ref={pronounRef}
+                                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                       >
+                                          <option value="" hidden>
+                                             Select...
+                                          </option>
+                                          <option value="">
+                                             Prefer not to say
+                                          </option>
+                                          {pronouns.map((pronoun) => (
+                                             <option
+                                                key={pronoun.id}
+                                                value={pronoun.id}
+                                             >
+                                                {pronoun.name}
+                                             </option>
+                                          ))}
+                                       </select>
+                                    </div>
+
+                                    <div className="col-span-6 sm:col-span-3">
+                                       <label
+                                          htmlFor="club"
+                                          className="block text-sm font-medium text-gray-700"
+                                       >
+                                          Club
+                                       </label>
+                                       <input
+                                          type="text"
+                                          name="club"
+                                          id="club"
+                                          placeholder="Club played in or supported..."
+                                          ref={clubRef}
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                       />
+                                    </div>
+
+                                    <div className="col-span-6 sm:col-span-3">
+                                       <label
+                                          htmlFor="emergency-contact-name"
+                                          className="block text-sm font-medium text-gray-700"
+                                       >
+                                          Emergency Contact Name
+                                       </label>
+                                       <input
+                                          type="text"
+                                          name="emergency-contact-name"
+                                          id="emergency-contact-name"
+                                          required
+                                          ref={emergencyNameRef}
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                       />
+                                    </div>
+
+                                    <div className="col-span-6 sm:col-span-3">
+                                       <label
+                                          htmlFor="emergency-contact-phone"
+                                          className="block text-sm font-medium text-gray-700"
+                                       >
+                                          Emergency Contact Phone
+                                       </label>
+                                       <input
+                                          type="tel"
+                                          name="emergency-contact-phone"
+                                          id="emergency-contact-phone"
+                                          required
+                                          ref={emergencyPhoneRef}
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          onBlur={(e) =>
+                                             validatePhone(
+                                                emergencyPhoneRef.current.value,
+                                                'emergency'
+                                             )
+                                          }
+                                       />
+                                       {!isEmgPhoneValid && (
+                                          <div className="text-sm text-red-600">
+                                             Invalid format
+                                          </div>
+                                       )}
                                     </div>
                                  </div>
                               </div>

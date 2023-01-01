@@ -18,7 +18,15 @@ namespace PUGPlanner_Backend.Controllers
         [HttpGet("GetCount")]
         public IActionResult GetCount(int gameId) 
         {
-            var count = _rosterRepository.getCount(gameId);
+            var count = _rosterRepository.GetCount(gameId);
+
+            return Ok(count);
+        }
+
+        [HttpGet("GetUserCount")]
+        public IActionResult GetUserCount(int userId)
+        {
+            var count = _rosterRepository.GetUserCount(userId);
 
             return Ok(count);
         }

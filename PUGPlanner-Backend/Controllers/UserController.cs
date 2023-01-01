@@ -29,6 +29,13 @@ namespace PUGPlanner_Backend.Controllers
             return Ok(user);
         }
 
+        // GET: api/<UserController>/GetAll
+        [HttpGet("GetAll")]
+        public IActionResult GetAll()
+        {
+            return Ok(_userRepository.GetAll());
+        }
+
         // GET: api/<UserController>/Get?email=string
         [HttpGet("Get")]
         public IActionResult GetByEmail(string email)

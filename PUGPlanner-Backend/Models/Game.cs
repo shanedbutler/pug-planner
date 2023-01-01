@@ -14,12 +14,12 @@ namespace PUGPlanner_Backend.Models
         [MaxLength(50)]
         public string Location { get; set; }
 
-        [Required]  
+        [Required]
         [MaxLength(255)]
         public string Address { get; set; }
 
         [Required]
-        [MaxLength(255)]
+        [MaxLength(1500)]
         public string Description { get; set; }
 
         [Required]
@@ -32,7 +32,12 @@ namespace PUGPlanner_Backend.Models
         public int MaxPlayers { get; set; }
 
         [Required]
-        public int UserProfileId { get; set; }
+        public bool Recurring { get; set; }
+
+        [Required]
+        public int PrimaryHostId { get; set; }
+
+        public int SecondaryHostId { get; set; }
 
         public string GameDateString => GameDate.ToString("dddd, dd MMMM yyyy @ hh:mm tt");
         public string SignupDateString => SignupDate.ToString("dddd, dd MMMM yyyy @ hh:mm tt");
@@ -43,6 +48,8 @@ namespace PUGPlanner_Backend.Models
         public string SignupDateFormString => SignupDate.ToString("yyyy-MM-dd");
         public string SignupTimeFormString => SignupDate.ToString("HH:mm");
             
-        public User AdminUser { get; set; }
+        public User PrimaryHost { get; set; }
+        public User SecondaryHost { get; set; }
+
     }
 }
