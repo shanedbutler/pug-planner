@@ -51,6 +51,10 @@ export const GameDetails = ({ isAdmin }) => {
       setRegLockModalOpen(true);
    };
 
+   /**
+    * Handles un-registering current user from roster by deleting them from roster
+    * Additionally checks if there's only one wait-list player remaining and removes wait-list if so
+    */
    const handleUnregister = () => {
       if (waitList.length === 1) {
          setIsWaitList(false);
@@ -103,7 +107,9 @@ export const GameDetails = ({ isAdmin }) => {
    };
 
    /**
-    * Checks if current user is already registered and if registration date status is open (-1)
+    * Checks if current user is already registered
+    * Checks if game date status is not yet passed (1) and registration date status is open / past (-1)
+    * Sets user registration ability state
     */
    const checkCanRegister = (rosterArr, gameObj) => {
       const userId = getCurrentUser().id;
