@@ -110,7 +110,7 @@ export const GameDetails = ({ isAdmin }) => {
          if (gameObj.signupDateStatus < 0 && !isAlreadyRegistered) {
             setCanRegister(true);
          } 
-         else if (gameObj.signupDateStatus < 0 || isAlreadyRegistered) {
+         else if (gameObj.signupDateStatus < 0 && isAlreadyRegistered) {
             setCanUnregister(true);
          } 
          else if (gameObj.signupDateStatus > 0) {
