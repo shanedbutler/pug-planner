@@ -27,12 +27,8 @@ export const GameForm = () => {
          location: locationRef.current.value,
          address: addressRef.current.value,
          description: descriptionRef.current.value,
-         gameDate: new Date(
-            gameDateRef.current.value + 'T' + gameTimeRef.current.value
-         ),
-         signupDate: new Date(
-            signupDateRef.current.value + 'T' + signupTimeRef.current.value
-         ),
+         gameDate: gameDateRef.current.value + 'T' + gameTimeRef.current.value,
+         signupDate: signupDateRef.current.value + 'T' + signupTimeRef.current.value,
          maxPlayers: parseInt(maxPlayersRef.current.value),
          primaryHostId: getCurrentUser().id,
          secondaryHostId: parseInt(secondaryHostRef.current.value) 
