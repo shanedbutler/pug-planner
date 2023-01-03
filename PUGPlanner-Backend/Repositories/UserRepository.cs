@@ -21,7 +21,7 @@ namespace PUGPlanner_Backend.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT up.Id, up.FirstName, up.LastName, 
+                        SELECT up.Id as UserId, up.FirstName, up.LastName, 
                                up.Email, up.Phone, up.Club,
                                up.CreateDateTime, up.[Admin], up.PronounId,
                                up.PrimaryPositionId, up.SecondaryPositionId,
@@ -59,7 +59,7 @@ namespace PUGPlanner_Backend.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT up.Id, up.FirstName, up.LastName, 
+                        SELECT up.Id as UserId, up.FirstName, up.LastName, 
                                up.Email, up.Phone, up.Club,
                                up.CreateDateTime, up.[Admin], up.PronounId,
                                up.PrimaryPositionId, up.SecondaryPositionId,
@@ -100,7 +100,7 @@ namespace PUGPlanner_Backend.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT up.Id, up.FirstName, up.LastName, 
+                        SELECT up.Id as UserId, up.FirstName, up.LastName, 
                                up.Email, up.Phone, up.Club,
                                up.CreateDateTime, up.[Admin], up.PronounId,
                                up.PrimaryPositionId, up.SecondaryPositionId,
@@ -144,7 +144,7 @@ namespace PUGPlanner_Backend.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT r.Id, r.GameId, r.UserProfileId,
-                               up.Id, up.FirstName, up.LastName, 
+                               up.Id as UserId, up.FirstName, up.LastName, 
                                up.Email, up.Phone, up.Club,
                                up.CreateDateTime, up.[Admin], up.PronounId,
                                up.PrimaryPositionId, up.SecondaryPositionId,
@@ -186,7 +186,7 @@ namespace PUGPlanner_Backend.Repositories
         {
             return new User()
             {
-                Id = DbUtils.GetInt(reader, "Id"),
+                Id = DbUtils.GetInt(reader, "UserId"),
                 FirstName = DbUtils.GetString(reader, "FirstName"),
                 LastName = DbUtils.GetString(reader, "LastName"),
                 Email = DbUtils.GetString(reader, "Email"),

@@ -104,16 +104,18 @@ export const GameDetails = ({ isAdmin }) => {
     */
    const checkCanRegister = (rosterArr, gameObj) => {
       const userId = getCurrentUser().id;
-      const isAlreadyRegistered = rosterArr.some(
-         (player) => player.id === userId
-      );
+      const isAlreadyRegistered = rosterArr.some((player) => player.id === userId);
 
-      if (gameObj.signupDateStatus < 0 && !isAlreadyRegistered) {
-         setCanRegister(true);
-      } else if (gameObj.signupDateStatus < 0 || isAlreadyRegistered) {
-         setCanUnregister(true);
-      } else if (gameObj.signupDateStatus > 0) {
-         setRegistrationNotOpen(true);
+      if (gameObj.gameDateStatus > 0) {
+         if (gameObj.signupDateStatus < 0 && !isAlreadyRegistered) {
+            setCanRegister(true);
+         } 
+         else if (gameObj.signupDateStatus < 0 && isAlreadyRegistered) {
+            setCanUnregister(true);
+         } 
+         else if (gameObj.signupDateStatus > 0) {
+            setRegistrationNotOpen(true);
+         }
       }
    };
 
