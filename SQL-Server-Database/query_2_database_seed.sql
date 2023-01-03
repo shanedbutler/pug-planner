@@ -20,30 +20,30 @@ INSERT INTO Pronoun (Id, [Name]) VALUES (5, 'She/They')
 SET IDENTITY_INSERT [Pronoun] OFF
 
 SET IDENTITY_INSERT [UserProfile] ON
-INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone) 
-VALUES (1, 'Foo', 'Barington', 'foo@bar.com', '555-305-2034', 'LA Galaxy', '2022-12-03', 1, 2, 1, 3, 'Baz', '555-235-5234');
-INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone) 
-VALUES (2, 'Reina', 'Sandwith', 'rsandwith0@google.com.brx', '555-302-5942', 'Real Madrid', '2022-12-04', 3, 4, 0, 2, 'Jena', '555-230-5912');
-INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone) 
-VALUES (3, 'Red', 'Do', 'rdo1@timesonline.co.ukx', '555-403-4134', 'Barcelona', '2022-12-04', 5, 6, 0, 4, 'George', '555-392-5912');
-INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone) 
-VALUES (4, 'Ricardo', 'Swope', 'rswope@hudsonnews.com', '555-301-5325', 'Liverpool FC', '2022-12-04', 7, 8, 0, 1, 'Feltman', '555-302-1321');
-INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone) 
-VALUES (5, 'Arnold', 'Fuller', 'afull@hotbot.net', '555-240-5012', 'Los Angeles FC', '2022-12-04', 1, 2, 0, 1, 'Carlotte', '555-305-3211');
-INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone) 
-VALUES (6, 'Armando', 'Zelle', 'zman@westco.net', '555-302-4096', 'Celtic', '2022-12-04', 5, 2, 0, 1, 'Angel', '555-311-4032');
-INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone) 
-VALUES (7, 'Jim', 'Singleton', 'jsins@nice.com', '555-503-0953', 'West Ham', '2022-12-05', 6, 7, 0, 1, 'Jess', '555-203-1953');
-INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone) 
-VALUES (8, 'Jessie', 'White', 'jwhite@nice.com', '555-291-3352', 'Boca Juniors', '2022-12-05', 4, 5, 0, 5, 'Stephen', '555-392-4012');
-INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone) 
-VALUES (9, 'Milton', 'Bradakin', 'mkinz@manowar.net', '555-204-2495', 'CF Monterrey', '2022-12-05', 2, 4, 0, 1, 'Melinda', '555-300-5943');
-INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone) 
-VALUES (10, 'Joe', 'Flips', 'flipin@cinomon.com', '555-301-6032', 'Napoli', '2022-12-05', 8, 6, 0, 1, 'Laura', '555-201-6604');
-INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone) 
-VALUES (11, 'Melissa', 'Zipps', 'mzip@hotmail.com', '555-305-2043', 'Arsenal', '2022-12-05', 2, 8, 0, 2, 'Marky', '555-302-5921');
-INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone) 
-VALUES (12, 'Laura', 'Karp', 'lthekarp@hotmail.com', '555-390-7000', 'DC United', '2022-12-05', 8, 4, 0, 2, 'Linda', '555-251-6043');
+INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone, [Active]) 
+VALUES (1, 'Foo', 'Barington', 'foo@bar.com', '555-305-2034', 'LA Galaxy', '2022-12-03', 1, 2, 1, 3, 'Baz', '555-235-5234', 1);
+INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone, [Active]) 
+VALUES (2, 'Reina', 'Sandwith', 'rsandwith0@google.com.brx', '555-302-5942', 'Real Madrid', '2022-12-04', 3, 4, 0, 2, 'Jena', '555-230-5912', 1);
+INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone, [Active]) 
+VALUES (3, 'Red', 'Do', 'rdo1@timesonline.co.ukx', '555-403-4134', 'Barcelona', '2022-12-04', 5, 6, 0, 4, 'George', '555-392-5912', 1);
+INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone, [Active]) 
+VALUES (4, 'Ricardo', 'Swope', 'rswope@hudsonnews.com', '555-301-5325', 'Liverpool FC', '2022-12-04', 7, 8, 0, 1, 'Feltman', '555-302-1321', 1);
+INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone, [Active]) 
+VALUES (5, 'Arnold', 'Fuller', 'afull@hotbot.net', '555-240-5012', 'Los Angeles FC', '2022-12-04', 1, 2, 0, 1, 'Carlotte', '555-305-3211', 1);
+INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone, [Active]) 
+VALUES (6, 'Armando', 'Zelle', 'zman@westco.net', '555-302-4096', 'Celtic', '2022-12-04', 5, 2, 0, 1, 'Angel', '555-311-4032', 1);
+INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone, [Active]) 
+VALUES (7, 'Jim', 'Singleton', 'jsins@nice.com', '555-503-0953', 'West Ham', '2022-12-05', 6, 7, 0, 1, 'Jess', '555-203-1953', 1);
+INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone, [Active]) 
+VALUES (8, 'Jessie', 'White', 'jwhite@nice.com', '555-291-3352', 'Boca Juniors', '2022-12-05', 4, 5, 0, 5, 'Stephen', '555-392-4012', 1);
+INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone, [Active]) 
+VALUES (9, 'Milton', 'Bradakin', 'mkinz@manowar.net', '555-204-2495', 'CF Monterrey', '2022-12-05', 2, 4, 0, 1, 'Melinda', '555-300-5943', 1);
+INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone, [Active]) 
+VALUES (10, 'Joe', 'Flips', 'flipin@cinomon.com', '555-301-6032', 'Napoli', '2022-12-05', 8, 6, 0, 1, 'Laura', '555-201-6604', 1);
+INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone, [Active]) 
+VALUES (11, 'Melissa', 'Zipps', 'mzip@hotmail.com', '555-305-2043', 'Arsenal', '2022-12-05', 2, 8, 0, 2, 'Marky', '555-302-5921', 1);
+INSERT INTO [UserProfile] (Id, FirstName, LastName, Email, Phone, Club, CreateDateTime, PrimaryPositionId, SecondaryPositionId, [Admin], PronounId, EmergencyName, EmergencyPhone, [Active]) 
+VALUES (12, 'Laura', 'Karp', 'lthekarp@hotmail.com', '555-390-7000', 'DC United', '2022-12-05', 8, 4, 0, 2, 'Linda', '555-251-6043', 1);
 SET IDENTITY_INSERT [UserProfile] OFF
 
 SET IDENTITY_INSERT [Game] ON

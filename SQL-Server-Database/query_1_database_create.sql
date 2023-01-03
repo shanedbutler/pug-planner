@@ -49,7 +49,8 @@ CREATE TABLE [UserProfile] (
   [SecondaryPositionId] int NOT NULL,
   [PronounId] int,
   [EmergencyName] nvarchar(50) NOT NULL,
-  [EmergencyPhone] nvarchar(20) NOT NULL
+  [EmergencyPhone] nvarchar(20) NOT NULL,
+  [Active] bit NOT NULL
 )
 GO
 
