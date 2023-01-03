@@ -26,7 +26,7 @@ export const GameEdit = () => {
       e.preventDefault();
 
       const editedGame = {
-         id: id,
+         id: parseInt(id),
          title: titleRef.current.value,
          location: locationRef.current.value,
          address: addressRef.current.value,
@@ -39,7 +39,7 @@ export const GameEdit = () => {
          ),
          maxPlayers: parseInt(maxPlayersRef.current.value),
          primaryHostId: getCurrentUser().id,
-         secondaryHostId: secondaryHostRef.current.value
+         secondaryHostId: parseInt(secondaryHostRef.current.value)
       };
 
       fetchPutGame(editedGame);
