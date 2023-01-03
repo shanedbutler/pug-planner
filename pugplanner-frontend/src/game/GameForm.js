@@ -27,14 +27,11 @@ export const GameForm = () => {
          location: locationRef.current.value,
          address: addressRef.current.value,
          description: descriptionRef.current.value,
-         gameDate: new Date(
-            gameDateRef.current.value + 'T' + gameTimeRef.current.value
-         ),
-         signupDate: new Date(
-            signupDateRef.current.value + 'T' + signupTimeRef.current.value
-         ),
+         gameDate: gameDateRef.current.value + 'T' + gameTimeRef.current.value,
+         signupDate: signupDateRef.current.value + 'T' + signupTimeRef.current.value,
          maxPlayers: parseInt(maxPlayersRef.current.value),
-         userProfileId: getCurrentUser().id,
+         primaryHostId: getCurrentUser().id,
+         secondaryHostId: parseInt(secondaryHostRef.current.value) 
       };
 
       fetchPostGame(newGame).then(() => navigate('/'));
@@ -167,7 +164,7 @@ export const GameForm = () => {
                                           ref={secondaryHostRef}
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                           >
-                                          <option value="0">
+                                          <option value="">
                                              None
                                           </option>
                                           {users.map((user) => (

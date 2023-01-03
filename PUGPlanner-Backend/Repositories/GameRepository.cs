@@ -44,20 +44,26 @@ namespace PUGPlanner_Backend.Repositories
                                LEFT JOIN UserProfile up ON g.PrimaryHostId = up.Id
                                LEFT JOIN UserProfile up2 ON g.SecondaryHostId = up2.Id
                                JOIN [Position] p ON up.PrimaryPositionId = p.Id
-                               JOIN [Position] p2 ON up.SecondaryPositionId = p2.Id
+                               LEFT JOIN [Position] p2 ON up.SecondaryPositionId = p2.Id
                                JOIN Pronoun pn ON up.PronounId = pn.Id
-                               JOIN [Position] p3 ON up2.PrimaryPositionId = p3.Id
-                               JOIN [Position] p4 ON up2.SecondaryPositionId = p4.Id
-                               JOIN Pronoun pn2 ON up2.PronounId = pn2.Id
+                               LEFT JOIN [Position] p3 ON up2.PrimaryPositionId = p3.Id
+                               LEFT JOIN [Position] p4 ON up2.SecondaryPositionId = p4.Id
+                               LEFT JOIN Pronoun pn2 ON up2.PronounId = pn2.Id
                         ORDER BY g.GameDate ASC";
 
                     List<Game> games = new();
 
                     var reader = cmd.ExecuteReader();
 
-                    while (reader.Read()) 
+                    while (reader.Read())
                     {
-                        games.Add(NewGameFromReader(reader));
+                        Game game = NewGameFromReader(reader);
+
+                        if (game.SecondaryHostId != null)
+                        {
+                            game = AddSecondHostFromReader(game, reader);
+                        }
+                        games.Add(game);
                     }
 
                     return games;
@@ -97,11 +103,11 @@ namespace PUGPlanner_Backend.Repositories
                                LEFT JOIN UserProfile up ON g.PrimaryHostId = up.Id
                                LEFT JOIN UserProfile up2 ON g.SecondaryHostId = up2.Id
                                JOIN [Position] p ON up.PrimaryPositionId = p.Id
-                               JOIN [Position] p2 ON up.SecondaryPositionId = p2.Id
+                               LEFT JOIN [Position] p2 ON up.SecondaryPositionId = p2.Id
                                JOIN Pronoun pn ON up.PronounId = pn.Id
-                               JOIN [Position] p3 ON up2.PrimaryPositionId = p3.Id
-                               JOIN [Position] p4 ON up2.SecondaryPositionId = p4.Id
-                               JOIN Pronoun pn2 ON up2.PronounId = pn2.Id
+                               LEFT JOIN [Position] p3 ON up2.PrimaryPositionId = p3.Id
+                               LEFT JOIN [Position] p4 ON up2.SecondaryPositionId = p4.Id
+                               LEFT JOIN Pronoun pn2 ON up2.PronounId = pn2.Id
                         WHERE g.id = @Id";
 
                     cmd.Parameters.AddWithValue("@Id", id);
@@ -113,6 +119,11 @@ namespace PUGPlanner_Backend.Repositories
                     if (reader.Read())
                     {
                         game = NewGameFromReader(reader);
+
+                        if (game.SecondaryHostId != null)
+                        {
+                            game = AddSecondHostFromReader(game, reader);
+                        }
                     }
                     reader.Close();
 
@@ -140,7 +151,7 @@ namespace PUGPlanner_Backend.Repositories
                 MaxPlayers = DbUtils.GetInt(reader, "MaxPlayers"),
                 Recurring = DbUtils.GetBool(reader, "Recurring"),
                 PrimaryHostId = DbUtils.GetInt(reader, "PrimaryHostId"),
-                SecondaryHostId= DbUtils.GetInt(reader, "SecondaryHostId"),
+                SecondaryHostId = DbUtils.GetNullableInt(reader, "SecondaryHostId"),
                 PrimaryHost = new User()
                 {
                     Id = DbUtils.GetInt(reader, "PrimaryHostId"),
@@ -168,76 +179,82 @@ namespace PUGPlanner_Backend.Repositories
                         Id = DbUtils.GetInt(reader, "PronounId"),
                         Name = DbUtils.GetString(reader, "PronounName"),
                     }
-                },
-                SecondaryHost = new User()
-                {
-                    Id = DbUtils.GetInt(reader, "SecondaryHostId"),
-                    FirstName = DbUtils.GetString(reader, "FirstName2"),
-                    LastName = DbUtils.GetString(reader, "LastName2"),
-                    Email = DbUtils.GetString(reader, "Email2"),
-                    Phone = DbUtils.GetString(reader, "Phone2"),
-                    Club = DbUtils.GetString(reader, "Club2"),
-                    PrimaryPositionId = DbUtils.GetInt(reader, "PrimaryPositionId2"),
-                    SecondaryPositionId = DbUtils.GetInt(reader, "SecondaryPositionId2"),
-                    PronounId = DbUtils.GetInt(reader, "PronounId2"),
-                    CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime2"),
-                    Admin = DbUtils.GetBool(reader, "Admin2"),
-                    EmergencyName = DbUtils.GetString(reader, "EmergencyName2"),
-                    EmergencyPhone = DbUtils.GetString(reader, "EmergencyPhone2"),
-                    Position = new UserPosition()
-                    {
-                        Primary = DbUtils.GetString(reader, "PrimaryPositionName2"),
-                        Secondary = DbUtils.GetString(reader, "SecondaryPositionName2"),
-                        PrimaryFull = DbUtils.GetString(reader, "PrimaryPositionFullName2"),
-                        SecondaryFull = DbUtils.GetString(reader, "SecondaryPositionFullName2"),
-                    },
-                    Pronoun = new Pronoun()
-                    {
-                        Id = DbUtils.GetInt(reader, "PronounId2"),
-                        Name = DbUtils.GetString(reader, "PronounName2"),
-                    }
                 }
             };
         }
 
-        public void Add(Game game)
+        private Game AddSecondHostFromReader(Game game, SqlDataReader reader)
         {
-           using (var conn = Connection)
+            game.SecondaryHost = new User()
             {
-                conn.Open();
-                using (var cmd = conn.CreateCommand())
+                Id = DbUtils.GetInt(reader, "SecondaryHostId"),
+                FirstName = DbUtils.GetString(reader, "FirstName2"),
+                LastName = DbUtils.GetString(reader, "LastName2"),
+                Email = DbUtils.GetString(reader, "Email2"),
+                Phone = DbUtils.GetString(reader, "Phone2"),
+                Club = DbUtils.GetString(reader, "Club2"),
+                PrimaryPositionId = DbUtils.GetInt(reader, "PrimaryPositionId2"),
+                SecondaryPositionId = DbUtils.GetInt(reader, "SecondaryPositionId2"),
+                PronounId = DbUtils.GetInt(reader, "PronounId2"),
+                CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime2"),
+                Admin = DbUtils.GetBool(reader, "Admin2"),
+                EmergencyName = DbUtils.GetString(reader, "EmergencyName2"),
+                EmergencyPhone = DbUtils.GetString(reader, "EmergencyPhone2"),
+                Position = new UserPosition()
                 {
-                    cmd.CommandText = @"
+                    Primary = DbUtils.GetString(reader, "PrimaryPositionName2"),
+                    Secondary = DbUtils.GetString(reader, "SecondaryPositionName2"),
+                    PrimaryFull = DbUtils.GetString(reader, "PrimaryPositionFullName2"),
+                    SecondaryFull = DbUtils.GetString(reader, "SecondaryPositionFullName2"),
+                },
+                Pronoun = new Pronoun()
+                {
+                    Id = DbUtils.GetInt(reader, "PronounId2"),
+                    Name = DbUtils.GetString(reader, "PronounName2"),
+                }
+            };
+
+            return game;
+        }
+
+        public void Add(Game game)
+            {
+                using (var conn = Connection)
+                {
+                    conn.Open();
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"
                         INSERT INTO Game (Title, Location, Address, Description,
                                           GameDate, SignupDate, MaxPlayers, Recurring, PrimaryHostId, SecondaryHostId)
                         OUTPUT INSERTED.ID
                         VALUES (@Title, @Location, @Address, @Description,
                                 @GameDate, @SignupDate, @MaxPlayers, @Recurring, @PrimaryHostId, @SecondaryHostId)";
 
-                    DbUtils.AddParameter(cmd, "@Title", game.Title);
-                    DbUtils.AddParameter(cmd, "@Location", game.Location);
-                    DbUtils.AddParameter(cmd, "@Address", game.Address);
-                    DbUtils.AddParameter(cmd, "@Description", game.Description);
-                    DbUtils.AddParameter(cmd, "@GameDate", game.GameDate);
-                    DbUtils.AddParameter(cmd, "@SignupDate", game.SignupDate);
-                    DbUtils.AddParameter(cmd, "@MaxPlayers", game.MaxPlayers);
-                    DbUtils.AddParameter(cmd, "@Recurring", game.Recurring);
-                    DbUtils.AddParameter(cmd, "@PrimaryHostId", game.PrimaryHostId);
-                    DbUtils.AddParameter(cmd, "@SecondaryHostId", game.SecondaryHostId);
+                        DbUtils.AddParameter(cmd, "@Title", game.Title);
+                        DbUtils.AddParameter(cmd, "@Location", game.Location);
+                        DbUtils.AddParameter(cmd, "@Address", game.Address);
+                        DbUtils.AddParameter(cmd, "@Description", game.Description);
+                        DbUtils.AddParameter(cmd, "@GameDate", game.GameDate);
+                        DbUtils.AddParameter(cmd, "@SignupDate", game.SignupDate);
+                        DbUtils.AddParameter(cmd, "@MaxPlayers", game.MaxPlayers);
+                        DbUtils.AddParameter(cmd, "@Recurring", game.Recurring);
+                        DbUtils.AddParameter(cmd, "@PrimaryHostId", game.PrimaryHostId);
+                        DbUtils.AddParameter(cmd, "@SecondaryHostId", game.SecondaryHostId);
 
-                    game.Id = (int)cmd.ExecuteScalar();
+                        game.Id = (int)cmd.ExecuteScalar();
+                    }
                 }
             }
-        }
 
-        public void Update(Game game)
-        {
-            using (var conn = Connection)
+            public void Update(Game game)
             {
-                conn.Open();
-                using (var cmd = conn.CreateCommand())
+                using (var conn = Connection)
                 {
-                    cmd.CommandText = @"
+                    conn.Open();
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"
                         UPDATE Game
                             SET
                                 Title = @Title,
@@ -248,26 +265,26 @@ namespace PUGPlanner_Backend.Repositories
                                 SignupDate = @SignupDate,
                                 MaxPlayers = @MaxPlayers,
                                 Recurring = @Recurring,
-                                PrimaryHostId = @PrimaryHostId
+                                PrimaryHostId = @PrimaryHostId,
                                 SecondaryHostId = @SecondaryHostId
                             WHERE Id = @Id";
 
-                    DbUtils.AddParameter(cmd, "@Id", game.Id);
-                    DbUtils.AddParameter(cmd, "@Title", game.Title);
-                    DbUtils.AddParameter(cmd, "@Location", game.Location);
-                    DbUtils.AddParameter(cmd, "@Address", game.Address);
-                    DbUtils.AddParameter(cmd, "@Description", game.Description);
-                    DbUtils.AddParameter(cmd, "@GameDate", game.GameDate);
-                    DbUtils.AddParameter(cmd, "@SignupDate", game.SignupDate);
-                    DbUtils.AddParameter(cmd, "@MaxPlayers", game.MaxPlayers);
-                    DbUtils.AddParameter(cmd, "@Recurring", game.Recurring);
-                    DbUtils.AddParameter(cmd, "@PrimaryHostId", game.PrimaryHostId);
-                    DbUtils.AddParameter(cmd, "@SecondaryHostId", game.SecondaryHostId);
+                        DbUtils.AddParameter(cmd, "@Id", game.Id);
+                        DbUtils.AddParameter(cmd, "@Title", game.Title);
+                        DbUtils.AddParameter(cmd, "@Location", game.Location);
+                        DbUtils.AddParameter(cmd, "@Address", game.Address);
+                        DbUtils.AddParameter(cmd, "@Description", game.Description);
+                        DbUtils.AddParameter(cmd, "@GameDate", game.GameDate);
+                        DbUtils.AddParameter(cmd, "@SignupDate", game.SignupDate);
+                        DbUtils.AddParameter(cmd, "@MaxPlayers", game.MaxPlayers);
+                        DbUtils.AddParameter(cmd, "@Recurring", game.Recurring);
+                        DbUtils.AddParameter(cmd, "@PrimaryHostId", game.PrimaryHostId);
+                        DbUtils.AddParameter(cmd, "@SecondaryHostId", game.SecondaryHostId);
 
-                    cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
-        }
 
+        }
     }
-}

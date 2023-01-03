@@ -60,6 +60,14 @@ namespace PUGPlanner_Backend.Models
             }
         }
 
+        public string NameAndPhone
+        {
+            get
+            {
+                return $"{FirstName} at {Phone}";
+            }
+        }
+
         public string JoinYear => CreateDateTime.ToString("yyyy");
 
     }

@@ -184,9 +184,9 @@ export const GameDetails = ({ isAdmin }) => {
                               Contact
                            </dt>
                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                              {game.primaryHost?.firstName} @ {game.primaryHost?.phone}
+                              {game.primaryHost?.nameAndPhone}
                               <br/>
-                              {game.secondaryHost?.firstName} @ {game.secondaryHost?.phone}
+                              {game.secondaryHost?.nameAndPhone}
                            </dd>
                         </div>
                         <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

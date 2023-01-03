@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PUGPlanner_Backend.Models
 {
@@ -37,7 +38,7 @@ namespace PUGPlanner_Backend.Models
         [Required]
         public int PrimaryHostId { get; set; }
 
-        public int SecondaryHostId { get; set; }
+        public int? SecondaryHostId { get; set; }
 
         public string GameDateString => GameDate.ToString("dddd, dd MMMM yyyy @ hh:mm tt");
         public string SignupDateString => SignupDate.ToString("dddd, dd MMMM yyyy @ hh:mm tt");
@@ -47,7 +48,7 @@ namespace PUGPlanner_Backend.Models
         public string GameTimeFormString => GameDate.ToString("HH:mm");
         public string SignupDateFormString => SignupDate.ToString("yyyy-MM-dd");
         public string SignupTimeFormString => SignupDate.ToString("HH:mm");
-            
+
         public User PrimaryHost { get; set; }
         public User SecondaryHost { get; set; }
 

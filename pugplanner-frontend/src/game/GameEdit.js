@@ -26,20 +26,16 @@ export const GameEdit = () => {
       e.preventDefault();
 
       const editedGame = {
-         id: id,
+         id: parseInt(id),
          title: titleRef.current.value,
          location: locationRef.current.value,
          address: addressRef.current.value,
          description: descriptionRef.current.value,
-         gameDate: new Date(
-            gameDateRef.current.value + 'T' + gameTimeRef.current.value
-         ),
-         signupDate: new Date(
-            signupDateRef.current.value + 'T' + signupTimeRef.current.value
-         ),
+         gameDate: gameDateRef.current.value + 'T' + gameTimeRef.current.value,
+         signupDate: signupDateRef.current.value + 'T' + signupTimeRef.current.value,
          maxPlayers: parseInt(maxPlayersRef.current.value),
          primaryHostId: getCurrentUser().id,
-         secondaryHostId: secondaryHostRef.current.value
+         secondaryHostId: parseInt(secondaryHostRef.current.value)
       };
 
       fetchPutGame(editedGame);
@@ -177,13 +173,10 @@ export const GameEdit = () => {
                                           id="secondaryHost"
                                           name="secondaryHost"
                                           ref={secondaryHostRef}
-                                          value={game.secondaryHostId}
+                                          defaultValue={game.secondaryHostId}
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                           >
-                                          <option value="0" hidden>
-                                             Select...
-                                          </option>
-                                          <option value="0">
+                                          <option value="">
                                              None
                                           </option>
                                           {users.map((user) => (
