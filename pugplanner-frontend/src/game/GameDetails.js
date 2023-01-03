@@ -52,6 +52,9 @@ export const GameDetails = ({ isAdmin }) => {
    };
 
    const handleUnregister = () => {
+      if (waitList.length === 1) {
+         setIsWaitList(false);
+      }
       deleteUserFromRoster(game.id);
       setCanUnregister(false);
       setUnregisterModalOpen(false);
