@@ -248,7 +248,7 @@ namespace PUGPlanner_Backend.Repositories
                                 SignupDate = @SignupDate,
                                 MaxPlayers = @MaxPlayers,
                                 Recurring = @Recurring,
-                                PrimaryHostId = @PrimaryHostId
+                                PrimaryHostId = @PrimaryHostId,
                                 SecondaryHostId = @SecondaryHostId
                             WHERE Id = @Id";
 
