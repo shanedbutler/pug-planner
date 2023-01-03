@@ -34,7 +34,8 @@ export const GameForm = () => {
             signupDateRef.current.value + 'T' + signupTimeRef.current.value
          ),
          maxPlayers: parseInt(maxPlayersRef.current.value),
-         userProfileId: getCurrentUser().id,
+         primaryHostId: getCurrentUser().id,
+         secondaryHostId: parseInt(secondaryHostRef.current.value) 
       };
 
       fetchPostGame(newGame).then(() => navigate('/'));
