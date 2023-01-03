@@ -173,12 +173,9 @@ export const GameEdit = () => {
                                           id="secondaryHost"
                                           name="secondaryHost"
                                           ref={secondaryHostRef}
-                                          value={game.secondaryHostId}
+                                          defaultValue={game.secondaryHostId}
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                           >
-                                          <option value="" hidden>
-                                             Select...
-                                          </option>
                                           <option value="">
                                              None
                                           </option>
