@@ -72,7 +72,7 @@ export const PlayerProfile = ({ isAdmin }) => {
             <div className="mt-5 py-6 border-t border-slate-200 text-center">
                <div className="flex flex-wrap justify-center">
                   <div className="w-full px-4">
-                     <p className="text-slate-700 mb-4">
+                     <p className="text-sm text-slate-700 mb-4">
                         A player of considerable range, Foo is the name taken by
                         the Melbourne-raised, LA-based goal keeper. Foo is
                         considered to excel at shear speed and determination.
