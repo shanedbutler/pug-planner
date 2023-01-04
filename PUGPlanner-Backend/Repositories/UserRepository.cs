@@ -25,7 +25,7 @@ namespace PUGPlanner_Backend.Repositories
                                up.Email, up.Phone, up.Club,
                                up.CreateDateTime, up.[Admin], up.PronounId,
                                up.PrimaryPositionId, up.SecondaryPositionId,
-                               up.EmergencyName, up.EmergencyPhone,
+                               up.EmergencyName, up.EmergencyPhone, up.Active,
                                p.[Name] as PrimaryPositionName, p2.[Name] as SecondaryPositionName,
                                p.FullName as PrimaryPositionFullName, p2.FullName as SecondaryPositionFullName,
                                pn.[Name] as PronounName
@@ -63,14 +63,15 @@ namespace PUGPlanner_Backend.Repositories
                                up.Email, up.Phone, up.Club,
                                up.CreateDateTime, up.[Admin], up.PronounId,
                                up.PrimaryPositionId, up.SecondaryPositionId,
-                               up.EmergencyName, up.EmergencyPhone,
+                               up.EmergencyName, up.EmergencyPhone, up.Active,
                                p.[Name] as PrimaryPositionName, p2.[Name] as SecondaryPositionName,
                                p.FullName as PrimaryPositionFullName, p2.FullName as SecondaryPositionFullName,
                                pn.[Name] as PronounName
                           FROM [UserProfile] up
                               JOIN Pronoun pn ON up.PronounId = pn.Id
                               JOIN [Position] p ON up.PrimaryPositionId = p.id
-                              JOIN [Position] p2 ON up.SecondaryPositionId = p2.id";
+                              JOIN [Position] p2 ON up.SecondaryPositionId = p2.id
+                          ORDER BY up.LastName";
 
                     List<User> users = new List<User>();
 
@@ -104,7 +105,7 @@ namespace PUGPlanner_Backend.Repositories
                                up.Email, up.Phone, up.Club,
                                up.CreateDateTime, up.[Admin], up.PronounId,
                                up.PrimaryPositionId, up.SecondaryPositionId,
-                               up.EmergencyName, up.EmergencyPhone,
+                               up.EmergencyName, up.EmergencyPhone, up.Active,
                                p.[Name] as PrimaryPositionName, p2.[Name] as SecondaryPositionName,
                                p.FullName as PrimaryPositionFullName, p2.FullName as SecondaryPositionFullName,
                                pn.[Name] as PronounName
@@ -148,7 +149,7 @@ namespace PUGPlanner_Backend.Repositories
                                up.Email, up.Phone, up.Club,
                                up.CreateDateTime, up.[Admin], up.PronounId,
                                up.PrimaryPositionId, up.SecondaryPositionId,
-                               up.EmergencyName, up.EmergencyPhone,
+                               up.EmergencyName, up.EmergencyPhone, up.Active,
                                p.[Name] as PrimaryPositionName, p2.[Name] as SecondaryPositionName,
                                p.FullName as PrimaryPositionFullName, p2.FullName as SecondaryPositionFullName,
                                pn.[Name] as PronounName
@@ -199,6 +200,7 @@ namespace PUGPlanner_Backend.Repositories
                 Admin = DbUtils.GetBool(reader, "Admin"),
                 EmergencyName = DbUtils.GetString(reader, "EmergencyName"),
                 EmergencyPhone = DbUtils.GetString(reader, "EmergencyPhone"),
+                Active = DbUtils.GetBool(reader, "Active"),
                 Position = new UserPosition()
                 {
                     Primary = DbUtils.GetString(reader, "PrimaryPositionName"),
@@ -223,11 +225,11 @@ namespace PUGPlanner_Backend.Repositories
                 {
                     cmd.CommandText = @"INSERT INTO UserProfile (FirstName, LastName, Email, Phone, Club, CreateDateTime, 
                                                                  PrimaryPositionId, SecondaryPositionId, Admin,
-                                                                 PronounId, EmergencyName, EmergencyPhone)
+                                                                 PronounId, EmergencyName, EmergencyPhone, Active)
                                         OUTPUT INSERTED.ID
                                         VALUES (@FirstName, @LastName, @Email, @Phone, @Club, @CreateDateTime, 
                                                 @PrimaryPositionId, @SecondaryPositionId, @Admin,
-                                                @PronounId, @EmergencyName, @EmergencyPhone)";
+                                                @PronounId, @EmergencyName, @EmergencyPhone, @Active)";
                     //DbUtils.AddParameter(cmd, "@FirebaseUserId", userProfile.FirebaseUserId);
                     DbUtils.AddParameter(cmd, "@FirstName", user.FirstName);
                     DbUtils.AddParameter(cmd, "@LastName", user.LastName);
@@ -241,6 +243,7 @@ namespace PUGPlanner_Backend.Repositories
                     DbUtils.AddParameter(cmd, "@PronounId", user.PronounId);
                     DbUtils.AddParameter(cmd, "@EmergencyName", user.EmergencyName);
                     DbUtils.AddParameter(cmd, "@EmergencyPhone", user.EmergencyPhone);
+                    DbUtils.AddParameter(cmd, "@Active", 1);
 
                     user.Id = (int)cmd.ExecuteScalar();
                 }
