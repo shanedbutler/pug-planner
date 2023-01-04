@@ -11,7 +11,7 @@ export const AppNav = () => {
 
    // Main nav bar handlers
    const navToDashboard = () => navigate('/');
-   const navToPlayerAdmin = () => navigate('/player-admin');
+   const navToPlayerAdmin = () => navigate('/players');
 
    // User menu handlers
    const navToProfile = () => navigate(`/profile/${user.id}`);
@@ -24,7 +24,7 @@ export const AppNav = () => {
    if (user.admin) {
       navigation = [
          { name: 'Dashboard', onClick: navToDashboard, current: false },
-         // { name: 'Player Admin', onClick: navToPlayerAdmin, current: false }
+         { name: 'Players', onClick: navToPlayerAdmin, current: false }
       ];
    } else {
       navigation = [
