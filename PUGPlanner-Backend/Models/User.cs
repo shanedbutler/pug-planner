@@ -48,6 +48,8 @@ namespace PUGPlanner_Backend.Models
         [MaxLength(20)]
         public string EmergencyPhone { get; set; }
 
+        public bool Active { get; set; }
+
         public Pronoun Pronoun { get; set; }
 
         public UserPosition Position { get; set; }

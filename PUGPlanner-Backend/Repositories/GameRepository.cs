@@ -28,7 +28,7 @@ namespace PUGPlanner_Backend.Repositories
                                up.Email, up.Phone, up.Club,
                                up.CreateDateTime, up.[Admin], up.PronounId,
                                up.PrimaryPositionId, up.SecondaryPositionId,
-                               up.EmergencyName, up.EmergencyPhone,
+                               up.EmergencyName, up.EmergencyPhone, up.Active,
                                p.[Name] as PrimaryPositionName, p2.[Name] as SecondaryPositionName,
                                p.FullName as PrimaryPositionFullName, p2.FullName as SecondaryPositionFullName,
                                pn.[Name] as PronounName,
@@ -36,7 +36,7 @@ namespace PUGPlanner_Backend.Repositories
                                up2.Email as Email2, up2.Phone as Phone2, up2.Club as Club2,
                                up2.CreateDateTime as CreateDateTime2, up2.[Admin] as Admin2, up2.PronounId as PronounId2,
                                up2.PrimaryPositionId as PrimaryPositionId2, up2.SecondaryPositionId as SecondaryPositionId2,
-                               up2.EmergencyName as EmergencyName2, up2.EmergencyPhone as EmergencyPhone2,
+                               up2.EmergencyName as EmergencyName2, up2.EmergencyPhone as EmergencyPhone2, up2.Active as Active2,
                                p3.[Name] as PrimaryPositionName2, p4.[Name] as SecondaryPositionName2,
                                p3.FullName as PrimaryPositionFullName2, p4.FullName as SecondaryPositionFullName2,
                                pn2.[Name] as PronounName2
@@ -87,7 +87,7 @@ namespace PUGPlanner_Backend.Repositories
                                up.Email, up.Phone, up.Club,
                                up.CreateDateTime, up.[Admin], up.PronounId,
                                up.PrimaryPositionId, up.SecondaryPositionId,
-                               up.EmergencyName, up.EmergencyPhone,
+                               up.EmergencyName, up.EmergencyPhone, up.Active,
                                p.[Name] as PrimaryPositionName, p2.[Name] as SecondaryPositionName,
                                p.FullName as PrimaryPositionFullName, p2.FullName as SecondaryPositionFullName,
                                pn.[Name] as PronounName,
@@ -95,7 +95,7 @@ namespace PUGPlanner_Backend.Repositories
                                up2.Email as Email2, up2.Phone as Phone2, up2.Club as Club2,
                                up2.CreateDateTime as CreateDateTime2, up2.[Admin] as Admin2, up2.PronounId as PronounId2,
                                up2.PrimaryPositionId as PrimaryPositionId2, up2.SecondaryPositionId as SecondaryPositionId2,
-                               up2.EmergencyName as EmergencyName2, up2.EmergencyPhone as EmergencyPhone2,
+                               up2.EmergencyName as EmergencyName2, up2.EmergencyPhone as EmergencyPhone2, up2.Active as Active2,
                                p3.[Name] as PrimaryPositionName2, p4.[Name] as SecondaryPositionName2,
                                p3.FullName as PrimaryPositionFullName2, p4.FullName as SecondaryPositionFullName2,
                                pn2.[Name] as PronounName2
@@ -167,6 +167,7 @@ namespace PUGPlanner_Backend.Repositories
                     Admin = DbUtils.GetBool(reader, "Admin"),
                     EmergencyName = DbUtils.GetString(reader, "EmergencyName"),
                     EmergencyPhone = DbUtils.GetString(reader, "EmergencyPhone"),
+                    Active = DbUtils.GetBool(reader, "Active"),
                     Position = new UserPosition()
                     {
                         Primary = DbUtils.GetString(reader, "PrimaryPositionName"),
@@ -200,6 +201,7 @@ namespace PUGPlanner_Backend.Repositories
                 Admin = DbUtils.GetBool(reader, "Admin2"),
                 EmergencyName = DbUtils.GetString(reader, "EmergencyName2"),
                 EmergencyPhone = DbUtils.GetString(reader, "EmergencyPhone2"),
+                Active = DbUtils.GetBool(reader, "Active2"),
                 Position = new UserPosition()
                 {
                     Primary = DbUtils.GetString(reader, "PrimaryPositionName2"),

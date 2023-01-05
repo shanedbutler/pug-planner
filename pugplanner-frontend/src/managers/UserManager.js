@@ -1,5 +1,5 @@
 import Avatar from 'boring-avatars';
-import { postOption } from './FetchOptions';
+import { postOption, putOption } from './FetchOptions';
 
 const apiUrl = 'https://localhost:7066';
 
@@ -58,12 +58,23 @@ export const logout = () => {
 };
 
 /**
- *
+ * Create new user via POST
  * @param {UserProfile} userBody
- * @returns GET new user object from database
+ * @returns GET newly created user object from database
  */
 export const registerUser = async (userBody) => {
    const response = await fetch(`${apiUrl}/api/user`, postOption(userBody));
+   const user = await response.json();
+   return user;
+};
+
+/**
+ * Edit user via PUT 
+ * @param {UserProfile} userBody
+ * @returns GET newly created user object from database
+ */
+export const editUserFetch = async (userBody) => {
+   const response = await fetch(`${apiUrl}/api/user`, putOption(userBody));
    const user = await response.json();
    return user;
 };
