@@ -7,9 +7,9 @@ export const ApplicationViews = () => {
 
    if (localUser.admin) {
       //return admin views
-      return <AdminViews />;
+      return <AdminViews userId={localUser.id} />;
    } else {
       //return customer views
-      return <PlayerViews />;
+      return <PlayerViews userId={localUser.id} />;
    }
 };
