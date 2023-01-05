@@ -1,7 +1,7 @@
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { editUser, editUserFetch, UserAvatar } from '../managers/UserManager';
+import { editUserFetch, UserAvatar } from '../managers/UserManager';
 import { PlayerActivationModal } from '../modals/PlayerActivationModal';
 import { PlayerDeactivationModal } from '../modals/PlayerDeactivationModal';
 

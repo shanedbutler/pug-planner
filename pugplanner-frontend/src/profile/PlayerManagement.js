@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { fetchUsers } from '../managers/UserManager';
-import { PlayerActivationModal } from '../modals/PlayerActivationModal';
-import { PlayerDeactivationModal } from '../modals/PlayerDeactivationModal';
 import { PlayerListItem } from './PlayerListItem';
 
 export const PlayerManagement = () => {
