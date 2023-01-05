@@ -1,7 +1,7 @@
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserAvatar } from '../managers/UserManager';
+import { editUser, editUserFetch, UserAvatar } from '../managers/UserManager';
 import { PlayerActivationModal } from '../modals/PlayerActivationModal';
 import { PlayerDeactivationModal } from '../modals/PlayerDeactivationModal';
 
@@ -25,13 +25,45 @@ export const PlayerListItem = ({ player, i }) => {
    };
 
    const handleDeactivate = () => {
-      //Fetch PUT request
+      const deactivatedPlayer = {
+         id: player.id,
+         firstName: player.firstName,
+         lastName: player.lastName,
+         email: player.email,
+         phone: player.phone,
+         club: player.club,
+         createDateTime: player.createDateTime,
+         primaryPositionId: player.primaryPositionId,
+         secondaryPositionId: player.secondaryPositionId,
+         admin: player.admin,
+         pronounId: player.pronounId,
+         emergencyName: player.emergencyName,
+         emergencyPhone: player.emergencyPhone,
+         active: false
+      };
+      editUserFetch(deactivatedPlayer);
       setIsActive(false);
       setDeactivateModalOpen(false);
    };
 
    const handleActivate = () => {
-      //Fetch PUT request
+      const activatedPlayer = {
+         id: player.id,
+         firstName: player.firstName,
+         lastName: player.lastName,
+         email: player.email,
+         phone: player.phone,
+         club: player.club,
+         createDateTime: player.createDateTime,
+         primaryPositionId: player.primaryPositionId,
+         secondaryPositionId: player.secondaryPositionId,
+         admin: player.admin,
+         pronounId: player.pronounId,
+         emergencyName: player.emergencyName,
+         emergencyPhone: player.emergencyPhone,
+         active: true
+      };
+      editUserFetch(activatedPlayer);
       setIsActive(true);
       setActivateModalOpen(false);
    };
