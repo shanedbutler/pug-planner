@@ -3,12 +3,11 @@ import { Dashboard } from '../dashboard/Dashboard';
 import { GameDetails } from '../game/GameDetails';
 import { GameEdit } from '../game/GameEdit';
 import { GameForm } from '../game/GameForm';
+import { PlayerEdit } from '../profile/PlayerEdit';
 import { PlayerManagement } from '../profile/PlayerManagement';
 import { PlayerProfile } from '../profile/PlayerProfile';
 
-export const AdminViews = () => {
-   // <Route path="/signup/:id" element={<SignUp />} />
-   // <Route path="/player-management" element={<UserAdmin />} />
+export const AdminViews = ({ userId }) => {
 
    const isAdmin = true;
 
@@ -22,6 +21,7 @@ export const AdminViews = () => {
             path="/profile/:id"
             element={<PlayerProfile isAdmin={isAdmin} />}
          />
+         <Route path="/profile/edit" element={<PlayerEdit userId={userId} />} />
          <Route path="/players" element={<PlayerManagement />} />
       </Routes>
    );
