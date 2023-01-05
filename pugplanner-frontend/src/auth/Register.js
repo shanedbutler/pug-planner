@@ -60,6 +60,7 @@ export const Register = () => {
             club: clubRef.current.value,
             emergencyName: emergencyNameRef.current.value,
             emergencyPhone: emergencyPhoneRef.current.value.replace(/\D/g, ''),
+            active: true
          };
          registerUser(newUser)
             .then((user) => login(user.email))
