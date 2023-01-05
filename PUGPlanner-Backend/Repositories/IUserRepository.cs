@@ -9,5 +9,6 @@ namespace PUGPlanner_Backend.Repositories
         User GetByEmail(string email);
         List<User> GetByRosterGameId(int gameId);
         void Add(User user);
+        void Update(User user);
     }
 }

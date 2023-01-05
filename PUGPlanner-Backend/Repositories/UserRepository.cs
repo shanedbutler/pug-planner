@@ -250,5 +250,48 @@ namespace PUGPlanner_Backend.Repositories
             }
         }
 
+        public void Update(User user)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE UserProfile
+                            SET
+                                FirstName = @FirstName,
+                                LastName = @LastName,
+                                Email = @Email,
+                                Phone = @Phone,
+                                Club = @Club,
+                                PrimaryPositionId = @PrimaryPositionId,
+                                SecondaryPositionId = @SecondaryPositionId,
+                                Admin = @Admin,
+                                PronounId = @PronounId,
+                                EmergencyName = @EmergencyName,
+                                EmergencyPhone = @EmergencyPhone,
+                                Active = @Active
+                            WHERE Id = @Id";
+
+                    DbUtils.AddParameter(cmd, "@Id", user.Id);
+                    DbUtils.AddParameter(cmd, "@FirstName", user.FirstName);
+                    DbUtils.AddParameter(cmd, "@LastName", user.LastName);
+                    DbUtils.AddParameter(cmd, "@Email", user.Email);
+                    DbUtils.AddParameter(cmd, "@Phone", user.Phone);
+                    DbUtils.AddParameter(cmd, "@Club", user.Club);
+                    DbUtils.AddParameter(cmd, "@PrimaryPositionId", user.PrimaryPositionId);
+                    DbUtils.AddParameter(cmd, "@SecondaryPositionId", user.SecondaryPositionId);
+                    DbUtils.AddParameter(cmd, "@Admin", user.Admin);
+                    DbUtils.AddParameter(cmd, "@PronounId", user.PronounId);
+                    DbUtils.AddParameter(cmd, "@EmergencyName", user.EmergencyName);
+                    DbUtils.AddParameter(cmd, "@EmergencyPhone", user.EmergencyPhone);
+                    DbUtils.AddParameter(cmd, "@Active", user.Active);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
     }
 }

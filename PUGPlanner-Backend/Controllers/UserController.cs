@@ -72,5 +72,13 @@ namespace PUGPlanner_Backend.Controllers
             return CreatedAtAction("GetByEmail", new {email = user.Email}, user);
         }
 
+        [HttpPut]
+        public IActionResult Update(User user)
+        {
+            _userRepository.Update(user);
+
+            return AcceptedAtAction("Get", new { id = user.Id }, user);
+        }
+
     }
 }
