@@ -14,6 +14,7 @@ export const GameEdit = () => {
    // React-select state variables for secondary host selection from users array
    const [userOptions, setUserOptions] = useState([]);
    const [secondaryHostSelection, setSecondaryHostSelection] = useState();
+   const [secondaryHostDefault, setSecondaryHostDefault] = useState();
    
    // UseRef hooks for all non-select inputs
    const titleRef = useRef();
@@ -47,9 +48,21 @@ export const GameEdit = () => {
       setUserOptions(userOptionsArr);
    };
 
-   const handleUserSelect = (e) => {
-      setSecondaryHostSelection(e.value);
-   };
+   const handleUserSelect = (e) => setSecondaryHostSelection(e.value);
+
+   /**
+    * Find the game's currently chosen co-host and set to state in a react-select format object
+    */
+      const handleSetDefaults = (game, users) => {
+         const gameSecondaryHost = users.find((user) => user.id === game.secondaryHostId);
+         
+         const gameSecondaryHostOption = {
+            value: gameSecondaryHost.id,
+            label: gameSecondaryHost.fullName,
+         };
+
+         setSecondaryHostDefault(gameSecondaryHostOption);
+      };
 
    const handleSubmit = (e) => {
       e.preventDefault();
@@ -67,8 +80,7 @@ export const GameEdit = () => {
          secondaryHostId: parseInt(secondaryHostSelection),
       };
 
-      fetchPutGame(editedGame);
-      navigate(`/game/${id}`);
+      fetchPutGame(editedGame).then(navigate(`/game/${id}`));
    };
 
    const handleCancel = (e) => {
@@ -77,8 +89,18 @@ export const GameEdit = () => {
    };
 
    useEffect(() => {
-      fetchGame(id).then((game) => setGame(game));
-      fetchUsers().then((usersArr) => handleSetUsers(usersArr));
+
+      // Get data responses from api and set to variables
+      const gameRes = fetchGame(id);
+      const usersRes = fetchUsers();
+
+      // Group values into promise all, and when their values are returned set state with setter functions
+      Promise.all([gameRes, usersRes]).then((values) => {
+         setGame(values[0]);
+         handleSetUsers(values[1]);
+         handleSetDefaults(values[0], values[1]);
+      });
+
    }, []);
 
    return (
@@ -201,8 +223,8 @@ export const GameEdit = () => {
                                     <Select
                                        id="secondary-host"
                                        name="secondary-host"
-                                       defaultValue={userOptions[1]}
                                        options={userOptions}
+                                       value={secondaryHostDefault}
                                        onChange={handleUserSelect}
                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                     />

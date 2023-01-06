@@ -22,6 +22,7 @@ export const PlayerEdit = ({ userId }) => {
    const [isPhoneValid, setIsPhoneValid] = useState(true);
    const [isEmgPhoneValid, setIsEmgPhoneValid] = useState(true);
 
+   // UseRef hooks for all non-select inputs
    const firstNameRef = useRef();
    const lastNameRef = useRef();
    const emailRef = useRef();
@@ -81,9 +82,18 @@ export const PlayerEdit = ({ userId }) => {
       const userSecondary = (positions.find((pos) =>  pos.id === player.secondaryPositionId));
       const userPronoun = (pronouns.find((pro) => pro.id === player.pronounId));
 
-      const userPrimaryOption = {value: userSecondary.id, label: userSecondary.fullName};
-      const userSecondaryOption = {value: userPrimary.id, label: userPrimary.fullName};
-      const userPronounOption = {value: userPronoun.id, label: userPronoun.name};
+      const userPrimaryOption = {
+         value: userSecondary.id,
+         label: userSecondary.fullName,
+      };
+      const userSecondaryOption = {
+         value: userPrimary.id,
+         label: userPrimary.fullName,
+      };
+      const userPronounOption = {
+         value: userPronoun.id,
+         label: userPronoun.name,
+      };
 
       //console.log(userPrimaryOption, userSecondaryOption, userPronounOption);
       setPrimaryDefault(userPrimaryOption);
@@ -274,7 +284,7 @@ export const PlayerEdit = ({ userId }) => {
                                           name="position"
                                           className="mt-1 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                           options={positionOptions}
-                                          //defaultValue={primaryDefault}
+                                          value={primaryDefault}
                                           onChange={handlePositionSelect}
                                        />
                                     </div>
@@ -291,7 +301,7 @@ export const PlayerEdit = ({ userId }) => {
                                           name="secondary-position"
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                           options={positionOptions}
-                                          //defaultValue={secondaryDefault}
+                                          value={secondaryDefault}
                                           onChange={handleSecondaryPositionSelect}
                                        />
                                     </div>
@@ -308,7 +318,7 @@ export const PlayerEdit = ({ userId }) => {
                                           name="pronouns"
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                           options={pronounOptions}
-                                          //defaultValue={pronounDefault}
+                                          value={pronounDefault}
                                           onChange={handlePronounSelect}
                                        />
                                     </div>
