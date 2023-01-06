@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Select from 'react-select';
 import { fetchPositions } from '../managers/PositionManager';
 import { fetchPronouns } from '../managers/PronounManager';
 import { login, registerUser } from '../managers/UserManager';
@@ -7,22 +8,71 @@ import { login, registerUser } from '../managers/UserManager';
 export const Register = () => {
    const navigate = useNavigate();
 
-   const [positions, setPositions] = useState([]);
-   const [pronouns, setPronouns] = useState([]);
+   // React-select state variables for primary position, secondary position, and pronouns
+   const [positionOptions, setPositionOptions] = useState([]);
+   const [positionSelection, setPositionSelection] = useState();
+   const [secondaryPositionSelection, setSecondaryPositionSelection] = useState();
+   const [pronounOptions, setPronounOptions] = useState([]);
+   const [pronounSelection, setPronounSelection] = useState();
 
    const [isPhoneValid, setIsPhoneValid] = useState(true);
    const [isEmgPhoneValid, setIsEmgPhoneValid] = useState(true);
 
+   // UseRef hooks for all non-select inputs
    const firstNameRef = useRef();
    const lastNameRef = useRef();
    const emailRef = useRef();
    const phoneRef = useRef();
-   const primaryRef = useRef();
-   const secondaryRef = useRef();
-   const pronounRef = useRef();
    const clubRef = useRef();
    const emergencyNameRef = useRef();
    const emergencyPhoneRef = useRef();
+
+   /**
+    * Map array values to option array and set to state for use by react-select
+    * @param {*} positionsArr 
+    */
+   const handleSetPositions = (positionsArr) => {
+      const positionOptionsArr = positionsArr.map((position) => {
+         return {
+            value: position.id,
+            label: position.fullName,
+         };
+      });
+      setPositionOptions(positionOptionsArr);
+   };
+
+   const handlePositionSelect = (e) => {
+      setPositionSelection(e.value);
+   };
+
+   const handleSecondaryPositionSelect = (e) => {
+      setSecondaryPositionSelection(e.value);
+   };
+
+   /**
+    * Push array values to option array and set to state for use by react-select
+    * Push opt out object to end of array as last option
+    * @param {*} positionsArr 
+    */
+   const handleSetPronouns = (pronounsArr) => {
+      let pronounOptionsArr = [];
+
+      pronounsArr.forEach((pronoun) => {
+         const pronounOptionObj = {
+            value: pronoun.id,
+            label: pronoun.name,
+         };
+         pronounOptionsArr.push(pronounOptionObj);
+      });
+      const optOutOption = { value: '', label: 'Prefer not to say' };
+      pronounOptionsArr.push(optOutOption);
+
+      setPronounOptions(pronounOptionsArr);
+   };
+
+   const handlePronounSelect = (e) => {
+      setPronounSelection(e.value);
+   };
 
    const validatePhone = (phoneNum, field) => {
       const regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
@@ -44,9 +94,9 @@ export const Register = () => {
       e.preventDefault();
       let newUser = {};
 
-      if (primaryRef.current.value === 'none') {
+      if (positionSelection === '') {
          //handlePrimaryRequired();
-      } else if (secondaryRef.current.value === 'none') {
+      } else if (secondaryPositionSelection === '') {
          //handleSecondaryRequired();
       } else {
          newUser = {
@@ -54,13 +104,13 @@ export const Register = () => {
             lastName: lastNameRef.current.value,
             email: emailRef.current.value,
             phone: phoneRef.current.value.replace(/\D/g, ''),
-            primaryPositionId: parseInt(primaryRef.current.value),
-            secondaryPositionId: parseInt(secondaryRef.current.value),
-            pronounId: parseInt(pronounRef.current.value),
+            primaryPositionId: parseInt(positionSelection),
+            secondaryPositionId: parseInt(secondaryPositionSelection),
+            pronounId: parseInt(pronounSelection),
             club: clubRef.current.value,
             emergencyName: emergencyNameRef.current.value,
             emergencyPhone: emergencyPhoneRef.current.value.replace(/\D/g, ''),
-            active: true
+            active: true,
          };
          registerUser(newUser)
             .then((user) => login(user.email))
@@ -74,8 +124,8 @@ export const Register = () => {
    };
 
    useEffect(() => {
-      fetchPositions().then((pos) => setPositions(pos));
-      fetchPronouns().then((pro) => setPronouns(pro));
+      fetchPositions().then((pos) => handleSetPositions(pos));
+      fetchPronouns().then((pro) => handleSetPronouns(pro));
    }, []);
 
    return (
@@ -89,16 +139,17 @@ export const Register = () => {
                            Register
                         </h3>
                         <p className="mt-3 text-sm text-gray-600">
-                           All information is required
+                           Please fill out the form to use the app
                         </p>
                      </div>
                   </div>
                   <div className="md:grid md:grid-cols-2 md:gap-6 mt-5">
                      <div className="mt-5 md:col-span-2 md:mt-0">
                         <form onSubmit={handleSubmit}>
-                           <div className="overflow-hidden shadow rounded-md">
+                           <div className="shadow rounded-md">
                               <div className="bg-white px-4 py-5 sm:p-6">
                                  <div className="grid grid-cols-6 gap-6">
+
                                     <div className="col-span-6 sm:col-span-3">
                                        <label
                                           htmlFor="first-name"
@@ -113,7 +164,7 @@ export const Register = () => {
                                           autoComplete="given-name"
                                           required
                                           ref={firstNameRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                        />
                                     </div>
 
@@ -175,7 +226,7 @@ export const Register = () => {
                                           }
                                        />
                                        {!isPhoneValid && (
-                                          <div className="text-sm text-red-600">
+                                          <div className="text-sm mt-1 text-red-600">
                                              Invalid format
                                           </div>
                                        )}
@@ -204,24 +255,13 @@ export const Register = () => {
                                        >
                                           Primary Position
                                        </label>
-                                       <select
+                                       <Select
                                           id="position"
                                           name="position"
-                                          ref={primaryRef}
-                                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                       >
-                                          <option value="none" hidden>
-                                             Select...
-                                          </option>
-                                          {positions.map((position) => (
-                                             <option
-                                                key={position.id}
-                                                value={position.id}
-                                             >
-                                                {position.fullName}
-                                             </option>
-                                          ))}
-                                       </select>
+                                          className="mt-1 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          options={positionOptions}
+                                          onChange={handlePositionSelect}
+                                       />
                                     </div>
 
                                     <div className="col-span-6 sm:col-span-3">
@@ -231,24 +271,15 @@ export const Register = () => {
                                        >
                                           Secondary Position
                                        </label>
-                                       <select
+                                       <Select
                                           id="secondary-position"
                                           name="secondary-position"
-                                          ref={secondaryRef}
-                                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                       >
-                                          <option value="none" hidden>
-                                             Select...
-                                          </option>
-                                          {positions.map((position) => (
-                                             <option
-                                                key={position.id}
-                                                value={position.id}
-                                             >
-                                                {position.fullName}
-                                             </option>
-                                          ))}
-                                       </select>
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          options={positionOptions}
+                                          onChange={
+                                             handleSecondaryPositionSelect
+                                          }
+                                       />
                                     </div>
 
                                     <div className="col-span-6 sm:col-span-3">
@@ -258,27 +289,13 @@ export const Register = () => {
                                        >
                                           Pronouns
                                        </label>
-                                       <select
+                                       <Select
                                           id="pronouns"
                                           name="pronouns"
-                                          ref={pronounRef}
-                                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                       >
-                                          <option value="" hidden>
-                                             Select...
-                                          </option>
-                                          <option value="">
-                                             Prefer not to say
-                                          </option>
-                                          {pronouns.map((pronoun) => (
-                                             <option
-                                                key={pronoun.id}
-                                                value={pronoun.id}
-                                             >
-                                                {pronoun.name}
-                                             </option>
-                                          ))}
-                                       </select>
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          options={pronounOptions}
+                                          onChange={handlePronounSelect}
+                                       />
                                     </div>
 
                                     <div className="col-span-6 sm:col-span-3">
@@ -337,7 +354,7 @@ export const Register = () => {
                                           }
                                        />
                                        {!isEmgPhoneValid && (
-                                          <div className="text-sm text-red-600">
+                                          <div className="text-sm mt-1 text-red-600">
                                              Invalid format
                                           </div>
                                        )}

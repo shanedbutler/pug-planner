@@ -1,30 +1,105 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Select from 'react-select';
 import { fetchPositions } from '../managers/PositionManager';
 import { fetchPronouns } from '../managers/PronounManager';
 import { editUserFetch, fetchUser } from '../managers/UserManager';
 
 export const PlayerEdit = ({ userId }) => {
-
    const navigate = useNavigate();
-
    const [player, setPlayer] = useState({});
-   const [positions, setPositions] = useState([]);
-   const [pronouns, setPronouns] = useState([]);
+
+   // React-select state variables for primary position, secondary position, and pronouns
+   const [positionOptions, setPositionOptions] = useState([]);
+   const [primaryDefault, setPrimaryDefault] = useState({});
+   const [secondaryDefault, setSecondaryDefault] = useState({});
+   const [positionSelection, setPositionSelection] = useState();
+   const [secondaryPositionSelection, setSecondaryPositionSelection] = useState();
+   const [pronounOptions, setPronounOptions] = useState([]);
+   const [pronounDefault, setPronounDefault] = useState({});
+   const [pronounSelection, setPronounSelection] = useState();
 
    const [isPhoneValid, setIsPhoneValid] = useState(true);
    const [isEmgPhoneValid, setIsEmgPhoneValid] = useState(true);
 
+   // UseRef hooks for all non-select inputs
    const firstNameRef = useRef();
    const lastNameRef = useRef();
    const emailRef = useRef();
    const phoneRef = useRef();
-   const primaryRef = useRef();
-   const secondaryRef = useRef();
-   const pronounRef = useRef();
    const clubRef = useRef();
    const emergencyNameRef = useRef();
    const emergencyPhoneRef = useRef();
+
+   /**
+    * Map array values to option array and set to state for use by react-select
+    * @param {*} positionsArr
+    */
+   const handleSetPositions = async (positionsArr) => {
+
+      const positionOptionsArr = positionsArr.map((position) => {
+         return {
+            value: position.id,
+            label: position.fullName,
+         };
+      });
+      setPositionOptions(positionOptionsArr);
+   };
+
+   const handlePositionSelect = (e) => setPositionSelection(e.value);
+
+   const handleSecondaryPositionSelect = (e) => setSecondaryPositionSelection(e.value);
+
+   /**
+    * Push array values to option array and set to state for use by react-select
+    * Push opt out object to end of array as last option
+    * @param {*} positionsArr
+    */
+   const handleSetPronouns = (pronounsArr) => {
+      let pronounOptionsArr = [];
+
+      pronounsArr.forEach((pronoun) => {
+         const pronounOptionObj = {
+            value: pronoun.id,
+            label: pronoun.name,
+         };
+         pronounOptionsArr.push(pronounOptionObj);
+      });
+
+      const optOutOption = { value: '', label: 'Prefer not to say' };
+      pronounOptionsArr.push(optOutOption);
+      setPronounOptions(pronounOptionsArr);
+   };
+
+   const handlePronounSelect = (e) => setPronounSelection(e.value);
+
+   /**
+    * Find player's currently chosen options and set them to state in the react-select format
+    */
+   const handleSetDefaults = (player, positions, pronouns) => {
+
+      const userPrimary = (positions.find((pos) => pos.id === player.primaryPositionId));
+      const userSecondary = (positions.find((pos) =>  pos.id === player.secondaryPositionId));
+      const userPronoun = (pronouns.find((pro) => pro.id === player.pronounId));
+
+      const userPrimaryOption = {
+         value: userSecondary.id,
+         label: userSecondary.fullName,
+      };
+      const userSecondaryOption = {
+         value: userPrimary.id,
+         label: userPrimary.fullName,
+      };
+      const userPronounOption = {
+         value: userPronoun.id,
+         label: userPronoun.name,
+      };
+
+      //console.log(userPrimaryOption, userSecondaryOption, userPronounOption);
+      setPrimaryDefault(userPrimaryOption);
+      setSecondaryDefault(userSecondaryOption);
+      setPronounDefault(userPronounOption);
+   };
 
    const validatePhone = (phoneNum, field) => {
       const regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
@@ -46,9 +121,9 @@ export const PlayerEdit = ({ userId }) => {
       e.preventDefault();
       let editedUser = {};
 
-      if (primaryRef.current.value === 'none') {
+      if (positionSelection === '') {
          //handlePrimaryRequired();
-      } else if (secondaryRef.current.value === 'none') {
+      } else if (secondaryPositionSelection === '') {
          //handleSecondaryRequired();
       } else {
          editedUser = {
@@ -57,16 +132,15 @@ export const PlayerEdit = ({ userId }) => {
             lastName: lastNameRef.current.value,
             email: emailRef.current.value,
             phone: phoneRef.current.value.replace(/\D/g, ''),
-            primaryPositionId: parseInt(primaryRef.current.value),
-            secondaryPositionId: parseInt(secondaryRef.current.value),
-            pronounId: parseInt(pronounRef.current.value),
+            primaryPositionId: parseInt(positionSelection),
+            secondaryPositionId: parseInt(secondaryPositionSelection),
+            pronounId: parseInt(pronounSelection),
             club: clubRef.current.value,
             emergencyName: emergencyNameRef.current.value,
             emergencyPhone: emergencyPhoneRef.current.value.replace(/\D/g, ''),
-            active: player.active
+            active: player.active,
          };
-         editUserFetch(editedUser)
-            .then(() => navigate(`/profile/${userId}`));
+         editUserFetch(editedUser).then(() => navigate(`/profile/${userId}`));
       }
    };
 
@@ -76,9 +150,19 @@ export const PlayerEdit = ({ userId }) => {
    };
 
    useEffect(() => {
-      fetchUser(userId).then((user) => setPlayer(user));
-      fetchPositions().then((pos) => setPositions(pos));
-      fetchPronouns().then((pro) => setPronouns(pro));
+
+      // Get data responses from api and set to variables
+      const userRes = fetchUser(userId);
+      const positionsRes = fetchPositions();
+      const pronounsRes = fetchPronouns();
+
+      // Group values into promise all, and when their values are returned set state with setter functions
+      Promise.all([userRes, positionsRes, pronounsRes]).then((values) => {
+         setPlayer(values[0]);
+         handleSetPositions(values[1]);
+         handleSetPronouns(values[2]);
+         handleSetDefaults(values[0], values[1], values[2]);
+      });
    }, []);
 
    return (
@@ -99,7 +183,7 @@ export const PlayerEdit = ({ userId }) => {
                   <div className="md:grid md:grid-cols-2 md:gap-6 mt-5">
                      <div className="mt-5 md:col-span-2 md:mt-0">
                         <form onSubmit={handleSubmit}>
-                           <div className="overflow-hidden shadow rounded-md">
+                           <div className="shadow rounded-md">
                               <div className="bg-white px-4 py-5 sm:p-6">
                                  <div className="grid grid-cols-6 gap-6">
                                     <div className="col-span-6 sm:col-span-3">
@@ -117,7 +201,7 @@ export const PlayerEdit = ({ userId }) => {
                                           required
                                           defaultValue={player.firstName}
                                           ref={firstNameRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                        />
                                     </div>
 
@@ -182,27 +266,11 @@ export const PlayerEdit = ({ userId }) => {
                                           }
                                        />
                                        {!isPhoneValid && (
-                                          <div className="text-sm text-red-600">
+                                          <div className="text-sm mt-1 text-red-600">
                                              Invalid format
                                           </div>
                                        )}
                                     </div>
-
-                                    {/* <div className="col-span-6 sm:col-span-6">
-                                       <label
-                                          htmlFor="password"
-                                          className="block text-sm font-medium text-gray-700"
-                                       >
-                                          Password
-                                       </label>
-                                       <input
-                                          type="password"
-                                          name="password"
-                                          id="password"
-                                          autoComplete="email"
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                       />
-                                    </div> */}
 
                                     <div className="col-span-6 sm:col-span-3">
                                        <label
@@ -211,27 +279,14 @@ export const PlayerEdit = ({ userId }) => {
                                        >
                                           Primary Position
                                        </label>
-                                       {console.log(player.primaryPositionId)}
-                                       <select
+                                       <Select
                                           id="position"
                                           name="position"
-                                          value={player.primaryPositionId}
-                                          ref={primaryRef}
-                                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                       >
-                                          <option value="none" hidden>
-                                             Select...
-                                          </option>
-                                          {positions.map((position) => (
-                                             <option
-                                                key={position.id}
-                                                value={position.id}
-                                             >
-                                                {console.log(position.id, position.fullName)}
-                                                {position.fullName}
-                                             </option>
-                                          ))}
-                                       </select>
+                                          className="mt-1 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          options={positionOptions}
+                                          value={primaryDefault}
+                                          onChange={handlePositionSelect}
+                                       />
                                     </div>
 
                                     <div className="col-span-6 sm:col-span-3">
@@ -241,25 +296,14 @@ export const PlayerEdit = ({ userId }) => {
                                        >
                                           Secondary Position
                                        </label>
-                                       <select
+                                       <Select
                                           id="secondary-position"
                                           name="secondary-position"
-                                          defaultValue={player.secondaryPositionId}
-                                          ref={secondaryRef}
-                                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                       >
-                                          <option value="none" hidden>
-                                             Select...
-                                          </option>
-                                          {positions.map((position) => (
-                                             <option
-                                                key={position.id}
-                                                value={position.id}
-                                             >
-                                                {position.fullName}
-                                             </option>
-                                          ))}
-                                       </select>
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          options={positionOptions}
+                                          value={secondaryDefault}
+                                          onChange={handleSecondaryPositionSelect}
+                                       />
                                     </div>
 
                                     <div className="col-span-6 sm:col-span-3">
@@ -269,28 +313,14 @@ export const PlayerEdit = ({ userId }) => {
                                        >
                                           Pronouns
                                        </label>
-                                       <select
+                                       <Select
                                           id="pronouns"
                                           name="pronouns"
-                                          defaultValue={player.pronounId}
-                                          ref={pronounRef}
-                                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                       >
-                                          <option value="" hidden>
-                                             Select...
-                                          </option>
-                                          <option value="">
-                                             Prefer not to say
-                                          </option>
-                                          {pronouns.map((pronoun) => (
-                                             <option
-                                                key={pronoun.id}
-                                                value={pronoun.id}
-                                             >
-                                                {pronoun.name}
-                                             </option>
-                                          ))}
-                                       </select>
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          options={pronounOptions}
+                                          value={pronounDefault}
+                                          onChange={handlePronounSelect}
+                                       />
                                     </div>
 
                                     <div className="col-span-6 sm:col-span-3">
@@ -352,7 +382,7 @@ export const PlayerEdit = ({ userId }) => {
                                           }
                                        />
                                        {!isEmgPhoneValid && (
-                                          <div className="text-sm text-red-600">
+                                          <div className="text-sm mt-1 text-red-600">
                                              Invalid format
                                           </div>
                                        )}
