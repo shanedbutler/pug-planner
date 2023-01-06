@@ -1,13 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Select from 'react-select';
 import { fetchPostGame } from '../managers/GameManager';
 import { fetchUsers, getCurrentUser } from '../managers/UserManager';
 
 export const GameForm = () => {
    const navigate = useNavigate();
 
-   const [users, setUsers] = useState([]);
+   // React-select state variables for secondary host selection from users array
+   const [userOptions, setUserOptions] = useState([]);
+   const [secondaryHostSelection, setSecondaryHostSelection] = useState();
 
+   // UseRef hooks for all non-select inputs
    const titleRef = useRef();
    const locationRef = useRef();
    const addressRef = useRef();
@@ -17,7 +21,32 @@ export const GameForm = () => {
    const signupDateRef = useRef();
    const signupTimeRef = useRef();
    const maxPlayersRef = useRef();
-   const secondaryHostRef = useRef();
+
+   /**
+    * Push array values to option array and set to state for use by react-select
+    * Create null value object at beginning of array as 'none' option
+    * @param {*} usersArr 
+    */
+   const handleSetUsers = (usersArr) => {
+      let userOptionsArr = [
+         {
+            value: '',
+            label: 'None',
+         },
+      ];
+      usersArr.forEach((user) => {
+         const userOptionObj = {
+            value: user.id,
+            label: user.fullName,
+         };
+         userOptionsArr.push(userOptionObj);
+      });
+      setUserOptions(userOptionsArr);
+   };
+
+   const handleUserSelect = (e) => {
+      setSecondaryHostSelection(e.value);
+   };
 
    const handleSubmit = (e) => {
       e.preventDefault();
@@ -31,7 +60,7 @@ export const GameForm = () => {
          signupDate: signupDateRef.current.value + 'T' + signupTimeRef.current.value,
          maxPlayers: parseInt(maxPlayersRef.current.value),
          primaryHostId: getCurrentUser().id,
-         secondaryHostId: parseInt(secondaryHostRef.current.value) 
+         secondaryHostId: parseInt(secondaryHostSelection),
       };
 
       fetchPostGame(newGame).then(() => navigate('/'));
@@ -43,7 +72,7 @@ export const GameForm = () => {
    };
 
    useEffect(() => {
-      fetchUsers().then((users) => setUsers(users));
+      fetchUsers().then((usersArr) => handleSetUsers(usersArr));
    }, []);
 
    return (
@@ -63,7 +92,7 @@ export const GameForm = () => {
                <div className="md:grid md:grid-cols-2 md:gap-6 mt-5">
                   <div className="mt-5 md:col-span-2 md:mt-0">
                      <form onSubmit={handleSubmit}>
-                        <div className="overflow-hidden shadow sm:rounded-md">
+                        <div className="shadow sm:rounded-md">
                            <div className="bg-white px-4 py-5 sm:p-6">
                               <div className="grid grid-cols-6 gap-6">
                                  <div className="col-span-6 sm:col-span-3">
@@ -152,31 +181,21 @@ export const GameForm = () => {
                                  </div>
 
                                  <div className="col-span-6 sm:col-span-3">
-                                       <label
-                                          htmlFor="secondaryHost"
-                                          className="block text-sm font-medium text-gray-700"
-                                       >
-                                          Co-Host
-                                       </label>
-                                       <select
-                                          id="secondaryHost"
-                                          name="secondaryHost"
-                                          ref={secondaryHostRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
-                                          >
-                                          <option value="">
-                                             None
-                                          </option>
-                                          {users.map((user) => (
-                                             <option
-                                                key={user.id}
-                                                value={user.id}
-                                             >
-                                                {user.fullName}
-                                             </option>
-                                          ))}
-                                       </select>
-                                    </div>
+                                    <label
+                                       htmlFor="secondaryHost"
+                                       className="block text-sm font-medium text-gray-700"
+                                    >
+                                       Co-Host
+                                    </label>
+                                    <Select
+                                       id="secondary-host"
+                                       name="secondary-host"
+                                       defaultValue={userOptions[1]}
+                                       options={userOptions}
+                                       onChange={handleUserSelect}
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                    />
+                                 </div>
 
                                  <div className="col-span-6 sm:col-span-3">
                                     <label
@@ -245,7 +264,6 @@ export const GameForm = () => {
                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                                     />
                                  </div>
-                                    
                               </div>
                            </div>
                            <div className="bg-gray-50 text-right py-3 px-3 sm:px-6">
