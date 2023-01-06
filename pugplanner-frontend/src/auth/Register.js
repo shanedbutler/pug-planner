@@ -226,7 +226,7 @@ export const Register = () => {
                                           }
                                        />
                                        {!isPhoneValid && (
-                                          <div className="text-sm text-red-600">
+                                          <div className="text-sm mt-1 text-red-600">
                                              Invalid format
                                           </div>
                                        )}
@@ -354,7 +354,7 @@ export const Register = () => {
                                           }
                                        />
                                        {!isEmgPhoneValid && (
-                                          <div className="text-sm text-red-600">
+                                          <div className="text-sm mt-1 text-red-600">
                                              Invalid format
                                           </div>
                                        )}
