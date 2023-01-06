@@ -7,14 +7,16 @@ import { editUserFetch, fetchUser } from '../managers/UserManager';
 
 export const PlayerEdit = ({ userId }) => {
    const navigate = useNavigate();
-
    const [player, setPlayer] = useState({});
 
    // React-select state variables for primary position, secondary position, and pronouns
    const [positionOptions, setPositionOptions] = useState([]);
+   const [primaryDefault, setPrimaryDefault] = useState({});
+   const [secondaryDefault, setSecondaryDefault] = useState({});
    const [positionSelection, setPositionSelection] = useState();
    const [secondaryPositionSelection, setSecondaryPositionSelection] = useState();
    const [pronounOptions, setPronounOptions] = useState([]);
+   const [pronounDefault, setPronounDefault] = useState({});
    const [pronounSelection, setPronounSelection] = useState();
 
    const [isPhoneValid, setIsPhoneValid] = useState(true);
@@ -32,7 +34,8 @@ export const PlayerEdit = ({ userId }) => {
     * Map array values to option array and set to state for use by react-select
     * @param {*} positionsArr
     */
-   const handleSetPositions = (positionsArr) => {
+   const handleSetPositions = async (positionsArr) => {
+
       const positionOptionsArr = positionsArr.map((position) => {
          return {
             value: position.id,
@@ -42,13 +45,9 @@ export const PlayerEdit = ({ userId }) => {
       setPositionOptions(positionOptionsArr);
    };
 
-   const handlePositionSelect = (e) => {
-      setPositionSelection(e.value);
-   };
+   const handlePositionSelect = (e) => setPositionSelection(e.value);
 
-   const handleSecondaryPositionSelect = (e) => {
-      setSecondaryPositionSelection(e.value);
-   };
+   const handleSecondaryPositionSelect = (e) => setSecondaryPositionSelection(e.value);
 
    /**
     * Push array values to option array and set to state for use by react-select
@@ -65,14 +64,31 @@ export const PlayerEdit = ({ userId }) => {
          };
          pronounOptionsArr.push(pronounOptionObj);
       });
+
       const optOutOption = { value: '', label: 'Prefer not to say' };
       pronounOptionsArr.push(optOutOption);
-
       setPronounOptions(pronounOptionsArr);
    };
 
-   const handlePronounSelect = (e) => {
-      setPronounSelection(e.value);
+   const handlePronounSelect = (e) => setPronounSelection(e.value);
+
+   /**
+    * Find player's currently chosen options and set them to state in the react-select format
+    */
+   const handleSetDefaults = (player, positions, pronouns) => {
+
+      const userPrimary = (positions.find((pos) => pos.id === player.primaryPositionId));
+      const userSecondary = (positions.find((pos) =>  pos.id === player.secondaryPositionId));
+      const userPronoun = (pronouns.find((pro) => pro.id === player.pronounId));
+
+      const userPrimaryOption = {value: userSecondary.id, label: userSecondary.fullName};
+      const userSecondaryOption = {value: userPrimary.id, label: userPrimary.fullName};
+      const userPronounOption = {value: userPronoun.id, label: userPronoun.name};
+
+      //console.log(userPrimaryOption, userSecondaryOption, userPronounOption);
+      setPrimaryDefault(userPrimaryOption);
+      setSecondaryDefault(userSecondaryOption);
+      setPronounDefault(userPronounOption);
    };
 
    const validatePhone = (phoneNum, field) => {
@@ -124,9 +140,19 @@ export const PlayerEdit = ({ userId }) => {
    };
 
    useEffect(() => {
-      fetchUser(userId).then((user) => setPlayer(user));
-      fetchPositions().then((pos) => handleSetPositions(pos));
-      fetchPronouns().then((pro) => handleSetPronouns(pro));
+
+      // Get data responses from api and set to variables
+      const userRes = fetchUser(userId);
+      const positionsRes = fetchPositions();
+      const pronounsRes = fetchPronouns();
+
+      // Group values into promise all, and when their values are returned set state with setter functions
+      Promise.all([userRes, positionsRes, pronounsRes]).then((values) => {
+         setPlayer(values[0]);
+         handleSetPositions(values[1]);
+         handleSetPronouns(values[2]);
+         handleSetDefaults(values[0], values[1], values[2]);
+      });
    }, []);
 
    return (
@@ -230,27 +256,11 @@ export const PlayerEdit = ({ userId }) => {
                                           }
                                        />
                                        {!isPhoneValid && (
-                                          <div className="text-sm text-red-600">
+                                          <div className="text-sm mt-1 text-red-600">
                                              Invalid format
                                           </div>
                                        )}
                                     </div>
-
-                                    {/* <div className="col-span-6 sm:col-span-6">
-                                       <label
-                                          htmlFor="password"
-                                          className="block text-sm font-medium text-gray-700"
-                                       >
-                                          Password
-                                       </label>
-                                       <input
-                                          type="password"
-                                          name="password"
-                                          id="password"
-                                          autoComplete="email"
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                       />
-                                    </div> */}
 
                                     <div className="col-span-6 sm:col-span-3">
                                        <label
@@ -264,7 +274,7 @@ export const PlayerEdit = ({ userId }) => {
                                           name="position"
                                           className="mt-1 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                           options={positionOptions}
-                                          defaultValue={player.secondaryPositionId}
+                                          //defaultValue={primaryDefault}
                                           onChange={handlePositionSelect}
                                        />
                                     </div>
@@ -281,7 +291,7 @@ export const PlayerEdit = ({ userId }) => {
                                           name="secondary-position"
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                           options={positionOptions}
-                                          defaultValue={player.secondaryPositionId}
+                                          //defaultValue={secondaryDefault}
                                           onChange={handleSecondaryPositionSelect}
                                        />
                                     </div>
@@ -298,7 +308,7 @@ export const PlayerEdit = ({ userId }) => {
                                           name="pronouns"
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                           options={pronounOptions}
-                                          defaultValue={player.secondaryPositionId}
+                                          //defaultValue={pronounDefault}
                                           onChange={handlePronounSelect}
                                        />
                                     </div>
@@ -362,7 +372,7 @@ export const PlayerEdit = ({ userId }) => {
                                           }
                                        />
                                        {!isEmgPhoneValid && (
-                                          <div className="text-sm text-red-600">
+                                          <div className="text-sm mt-1 text-red-600">
                                              Invalid format
                                           </div>
                                        )}
