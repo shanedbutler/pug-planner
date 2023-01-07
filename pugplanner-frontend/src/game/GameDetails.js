@@ -155,7 +155,7 @@ export const GameDetails = ({ isAdmin }) => {
    return (
       <>
          <div className="px-5 pt-6 last:pb-6">
-            <div className="mx-auto max-w-4xl sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-3xl sm:px-6 lg:px-8">
                <div className="overflow-hidden bg-white shadow rounded-md">
                   <div className="flex justify-between px-4 py-5 sm:px-6">
                      <div>
@@ -247,7 +247,7 @@ export const GameDetails = ({ isAdmin }) => {
                         </div>
                         {!isRosterEmpty && (
                            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                              <dt className="text-sm font-medium text-gray-500">Detailed roster</dt>
+                              <dt className="text-sm font-medium text-gray-500">Roster</dt>
                               <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                  <ul className="divide-y divide-gray-200 rounded-md border border-gray-200">
                                     {isWaitList
