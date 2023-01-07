@@ -51,6 +51,8 @@ export const GameCard = ({ game }) => {
                </h3>
                <p className="mt-1 max-w-lg text-sm text-gray-500">
                   {game.gameDateString}
+                  <br />
+                  {game.gameTimeString}
                </p>
             </div>
             <div className="border-t border-gray-200">

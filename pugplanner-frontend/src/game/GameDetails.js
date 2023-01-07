@@ -156,13 +156,15 @@ export const GameDetails = ({ isAdmin }) => {
                         </h3>
                         <p className="mt-1 max-w-2xl text-sm text-gray-500">
                            {game.gameDateString}
+                           <br />
+                           {game.gameTimeString}
                         </p>
                      </div>
                      <div className='flex justify-end'>
                         {isAdmin && (
                            <button
                               title="Edit Game"
-                              className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-2 pl-3 mb-2 mr-2 text-sm font-medium text-black shadow-sm hover:bg-lime-300 focus:bg-lime-300"
+                              className="flex h-10 rounded-md border border-transparent bg-lime-200 py-2 pr-2 pl-3 mb-2 mr-2 text-sm font-medium text-black shadow-sm hover:bg-lime-300 focus:bg-lime-300"
                               onClick={navToGameEdit}
                            >
                               <PencilSquareIcon
@@ -174,7 +176,7 @@ export const GameDetails = ({ isAdmin }) => {
                         {canDelete && (
                            <button
                               title="Delete Game"
-                              className="flex rounded-md border border-transparent bg-red-200 py-2 pr-2 pl-3 mb-2 text-sm font-medium text-black shadow-sm hover:bg-red-300 focus:bg-red-300"
+                              className="flex h-10 rounded-md border border-transparent bg-red-200 py-2 pr-2 pl-3 mb-2 text-sm font-medium text-black shadow-sm hover:bg-red-300 focus:bg-red-300"
                               onClick={handleDelete}
                            >
                               <TrashIcon
