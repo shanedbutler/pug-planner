@@ -19,7 +19,7 @@ export const fetchGameRosterCount = async (gameId) => {
 /**
  * Gets count of user's appearances in the game roster table
  * @param {int} userId
- * @returns rosterUserCount object 
+ * @returns rosterUserCount object
  */
 export const fetchUserRosterCount = async (userId) => {
    const response = await fetch(
@@ -27,7 +27,7 @@ export const fetchUserRosterCount = async (userId) => {
    );
    const rosterUserCount = await response.json();
    return rosterUserCount;
-}
+};
 
 /**
  * POSTs new roster entry to database
@@ -58,8 +58,9 @@ export const postUserToRoster = async (gameId) => {
 export const deleteUserFromRoster = async (gameId) => {
    const userId = getCurrentUser().id;
 
-   await fetch(
+   const response = await fetch(
       `${apiUrl}/api/roster/delete?userId=${userId}&gameId=${gameId}`,
       { method: 'DELETE' }
    );
+   return response;
 };
