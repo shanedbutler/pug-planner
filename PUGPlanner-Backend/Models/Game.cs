@@ -40,8 +40,10 @@ namespace PUGPlanner_Backend.Models
 
         public int? SecondaryHostId { get; set; }
 
-        public string GameDateString => GameDate.ToString("dddd, dd MMMM yyyy @ hh:mm tt");
-        public string SignupDateString => SignupDate.ToString("dddd, dd MMMM yyyy @ hh:mm tt");
+        public string GameDateString => GameDate.ToString("dddd, dd MMMM yyyy");
+        public string SignupDateString => SignupDate.ToString("dddd, dd MMMM yyyy");
+        public string GameTimeString => GameDate.ToString("hh:mm tt");
+        public string SignupTimeString => SignupDate.ToString("hh:mm tt");
         public int SignupDateStatus => SignupDate.CompareTo(DateTime.Now);
         public int GameDateStatus => GameDate.CompareTo(DateTime.Now);
         public string GameDateFormString => GameDate.ToString("yyyy-MM-dd");

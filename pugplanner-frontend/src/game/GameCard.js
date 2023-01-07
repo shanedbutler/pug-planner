@@ -1,23 +1,13 @@
+import { CheckIcon, LockClosedIcon, LockOpenIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-   fetchGameRosterCount,
-   postUserToRoster,
-} from '../managers/RosterManager';
-import { RegistrationModal } from '../modals/RegistrationModal';
+import { Link, useNavigate } from 'react-router-dom';
+import { fetchGameRosterCount } from '../managers/RosterManager';
 
 export const GameCard = ({ game }) => {
    const navigate = useNavigate();
 
    const [rosterCount, setRosterCount] = useState({});
    const [isWaitList, setIsWaitList] = useState(false);
-
-   const [modalOpen, setModalOpen] = useState(false);
-
-   const handleRegister = () => {
-      postUserToRoster(game.id);
-      setModalOpen(true);
-   };
 
    const handleDetails = () => {
       navigate(`/game/${game.id}`);
@@ -33,10 +23,8 @@ export const GameCard = ({ game }) => {
    };
 
    useEffect(() => {
-      fetchGameRosterCount(game.id).then((countObj) =>
-         setRosterCount(countObj)
-      );
-   }, [game.id, modalOpen]);
+      fetchGameRosterCount(game.id).then((countObj) => setRosterCount(countObj));
+   }, [game.id]);
 
    useEffect(() => {
       checkIsWaitList();
@@ -46,56 +34,81 @@ export const GameCard = ({ game }) => {
       <>
          <div className="my-5 overflow-hidden bg-white shadow rounded-md">
             <div className="px-4 py-5 sm:px-6">
-               <h3 className="text-lg font-medium leading-6 text-gray-900">
-                  {game.title}
-               </h3>
-               <p className="mt-1 max-w-lg text-sm text-gray-500">
-                  {game.gameDateString}
-               </p>
+               <div className="flex justify-between">
+                  <div>
+                     <h3 className="text-lg font-medium leading-6 text-gray-900">{game.title}</h3>
+                     <p className="mt-1 max-w-lg text-sm text-gray-500">
+                        {game.gameDateString}
+                        <br />
+                        {game.gameTimeString}
+                     </p>
+                  </div>
+                  <div className="flex justify-end align-top">
+                     {game.signupDateStatus < 0 &&
+                        (game.gameDateStatus < 0 ? (
+                           <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-lime-100">
+                              <CheckIcon className="h-5 w-5 flex-shrink text-slate-600" aria-hidden="true" />
+                           </div>
+                        ) : (
+                           <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-violet-50">
+                              <LockOpenIcon className="h-5 w-5 flex-shrink text-slate-600" aria-hidden="true" />
+                           </div>
+                        ))}
+                     {game.signupDateStatus > 0 && (
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-50">
+                           <LockClosedIcon className="h-5 w-5 flex-shrink text-slate-600" aria-hidden="true" />
+                        </div>
+                     )}
+                  </div>
+               </div>
             </div>
             <div className="border-t border-gray-200">
                <dl>
+                  {game.signupDateStatus > 0 && (
+                     <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                        <dt className="text-sm font-medium text-gray-500">Sign-ups open</dt>
+                        <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                           {game.signupDateString} at {game.signupTimeString}
+                        </dd>
+                     </div>
+                  )}
                   <div className="bg-gray-50 px-4 pt-4 pb-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                     <dt className="text-sm font-medium text-gray-500">
-                        Location
-                     </dt>
-                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                        {game.location}
+                     <dt className="text-sm font-medium text-gray-500">Location</dt>
+                     <dd className="mt-1 text-sm text-gray-900  sm:col-span-2 sm:mt-0">
+                        <a href={`https://maps.google.com/?q=${game.address}`} target="_blank">
+                           {game.location}
+                        </a>
                      </dd>
                   </div>
                   <div className="bg-white px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                      <dt className="text-sm font-medium text-gray-500">Hosted by</dt>
                      <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                        {game.primaryHost?.fullName}
-                        <br/>
-                        {game.secondaryHost?.fullName}
+                        <Link to={`/profile/${game.primaryHost?.id}`}>{game.primaryHost?.fullName}</Link>
+                        {game.secondaryHost && (
+                           <div>
+                              <Link to={`/profile/${game.secondaryHost?.id}`}>{game.secondaryHost?.fullName}</Link>
+                           </div>
+                        )}
                      </dd>
                   </div>
                   <div className="bg-gray-50 px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                     <dt className="text-sm font-medium text-gray-500">
-                        Roster
-                     </dt>
+                     <dt className="text-sm font-medium text-gray-500">Player slots</dt>
                      <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                        {' '}
-                        {isWaitList
-                           ? `${game.maxPlayers} / ${game.maxPlayers} + (${
-                                rosterCount.currentPlayers - game.maxPlayers
-                             } on waitlist)`
-                           : `${rosterCount.currentPlayers} / ${game.maxPlayers}`}
+                        {game.signupDateStatus < 0
+                           ? isWaitList
+                              ? `${game.maxPlayers} / ${game.maxPlayers} + (${
+                                   rosterCount.currentPlayers - game.maxPlayers
+                                } on waitlist)`
+                              : `${rosterCount.currentPlayers} / ${game.maxPlayers}`
+                           : game.maxPlayers}
                      </dd>
                   </div>
                   <div className="bg-white px-4 pt-3 pb-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                     <dt className="text-sm font-medium text-gray-500">
-                        About
-                     </dt>
-                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                        {game.description}
-                     </dd>
+                     <dt className="text-sm font-medium text-gray-500">About</dt>
+                     <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{game.description}</dd>
                   </div>
                   <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                     <dt className="text-sm font-medium text-gray-500">
-                        Actions
-                     </dt>
+                     <dt className="invisible text-sm font-medium text-gray-500">Actions</dt>
                      <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                         <ul>
                            <li className="flex items-center justify-end text-sm">
@@ -105,13 +118,6 @@ export const GameCard = ({ game }) => {
                               >
                                  Details
                               </button>
-                              <button
-                                 className="rounded-md border border-transparent bg-lime-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-lime-200 focus:bg-lime-200"
-                                 onClick={handleRegister}
-                                 hidden
-                              >
-                                 Register
-                              </button>
                            </li>
                         </ul>
                      </dd>
@@ -119,12 +125,6 @@ export const GameCard = ({ game }) => {
                </dl>
             </div>
          </div>
-         <RegistrationModal
-            open={modalOpen}
-            setOpen={setModalOpen}
-            handleNav={handleDetails}
-            onDetails={false}
-         />
       </>
    );
 };

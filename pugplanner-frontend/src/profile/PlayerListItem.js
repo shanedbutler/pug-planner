@@ -81,7 +81,7 @@ export const PlayerListItem = ({ player, i }) => {
          <li
             className={`${
                i % 2 ? 'bg-gray-50' : 'bg-white'
-            } flex items-center justify-around py-3 px-4 text-sm`}
+            } flex items-center justify-between sm:px-16 py-3 px-6 text-sm border-t first:border-t-transparent border-gray-200`}
          >
             <div
                className="cursor-pointer flex items-center"
@@ -94,7 +94,7 @@ export const PlayerListItem = ({ player, i }) => {
                />
             </div>
             <div
-               className="cursor-pointer font-medium text-slate-600 hover:text-slate-500"
+               className="cursor-pointer text-slate-600 hover:text-violet-500"
                onClick={handleProfileNav}
             >
                {player.fullName}

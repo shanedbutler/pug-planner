@@ -1,4 +1,4 @@
-import { PencilSquareIcon } from '@heroicons/react/24/outline';
+import { ChevronLeftIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchUserRosterCount } from '../managers/RosterManager';
@@ -30,9 +30,7 @@ export const PlayerProfile = ({ isAdmin }) => {
 
    useEffect(() => {
       fetchUser(id).then((userObj) => checkAndSet(userObj));
-      fetchUserRosterCount(id).then((countObj) =>
-         setAppearances(countObj.appearances)
-      );
+      fetchUserRosterCount(id).then((countObj) => setAppearances(countObj.appearances));
    }, []);
 
    return (
@@ -53,6 +51,9 @@ export const PlayerProfile = ({ isAdmin }) => {
          )}
          <div className="max-w-md mx-auto sm:max-w-lg bg-white mb-6 mt-16 shadow rounded-md">
             <div className="px-4 py-6 sm:px-6">
+               <div className='px-2'>
+                  <ChevronLeftIcon className="h-6 w-6 text-slate-600 cursor-pointer hover:text-violet-500" aria-hidden="true" onClick={() => navigate(-1)} />
+               </div>
                <div className="flex flex-wrap justify-center">
                   <div className="w-full flex justify-center">
                      <div className="border-none -m-16">
