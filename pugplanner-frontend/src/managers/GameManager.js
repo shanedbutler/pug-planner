@@ -44,3 +44,14 @@ export const fetchPutGame = async (gameBody) => {
    const game = await response.json();
    return game;
 };
+
+/**
+ * Delete game by id from database
+ * @param {int} gameId
+ */
+export const fetchDeleteGame = async (gameId) => {
+   const response = await fetch(`${apiUrl}/api/game/delete/?id=${gameId}`, {
+      method: 'DELETE',
+   });
+   return response;
+};
