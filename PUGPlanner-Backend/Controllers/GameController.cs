@@ -46,5 +46,13 @@ namespace PUGPlanner_Backend.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("Delete")]
+        public IActionResult Delete(int id)
+        {
+            _gameRepository.Delete(id);
+            return NoContent();
+        }
     }
+    
 }
