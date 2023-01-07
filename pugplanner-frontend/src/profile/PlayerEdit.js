@@ -3,16 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { fetchPositions } from '../managers/PositionManager';
 import { fetchPronouns } from '../managers/PronounManager';
-import { login, registerUser } from '../managers/UserManager';
+import { editUserFetch, fetchUser } from '../managers/UserManager';
 
-export const Register = () => {
+export const PlayerEdit = ({ userId }) => {
    const navigate = useNavigate();
+   const [player, setPlayer] = useState({});
 
    // React-select state variables for primary position, secondary position, and pronouns
    const [positionOptions, setPositionOptions] = useState([]);
+   const [primaryDefault, setPrimaryDefault] = useState({});
+   const [secondaryDefault, setSecondaryDefault] = useState({});
    const [positionSelection, setPositionSelection] = useState();
    const [secondaryPositionSelection, setSecondaryPositionSelection] = useState();
    const [pronounOptions, setPronounOptions] = useState([]);
+   const [pronounDefault, setPronounDefault] = useState({});
    const [pronounSelection, setPronounSelection] = useState();
 
    const [isPhoneValid, setIsPhoneValid] = useState(true);
@@ -29,9 +33,10 @@ export const Register = () => {
 
    /**
     * Map array values to option array and set to state for use by react-select
-    * @param {*} positionsArr 
+    * @param {*} positionsArr
     */
-   const handleSetPositions = (positionsArr) => {
+   const handleSetPositions = async (positionsArr) => {
+
       const positionOptionsArr = positionsArr.map((position) => {
          return {
             value: position.id,
@@ -41,18 +46,14 @@ export const Register = () => {
       setPositionOptions(positionOptionsArr);
    };
 
-   const handlePositionSelect = (e) => {
-      setPositionSelection(e.value);
-   };
+   const handlePositionSelect = (e) => setPositionSelection(e.value);
 
-   const handleSecondaryPositionSelect = (e) => {
-      setSecondaryPositionSelection(e.value);
-   };
+   const handleSecondaryPositionSelect = (e) => setSecondaryPositionSelection(e.value);
 
    /**
     * Push array values to option array and set to state for use by react-select
     * Push opt out object to end of array as last option
-    * @param {*} positionsArr 
+    * @param {*} positionsArr
     */
    const handleSetPronouns = (pronounsArr) => {
       let pronounOptionsArr = [];
@@ -64,14 +65,40 @@ export const Register = () => {
          };
          pronounOptionsArr.push(pronounOptionObj);
       });
+
       const optOutOption = { value: '', label: 'Prefer not to say' };
       pronounOptionsArr.push(optOutOption);
-
       setPronounOptions(pronounOptionsArr);
    };
 
-   const handlePronounSelect = (e) => {
-      setPronounSelection(e.value);
+   const handlePronounSelect = (e) => setPronounSelection(e.value);
+
+   /**
+    * Find player's currently chosen options and set them to state in the react-select format
+    */
+   const handleSetDefaults = (player, positions, pronouns) => {
+
+      const userPrimary = (positions.find((pos) => pos.id === player.primaryPositionId));
+      const userSecondary = (positions.find((pos) =>  pos.id === player.secondaryPositionId));
+      const userPronoun = (pronouns.find((pro) => pro.id === player.pronounId));
+
+      const userPrimaryOption = {
+         value: userSecondary.id,
+         label: userSecondary.fullName,
+      };
+      const userSecondaryOption = {
+         value: userPrimary.id,
+         label: userPrimary.fullName,
+      };
+      const userPronounOption = {
+         value: userPronoun.id,
+         label: userPronoun.name,
+      };
+
+      //console.log(userPrimaryOption, userSecondaryOption, userPronounOption);
+      setPrimaryDefault(userPrimaryOption);
+      setSecondaryDefault(userSecondaryOption);
+      setPronounDefault(userPronounOption);
    };
 
    const validatePhone = (phoneNum, field) => {
@@ -92,14 +119,15 @@ export const Register = () => {
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      let newUser = {};
+      let editedUser = {};
 
       if (positionSelection === '') {
          //handlePrimaryRequired();
       } else if (secondaryPositionSelection === '') {
          //handleSecondaryRequired();
       } else {
-         newUser = {
+         editedUser = {
+            id: player.id,
             firstName: firstNameRef.current.value,
             lastName: lastNameRef.current.value,
             email: emailRef.current.value,
@@ -110,22 +138,31 @@ export const Register = () => {
             club: clubRef.current.value,
             emergencyName: emergencyNameRef.current.value,
             emergencyPhone: emergencyPhoneRef.current.value.replace(/\D/g, ''),
-            active: true,
+            active: player.active,
          };
-         registerUser(newUser)
-            .then((user) => login(user.email))
-            .then(() => navigate('/'));
+         editUserFetch(editedUser).then(() => navigate(`/profile/${userId}`));
       }
    };
 
    const handleCancel = (e) => {
       e.preventDefault();
-      navigate('/login');
+      navigate(`/profile/${userId}`);
    };
 
    useEffect(() => {
-      fetchPositions().then((pos) => handleSetPositions(pos));
-      fetchPronouns().then((pro) => handleSetPronouns(pro));
+
+      // Get data responses from api and set to variables
+      const userRes = fetchUser(userId);
+      const positionsRes = fetchPositions();
+      const pronounsRes = fetchPronouns();
+
+      // Group values into promise all, and when their values are returned set state with setter functions
+      Promise.all([userRes, positionsRes, pronounsRes]).then((values) => {
+         setPlayer(values[0]);
+         handleSetPositions(values[1]);
+         handleSetPronouns(values[2]);
+         handleSetDefaults(values[0], values[1], values[2]);
+      });
    }, []);
 
    return (
@@ -136,10 +173,10 @@ export const Register = () => {
                   <div className="md:col-span-1">
                      <div className="px-4 sm:px-0 text-center">
                         <h3 className="text-3xl font-medium leading-6 text-gray-900">
-                           Register
+                           Edit Profile
                         </h3>
                         <p className="mt-3 text-sm text-gray-600">
-                           Please fill out the form to use the app
+                           Make changes to your profile
                         </p>
                      </div>
                   </div>
@@ -149,7 +186,6 @@ export const Register = () => {
                            <div className="shadow rounded-md">
                               <div className="bg-white px-4 py-5 sm:p-6">
                                  <div className="grid grid-cols-6 gap-6">
-
                                     <div className="col-span-6 sm:col-span-3">
                                        <label
                                           htmlFor="first-name"
@@ -163,6 +199,7 @@ export const Register = () => {
                                           id="first-name"
                                           autoComplete="given-name"
                                           required
+                                          defaultValue={player.firstName}
                                           ref={firstNameRef}
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                        />
@@ -181,6 +218,7 @@ export const Register = () => {
                                           id="last-name"
                                           autoComplete="family-name"
                                           required
+                                          defaultValue={player.lastName}
                                           ref={lastNameRef}
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                        />
@@ -199,6 +237,7 @@ export const Register = () => {
                                           id="email-address"
                                           autoComplete="email"
                                           required
+                                          defaultValue={player.email}
                                           ref={emailRef}
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                        />
@@ -216,6 +255,7 @@ export const Register = () => {
                                           name="phone"
                                           id="phone"
                                           required
+                                          defaultValue={player.phone}
                                           ref={phoneRef}
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                           onBlur={(e) =>
@@ -232,22 +272,6 @@ export const Register = () => {
                                        )}
                                     </div>
 
-                                    <div className="col-span-6 sm:col-span-6">
-                                       <label
-                                          htmlFor="password"
-                                          className="block text-sm font-medium text-gray-700"
-                                       >
-                                          Password
-                                       </label>
-                                       <input
-                                          type="password"
-                                          name="password"
-                                          id="password"
-                                          autoComplete="email"
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                       />
-                                    </div>
-
                                     <div className="col-span-6 sm:col-span-3">
                                        <label
                                           htmlFor="primaryPosition"
@@ -260,6 +284,7 @@ export const Register = () => {
                                           name="position"
                                           className="mt-1 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                           options={positionOptions}
+                                          value={primaryDefault}
                                           onChange={handlePositionSelect}
                                        />
                                     </div>
@@ -276,9 +301,8 @@ export const Register = () => {
                                           name="secondary-position"
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                           options={positionOptions}
-                                          onChange={
-                                             handleSecondaryPositionSelect
-                                          }
+                                          value={secondaryDefault}
+                                          onChange={handleSecondaryPositionSelect}
                                        />
                                     </div>
 
@@ -294,6 +318,7 @@ export const Register = () => {
                                           name="pronouns"
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                           options={pronounOptions}
+                                          value={pronounDefault}
                                           onChange={handlePronounSelect}
                                        />
                                     </div>
@@ -310,6 +335,7 @@ export const Register = () => {
                                           name="club"
                                           id="club"
                                           placeholder="Club played in or supported..."
+                                          defaultValue={player.club}
                                           ref={clubRef}
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                        />
@@ -327,6 +353,7 @@ export const Register = () => {
                                           name="emergency-contact-name"
                                           id="emergency-contact-name"
                                           required
+                                          defaultValue={player.emergencyName}
                                           ref={emergencyNameRef}
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                        />
@@ -344,6 +371,7 @@ export const Register = () => {
                                           name="emergency-contact-phone"
                                           id="emergency-contact-phone"
                                           required
+                                          defaultValue={player.emergencyPhone}
                                           ref={emergencyPhoneRef}
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                           onBlur={(e) =>
@@ -364,12 +392,12 @@ export const Register = () => {
                               <div className="bg-gray-50 text-right py-5 px-5 sm:px-6">
                                  <button
                                     type="submit"
-                                    className="rounded-md border border-transparent bg-violet-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm hover:bg-violet-200 focus:bg-violet-200"
+                                    className="rounded-md border border-transparent bg-lime-200 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-300 focus:bg-lime-200"
                                  >
-                                    Register
+                                    Save
                                  </button>
                                  <button
-                                    className="rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
+                                    className="rounded-md border border-transparent bg-rose-200 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-rose-300 focus:bg-rose-300"
                                     onClick={handleCancel}
                                  >
                                     Cancel
