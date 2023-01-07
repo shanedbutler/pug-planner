@@ -1,7 +1,7 @@
+import { CheckIcon, LockClosedIcon, LockOpenIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchGameRosterCount, postUserToRoster } from '../managers/RosterManager';
-import { RegistrationModal } from '../modals/RegistrationModal';
+import { fetchGameRosterCount } from '../managers/RosterManager';
 
 export const GameCard = ({ game }) => {
    const navigate = useNavigate();
@@ -34,12 +34,33 @@ export const GameCard = ({ game }) => {
       <>
          <div className="my-5 overflow-hidden bg-white shadow rounded-md">
             <div className="px-4 py-5 sm:px-6">
-               <h3 className="text-lg font-medium leading-6 text-gray-900">{game.title}</h3>
-               <p className="mt-1 max-w-lg text-sm text-gray-500">
-                  {game.gameDateString}
-                  <br />
-                  {game.gameTimeString}
-               </p>
+               <div className="flex justify-between">
+                  <div>
+                     <h3 className="text-lg font-medium leading-6 text-gray-900">{game.title}</h3>
+                     <p className="mt-1 max-w-lg text-sm text-gray-500">
+                        {game.gameDateString}
+                        <br />
+                        {game.gameTimeString}
+                     </p>
+                  </div>
+                  <div className="flex justify-end align-top">
+                     {game.signupDateStatus < 0 &&
+                        (game.gameDateStatus < 0 ? (
+                           <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-lime-100">
+                              <CheckIcon className="h-5 w-5 flex-shrink text-slate-600" aria-hidden="true" />
+                           </div>
+                        ) : (
+                           <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-violet-50">
+                              <LockOpenIcon className="h-5 w-5 flex-shrink text-slate-600" aria-hidden="true" />
+                           </div>
+                        ))}
+                     {game.signupDateStatus > 0 && (
+                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-50">
+                           <LockClosedIcon className="h-5 w-5 flex-shrink text-slate-600" aria-hidden="true" />
+                        </div>
+                     )}
+                  </div>
+               </div>
             </div>
             <div className="border-t border-gray-200">
                <dl>
@@ -62,16 +83,12 @@ export const GameCard = ({ game }) => {
                   <div className="bg-white px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                      <dt className="text-sm font-medium text-gray-500">Hosted by</dt>
                      <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                        <Link to={`/profile/${game.primaryHost?.id}`}>
-                           {game.primaryHost?.fullName}
-                        </Link>
+                        <Link to={`/profile/${game.primaryHost?.id}`}>{game.primaryHost?.fullName}</Link>
                         {game.secondaryHost && (
-                                 <div>
-                                    <Link to={`/profile/${game.secondaryHost?.id}`}>
-                                       {game.secondaryHost?.fullName}
-                                    </Link>
-                                 </div>
-                              )}
+                           <div>
+                              <Link to={`/profile/${game.secondaryHost?.id}`}>{game.secondaryHost?.fullName}</Link>
+                           </div>
+                        )}
                      </dd>
                   </div>
                   <div className="bg-gray-50 px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
