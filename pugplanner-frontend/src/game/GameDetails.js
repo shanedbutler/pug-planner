@@ -1,11 +1,8 @@
-import { LockClosedIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
+import { LockClosedIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchGame } from '../managers/GameManager';
-import {
-   deleteUserFromRoster,
-   postUserToRoster,
-} from '../managers/RosterManager';
+import { fetchDeleteGame, fetchGame } from '../managers/GameManager';
+import { deleteUserFromRoster, postUserToRoster } from '../managers/RosterManager';
 import { fetchRoster, getCurrentUser } from '../managers/UserManager';
 import { RegistrationModal } from '../modals/RegistrationModal';
 import { RegLockModal } from '../modals/RegLockModal';
@@ -16,7 +13,6 @@ export const GameDetails = ({ isAdmin }) => {
    const { id } = useParams();
 
    const navigate = useNavigate();
-   const navToDashboard = () => navigate('/');
 
    const [game, setGame] = useState({});
    const [roster, setRoster] = useState([]);
@@ -24,6 +20,7 @@ export const GameDetails = ({ isAdmin }) => {
    const [canRegister, setCanRegister] = useState(false);
    const [canUnregister, setCanUnregister] = useState(false);
    const [registrationNotOpen, setRegistrationNotOpen] = useState(false);
+   const [canDelete, setCanDelete] = useState(false);
 
    const [startingRoster, setStartingRoster] = useState([]);
    const [waitList, setWaitList] = useState([]);
@@ -32,8 +29,11 @@ export const GameDetails = ({ isAdmin }) => {
    const [unregisterModalOpen, setUnregisterModalOpen] = useState(false);
    const [regLockModalOpen, setRegLockModalOpen] = useState(false);
 
-   const navToGameEdit = () => {
-      navigate(`/edit-game/${id}`);
+   const navToGameEdit = () => navigate(`/edit-game/${id}`);
+   const navToDashboard = () => navigate('/');
+
+   const handleDelete = () => {
+      fetchDeleteGame(id).then(navToDashboard);
    };
 
    const handleRegister = () => {
@@ -64,10 +64,9 @@ export const GameDetails = ({ isAdmin }) => {
       setUnregisterModalOpen(false);
    };
 
-   const handleModalNav = () => {
-      navigate('/');
-   };
-
+   /**
+    * Fetches data and then sets state through checker function call.
+    */
    const fetchData = () => {
       fetchGame(id).then((gameResponse) => {
          return fetchRoster(id).then((rosterResponse) => {
@@ -104,6 +103,7 @@ export const GameDetails = ({ isAdmin }) => {
       }
 
       checkCanRegister(rosterArr, gameObj);
+      checkCanDelete(rosterArr);
    };
 
    /**
@@ -118,13 +118,25 @@ export const GameDetails = ({ isAdmin }) => {
       if (gameObj.gameDateStatus > 0) {
          if (gameObj.signupDateStatus < 0 && !isAlreadyRegistered) {
             setCanRegister(true);
-         } 
-         else if (gameObj.signupDateStatus < 0 && isAlreadyRegistered) {
+         } else if (gameObj.signupDateStatus < 0 && isAlreadyRegistered) {
             setCanUnregister(true);
-         } 
-         else if (gameObj.signupDateStatus > 0) {
+         } else if (gameObj.signupDateStatus > 0) {
             setRegistrationNotOpen(true);
          }
+      }
+   };
+
+   /**
+    * Checks if current user can delete the game. 
+    * Games with players registered to it's roster currently cannot be deleted.
+    * @param {array} rosterArr 
+    */
+   const checkCanDelete = (rosterArr) => {
+      if (rosterArr.length === 0 && isAdmin) {
+         setCanDelete(true);
+      }
+      else {
+         setCanDelete(false);
       }
    };
 
@@ -146,18 +158,32 @@ export const GameDetails = ({ isAdmin }) => {
                            {game.gameDateString}
                         </p>
                      </div>
-                     {isAdmin && (
-                        <button
-                           title="Edit Game"
-                           className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-2 pl-3 mb-2 text-sm font-medium text-black shadow-sm hover:bg-lime-300 focus:bg-lime-300"
-                           onClick={navToGameEdit}
-                        >
-                           <PencilSquareIcon
-                              className="h-5 w-5 mr-1 flex-shrink text-slate-600"
-                              aria-hidden="true"
-                           />
-                        </button>
-                     )}
+                     <div className='flex justify-end'>
+                        {isAdmin && (
+                           <button
+                              title="Edit Game"
+                              className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-2 pl-3 mb-2 mr-2 text-sm font-medium text-black shadow-sm hover:bg-lime-300 focus:bg-lime-300"
+                              onClick={navToGameEdit}
+                           >
+                              <PencilSquareIcon
+                                 className="h-5 w-5 mr-1 flex-shrink text-slate-600"
+                                 aria-hidden="true"
+                              />
+                           </button>
+                        )}
+                        {canDelete && (
+                           <button
+                              title="Delete Game"
+                              className="flex rounded-md border border-transparent bg-red-200 py-2 pr-2 pl-3 mb-2 text-sm font-medium text-black shadow-sm hover:bg-red-300 focus:bg-red-300"
+                              onClick={handleDelete}
+                           >
+                              <TrashIcon
+                                 className="h-5 w-5 mr-1 flex-shrink text-slate-600"
+                                 aria-hidden="true"
+                              />
+                           </button>
+                        )}
+                     </div>
                   </div>
                   <div className="border-t border-gray-200">
                      <dl>
@@ -174,9 +200,9 @@ export const GameDetails = ({ isAdmin }) => {
                               Hosted by
                            </dt>
                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                           {game.primaryHost?.fullName}
-                           <br/>
-                           {game.secondaryHost?.fullName}
+                              {game.primaryHost?.fullName}
+                              <br />
+                              {game.secondaryHost?.fullName}
                            </dd>
                         </div>
                         <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -185,7 +211,7 @@ export const GameDetails = ({ isAdmin }) => {
                            </dt>
                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                               {game.primaryHost?.nameAndPhone}
-                              <br/>
+                              <br />
                               {game.secondaryHost?.nameAndPhone}
                            </dd>
                         </div>
@@ -309,7 +335,7 @@ export const GameDetails = ({ isAdmin }) => {
          <RegistrationModal
             open={modalOpen}
             setOpen={setModalOpen}
-            handleNav={handleModalNav}
+            handleNav={navToDashboard}
             onDetails={true}
          />
          <UnregisterModal
