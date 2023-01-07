@@ -97,10 +97,10 @@ export const PlayerProfile = ({ isAdmin }) => {
                      <div className="mt-1">{player.club}</div>
                      {isAdmin && (
                         <>
-                           <div className="mt-1">{player.phone}</div>
+                           <div className="mt-1">{player.phoneString}</div>
                            <div className="mt-1">{player.email}</div>
                            <div className="mt-1">
-                              Emergency contact: {player.emergencyName} at {player.emergencyPhone}
+                              Emergency contact: {player.emergencyName} at {player.emergencyPhoneString}
                            </div>
                         </>
                      )}

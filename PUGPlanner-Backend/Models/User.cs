@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel.DataAnnotations;
 
 namespace PUGPlanner_Backend.Models
 {
@@ -66,11 +67,28 @@ namespace PUGPlanner_Backend.Models
         {
             get
             {
-                return $"{FirstName} at {Phone}";
+                return $"{FirstName} at {PhoneString}";
             }
         }
 
         public string JoinYear => CreateDateTime.ToString("yyyy");
+
+        private string FormatPhone (string phone)
+        {
+            var areaCodeValues = phone.Take(3);
+            var middleThreeValues = phone.Skip(3).Take(3);
+            var lastFourValues = phone.Skip(5).Take(4);
+
+            string areaCode = string.Join("", areaCodeValues);
+            string middleThree = string.Join("", middleThreeValues);
+            string lastFour = string.Join("", lastFourValues);
+
+
+            return $"({areaCode}) {middleThree}-{lastFour}";
+        }
+
+        public string PhoneString => FormatPhone(Phone);
+        public string EmergencyPhoneString => FormatPhone(EmergencyPhone);
 
     }
 }
