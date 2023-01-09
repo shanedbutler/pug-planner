@@ -111,9 +111,10 @@ export const PlayerProfile = ({ isAdmin }) => {
                   <div className="flex flex-wrap justify-center">
                      <div className="w-full px-4">
                         <p className="text-sm text-slate-700 mb-4">
-                           A player of considerable range, Foo is the name taken
-                           by the Melbourne-raised, LA-based goal keeper. Foo is
-                           considered to excel at shear speed and determination.
+                           A player of considerable range, {player.firstName} is the name taken
+                           by the LA-based {player.position?.primaryFull}. {player.firstName} is
+                           considered to excel at shear speed and determination. {player.firstName} is
+                           a supporter of {player.club}.
                         </p>
                      </div>
                   </div>

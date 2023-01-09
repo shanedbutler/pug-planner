@@ -102,10 +102,13 @@ export const isCurrentUserAdmin = () => {
  * React component for current user's Boring Avatar
  * @returns Avatar Component
  */
-export const UserAvatar = ({ fullName, id, scale }) => {
+export const UserAvatar = ({ fullName, scale }) => {
    if (scale == null) {
       scale = 40;
    }
+   const originalColor = ['#F88F89', '#EEC276', '#F2E8DF', '#79C3AA', '#DDB8D9'];
+   const altColor = ['#86A69D', '#F2B263', '#F2E8DF', '#F2C6C2', '#F28585'];
+   const altColor2 = ['#F2889B', '#F2E8DF', '#95BFA4', '#F29E38', '#F28444'];
 
    return (
       <Avatar
@@ -113,7 +116,7 @@ export const UserAvatar = ({ fullName, id, scale }) => {
          name={fullName}
          square={false}
          variant="beam"
-         colors={['#F88F89', '#EEC276', '#FBF6D0', '#79C3AA', '#DDB8D9']}
+         colors={originalColor}
       />
    );
 };
