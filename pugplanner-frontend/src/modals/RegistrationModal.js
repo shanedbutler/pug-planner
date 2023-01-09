@@ -31,9 +31,9 @@ export const RegistrationModal = ({ open, setOpen, handleNav, onDetails }) => {
                   >
                      <Dialog.Panel className="relative transform overflow-hidden rounded-md max-w-sm bg-white text-center shadow-xl transition-all">
                         <div className="bg-white px-7 py-4">
-                           <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-lime-50">
+                           <div className="mx-auto flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-lime-50">
                               <CheckCircleIcon
-                                 className="h-7 w-7 text-lime-600"
+                                 className="h-6 w-6 text-lime-600"
                                  aria-hidden="true"
                               />
                            </div>

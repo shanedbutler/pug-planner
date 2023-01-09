@@ -287,7 +287,7 @@ export const GameDetails = ({ isAdmin }) => {
                            <dt className="invisible text-sm font-medium text-gray-500">Actions</dt>
                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                               <ul>
-                                 <li className="flex items-center justify-end py-2 pl-2 pr-3 text-sm">
+                                 <li className="flex items-center justify-end py-2 pl-2 text-sm">
                                     <button
                                        className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-200 focus:bg-lime-200"
                                        onClick={navToDashboard}

@@ -17,7 +17,7 @@ export const App = () => {
                <Authorized>
                   <>
                      <AppNav />
-                     <div className="content-wrapper">
+                     <div className="content-wrapper selection:bg-lime-100">
                         <ApplicationViews />
                      </div>
                   </>

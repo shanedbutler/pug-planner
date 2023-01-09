@@ -139,7 +139,7 @@ export const Register = () => {
                            Register
                         </h3>
                         <p className="mt-3 text-sm text-gray-600">
-                           Please fill out the form to use the app
+                           Please fill out the form to create and new account and login
                         </p>
                      </div>
                   </div>
@@ -303,13 +303,12 @@ export const Register = () => {
                                           htmlFor="club"
                                           className="block text-sm font-medium text-gray-700"
                                        >
-                                          Club
+                                          Club Supported
                                        </label>
                                        <input
                                           type="text"
                                           name="club"
                                           id="club"
-                                          placeholder="Club played in or supported..."
                                           ref={clubRef}
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                        />
@@ -320,7 +319,7 @@ export const Register = () => {
                                           htmlFor="emergency-contact-name"
                                           className="block text-sm font-medium text-gray-700"
                                        >
-                                          Emergency Contact Name
+                                          Emergency Contact First Name
                                        </label>
                                        <input
                                           type="text"

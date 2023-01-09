@@ -43,7 +43,7 @@ export const Dashboard = ({ isAdmin }) => {
          <div className="px-5 py-5 mx-auto max-w-lg">
             <div className="flex">
                <button
-                  className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-4 pl-3 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-300 focus:bg-lime-300"
+                  className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-4 pl-3 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-300"
                   onClick={toggleDateFilter}
                >
                   <ClockIcon
@@ -54,7 +54,7 @@ export const Dashboard = ({ isAdmin }) => {
                </button>
                {isAdmin && (
                   <button
-                     className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-4 pl-3 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-300 focus:bg-lime-300"
+                     className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-4 pl-3 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-300"
                      onClick={navToGameForm}
                   >
                      <PlusCircleIcon

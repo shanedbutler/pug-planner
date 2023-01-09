@@ -92,8 +92,8 @@ export const GameForm = () => {
                <div className="md:grid md:grid-cols-2 md:gap-6 mt-5">
                   <div className="mt-5 md:col-span-2 md:mt-0">
                      <form onSubmit={handleSubmit}>
-                        <div className="shadow sm:rounded-md">
-                           <div className="bg-white px-4 py-5 sm:p-6">
+                        <div>
+                           <div className="bg-white shadow sm:rounded-md px-4 py-5 sm:p-6">
                               <div className="grid grid-cols-6 gap-6">
                                  <div className="col-span-6 sm:col-span-3">
                                     <label
@@ -266,7 +266,7 @@ export const GameForm = () => {
                                  </div>
                               </div>
                            </div>
-                           <div className="bg-gray-50 text-right py-3 px-3 sm:px-6">
+                           <div className="bg-gray-50 shadow sm:rounded-md text-right -mt-2 py-6 px-3 sm:px-6">
                               <button
                                  type="submit"
                                  className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-200 focus:bg-lime-200"
