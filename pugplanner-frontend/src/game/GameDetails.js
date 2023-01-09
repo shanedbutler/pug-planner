@@ -18,6 +18,7 @@ export const GameDetails = ({ isAdmin }) => {
    const [isRosterEmpty, setIsRosterEmpty] = useState(true);
    const [roster, setRoster] = useState([]);
    const [isWaitList, setIsWaitList] = useState(false);
+   const [willWaitList, setWillWaitList] = useState(false);
    const [canRegister, setCanRegister] = useState(false);
    const [canUnregister, setCanUnregister] = useState(false);
    const [registrationNotOpen, setRegistrationNotOpen] = useState(false);
@@ -101,6 +102,11 @@ export const GameDetails = ({ isAdmin }) => {
 
          setIsWaitList(true);
       } else {
+         // Set state if the next user to register will be added to the wait-list
+         if (rosterArr.length === gameObj.maxPlayers) {
+            setWillWaitList(true);
+         }
+
          setRoster(rosterArr);
       }
 
@@ -154,7 +160,7 @@ export const GameDetails = ({ isAdmin }) => {
 
    return (
       <>
-         <div className="px-5 pt-6 last:pb-6">
+         <div className="px-5 pt-10 last:pb-6">
             <div className="mx-auto max-w-3xl sm:px-6 lg:px-8">
                <div className="overflow-hidden bg-white shadow rounded-md">
                   <div className="flex justify-between px-4 py-5 sm:px-6">
@@ -211,9 +217,7 @@ export const GameDetails = ({ isAdmin }) => {
                         <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                            <dt className="text-sm font-medium text-gray-500">Hosted by</dt>
                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                              <Link to={`/profile/${game.primaryHost?.id}`}>
-                                 {game.primaryHost?.fullName}
-                              </Link>
+                              <Link to={`/profile/${game.primaryHost?.id}`}>{game.primaryHost?.fullName}</Link>
                               {game.secondaryHost && (
                                  <div>
                                     <Link to={`/profile/${game.secondaryHost?.id}`}>
@@ -237,12 +241,12 @@ export const GameDetails = ({ isAdmin }) => {
                               {isRosterEmpty
                                  ? game.maxPlayers
                                  : isWaitList
-                                 ? `${game.maxPlayers} / ${game.maxPlayers} + (${waitList.length} on waitlist)`
+                                 ? `${game.maxPlayers} / ${game.maxPlayers} with ${waitList.length} on wait-list`
                                  : `${roster.length} / ${game.maxPlayers}`}
                            </dd>
                         </div>
                         <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                           <dt className="text-sm font-medium text-gray-500">About</dt>
+                           <dt className="text-sm font-medium text-gray-500">Description</dt>
                            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{game.description}</dd>
                         </div>
                         {!isRosterEmpty && (
@@ -295,7 +299,11 @@ export const GameDetails = ({ isAdmin }) => {
                                           className="rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
                                           onClick={handleRegister}
                                        >
-                                          {!isWaitList ? 'Register' : 'Join Waitlist'}
+                                          {!isWaitList
+                                             ? willWaitList
+                                                ? 'Join Waitlist'
+                                                : 'Register'
+                                             : 'Join Wait-list'}
                                        </button>
                                     )}
                                     {canUnregister && (
