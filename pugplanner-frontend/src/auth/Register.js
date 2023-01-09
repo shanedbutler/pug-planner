@@ -146,8 +146,8 @@ export const Register = () => {
                   <div className="md:grid md:grid-cols-2 md:gap-6 mt-5">
                      <div className="mt-5 md:col-span-2 md:mt-0">
                         <form onSubmit={handleSubmit}>
-                           <div className="shadow rounded-md">
-                              <div className="bg-white px-4 py-5 sm:p-6">
+                           <div>
+                              <div className="bg-white shadow rounded-md px-4 py-5 sm:p-6">
                                  <div className="grid grid-cols-6 gap-6">
 
                                     <div className="col-span-6 sm:col-span-3">
@@ -361,18 +361,18 @@ export const Register = () => {
                                     </div>
                                  </div>
                               </div>
-                              <div className="bg-gray-50 text-right py-5 px-5 sm:px-6">
+                              <div className="bg-gray-50 shadow rounded-md text-right -mt-2 py-6 px-3 sm:px-6">
                                  <button
-                                    type="submit"
-                                    className="rounded-md border border-transparent bg-violet-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm hover:bg-violet-200 focus:bg-violet-200"
-                                 >
-                                    Register
-                                 </button>
-                                 <button
-                                    className="rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
+                                    className="rounded-md border border-transparent bg-rose-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
                                     onClick={handleCancel}
                                  >
                                     Cancel
+                                 </button>
+                                 <button
+                                    type="submit"
+                                    className="rounded-md border border-transparent bg-violet-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-violet-200 focus:bg-violet-200"
+                                 >
+                                    Register
                                  </button>
                               </div>
                            </div>

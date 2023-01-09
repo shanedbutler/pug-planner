@@ -46,16 +46,16 @@ export const GameCard = ({ game }) => {
                   <div className="flex justify-end align-top">
                      {game.signupDateStatus < 0 &&
                         (game.gameDateStatus < 0 ? (
-                           <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-lime-100">
+                           <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-lime-100">
                               <CheckIcon className="h-5 w-5 flex-shrink text-slate-600" aria-hidden="true" />
                            </div>
                         ) : (
-                           <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-violet-50">
+                           <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-violet-50">
                               <LockOpenIcon className="h-5 w-5 flex-shrink text-slate-600" aria-hidden="true" />
                            </div>
                         ))}
                      {game.signupDateStatus > 0 && (
-                        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-50">
+                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-red-50">
                            <LockClosedIcon className="h-5 w-5 flex-shrink text-slate-600" aria-hidden="true" />
                         </div>
                      )}
@@ -107,7 +107,7 @@ export const GameCard = ({ game }) => {
                      <dt className="text-sm font-medium text-gray-500">Description</dt>
                      <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{game.description}</dd>
                   </div>
-                  <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-3">
                      <dt className="invisible text-sm font-medium text-gray-500">Actions</dt>
                      <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                         <ul>

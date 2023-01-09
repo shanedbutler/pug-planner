@@ -36,7 +36,6 @@ export const PlayerEdit = ({ userId }) => {
     * @param {*} positionsArr
     */
    const handleSetPositions = async (positionsArr) => {
-
       const positionOptionsArr = positionsArr.map((position) => {
          return {
             value: position.id,
@@ -77,10 +76,9 @@ export const PlayerEdit = ({ userId }) => {
     * Find player's currently chosen options and set them to state in the react-select format
     */
    const handleSetDefaults = (player, positions, pronouns) => {
-
-      const userPrimary = (positions.find((pos) => pos.id === player.primaryPositionId));
-      const userSecondary = (positions.find((pos) =>  pos.id === player.secondaryPositionId));
-      const userPronoun = (pronouns.find((pro) => pro.id === player.pronounId));
+      const userPrimary = positions.find((pos) => pos.id === player.primaryPositionId);
+      const userSecondary = positions.find((pos) => pos.id === player.secondaryPositionId);
+      const userPronoun = pronouns.find((pro) => pro.id === player.pronounId);
 
       const userPrimaryOption = {
          value: userSecondary.id,
@@ -150,7 +148,6 @@ export const PlayerEdit = ({ userId }) => {
    };
 
    useEffect(() => {
-
       // Get data responses from api and set to variables
       const userRes = fetchUser(userId);
       const positionsRes = fetchPositions();
@@ -172,25 +169,18 @@ export const PlayerEdit = ({ userId }) => {
                <div className="mt-10 sm:mt-0">
                   <div className="md:col-span-1">
                      <div className="px-4 sm:px-0 text-center">
-                        <h3 className="text-3xl font-medium leading-6 text-gray-900">
-                           Edit Profile
-                        </h3>
-                        <p className="mt-3 text-sm text-gray-600">
-                           Make changes to your profile
-                        </p>
+                        <h3 className="text-3xl font-medium leading-6 text-gray-900">Edit Profile</h3>
+                        <p className="mt-3 text-sm text-gray-600">Make changes to your profile</p>
                      </div>
                   </div>
                   <div className="md:grid md:grid-cols-2 md:gap-6 mt-5">
                      <div className="mt-5 md:col-span-2 md:mt-0">
                         <form onSubmit={handleSubmit}>
-                           <div className="shadow rounded-md">
-                              <div className="bg-white px-4 py-5 sm:p-6">
+                           <div>
+                              <div className="bg-white shadow rounded-md px-4 py-5 sm:p-6">
                                  <div className="grid grid-cols-6 gap-6">
                                     <div className="col-span-6 sm:col-span-3">
-                                       <label
-                                          htmlFor="first-name"
-                                          className="block text-sm font-medium text-gray-700"
-                                       >
+                                       <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
                                           First name
                                        </label>
                                        <input
@@ -206,10 +196,7 @@ export const PlayerEdit = ({ userId }) => {
                                     </div>
 
                                     <div className="col-span-6 sm:col-span-3">
-                                       <label
-                                          htmlFor="last-name"
-                                          className="block text-sm font-medium text-gray-700"
-                                       >
+                                       <label htmlFor="last-name" className="block text-sm font-medium text-gray-700">
                                           Last name
                                        </label>
                                        <input
@@ -244,10 +231,7 @@ export const PlayerEdit = ({ userId }) => {
                                     </div>
 
                                     <div className="col-span-6 sm:col-span-3">
-                                       <label
-                                          htmlFor="phone"
-                                          className="block text-sm font-medium text-gray-700"
-                                       >
+                                       <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
                                           Phone
                                        </label>
                                        <input
@@ -258,17 +242,10 @@ export const PlayerEdit = ({ userId }) => {
                                           defaultValue={player.phone}
                                           ref={phoneRef}
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                          onBlur={(e) =>
-                                             validatePhone(
-                                                phoneRef.current.value,
-                                                'user'
-                                             )
-                                          }
+                                          onBlur={(e) => validatePhone(phoneRef.current.value, 'user')}
                                        />
                                        {!isPhoneValid && (
-                                          <div className="text-sm mt-1 text-red-600">
-                                             Invalid format
-                                          </div>
+                                          <div className="text-sm mt-1 text-red-600">Invalid format</div>
                                        )}
                                     </div>
 
@@ -282,9 +259,10 @@ export const PlayerEdit = ({ userId }) => {
                                        <Select
                                           id="position"
                                           name="position"
-                                          className="mt-1 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 sm:text-sm"
                                           options={positionOptions}
                                           value={primaryDefault}
+                                          isSearchable={false}
                                           onChange={handlePositionSelect}
                                        />
                                     </div>
@@ -299,9 +277,10 @@ export const PlayerEdit = ({ userId }) => {
                                        <Select
                                           id="secondary-position"
                                           name="secondary-position"
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 sm:text-sm"
                                           options={positionOptions}
                                           value={secondaryDefault}
+                                          isSearchable={false}
                                           onChange={handleSecondaryPositionSelect}
                                        />
                                     </div>
@@ -316,18 +295,16 @@ export const PlayerEdit = ({ userId }) => {
                                        <Select
                                           id="pronouns"
                                           name="pronouns"
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 sm:text-sm"
                                           options={pronounOptions}
                                           value={pronounDefault}
+                                          isSearchable={false}
                                           onChange={handlePronounSelect}
                                        />
                                     </div>
 
                                     <div className="col-span-6 sm:col-span-3">
-                                       <label
-                                          htmlFor="club"
-                                          className="block text-sm font-medium text-gray-700"
-                                       >
+                                       <label htmlFor="club" className="block text-sm font-medium text-gray-700">
                                           Club
                                        </label>
                                        <input
@@ -374,33 +351,26 @@ export const PlayerEdit = ({ userId }) => {
                                           defaultValue={player.emergencyPhone}
                                           ref={emergencyPhoneRef}
                                           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                          onBlur={(e) =>
-                                             validatePhone(
-                                                emergencyPhoneRef.current.value,
-                                                'emergency'
-                                             )
-                                          }
+                                          onBlur={(e) => validatePhone(emergencyPhoneRef.current.value, 'emergency')}
                                        />
                                        {!isEmgPhoneValid && (
-                                          <div className="text-sm mt-1 text-red-600">
-                                             Invalid format
-                                          </div>
+                                          <div className="text-sm mt-1 text-red-600">Invalid format</div>
                                        )}
                                     </div>
                                  </div>
                               </div>
-                              <div className="bg-gray-50 text-right py-5 px-5 sm:px-6">
+                              <div className="bg-gray-50 shadow rounded-md text-right -mt-2 py-6 px-3 sm:px-6">
                                  <button
-                                    type="submit"
-                                    className="rounded-md border border-transparent bg-lime-200 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-300 focus:bg-lime-200"
-                                 >
-                                    Save
-                                 </button>
-                                 <button
-                                    className="rounded-md border border-transparent bg-rose-200 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-rose-300 focus:bg-rose-300"
+                                    className="rounded-md border border-transparent bg-rose-200 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm hover:bg-rose-300 focus:bg-rose-300"
                                     onClick={handleCancel}
                                  >
                                     Cancel
+                                 </button>
+                                 <button
+                                    type="submit"
+                                    className="rounded-md border border-transparent bg-lime-200 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-lime-300 focus:bg-lime-200"
+                                 >
+                                    Save
                                  </button>
                               </div>
                            </div>
