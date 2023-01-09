@@ -45,7 +45,7 @@ export const AppNav = () => {
    }, []);
    return (
       <>
-         <div className="min-h-full">
+         <div className="nav-bar min-h-full">
             <Disclosure as="nav" className="bg-red-100">
                {({ open }) => (
                   <>
