@@ -6,22 +6,24 @@ import { ApplicationViews } from './views/ApplicationViews';
 import { Authorized } from './views/Authorized';
 
 export const App = () => {
-    return (
-        <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+   return (
+      <Routes>
+         <Route path="/login" element={<Login />} />
+         <Route path="/register" element={<Register />} />
 
-            <Route
-                path="*"
-                element={
-                    <Authorized>
-                        <>
-                            <AppNav />
-                            <ApplicationViews />
-                        </>
-                    </Authorized>
-                }
-            />
-        </Routes>
-    );
+         <Route
+            path="*"
+            element={
+               <Authorized>
+                  <>
+                     <AppNav />
+                     <div className="content-wrapper">
+                        <ApplicationViews />
+                     </div>
+                  </>
+               </Authorized>
+            }
+         />
+      </Routes>
+   );
 };
