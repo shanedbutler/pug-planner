@@ -1,5 +1,8 @@
 # Pick-Up Game Planner
-Pick-Up Game Planner, also known as PUG Planner, or PUP is a web application to plan, organize and manage community pick-up game events. 
+Pick-Up Game Planner, also known as PUG Planner, or PUP is a web application to plan, organize and manage community pick-up game events. The application was designed specifically for soccer, but could easily be expanded to serve a wide variety of sports and activites, including tabletop and e-sports.
+
+![](https://github.com/shanedbutler/pug-planner/blob/main/preview.gif)
+
 
 ## Getting Started with PUG Planner
 
