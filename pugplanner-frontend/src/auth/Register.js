@@ -164,7 +164,7 @@ export const Register = () => {
                                           autoComplete="given-name"
                                           required
                                           ref={firstNameRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                        />
                                     </div>
 
@@ -182,7 +182,7 @@ export const Register = () => {
                                           autoComplete="family-name"
                                           required
                                           ref={lastNameRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                        />
                                     </div>
 
@@ -200,7 +200,7 @@ export const Register = () => {
                                           autoComplete="email"
                                           required
                                           ref={emailRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                        />
                                     </div>
 
@@ -217,7 +217,7 @@ export const Register = () => {
                                           id="phone"
                                           required
                                           ref={phoneRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                           onBlur={(e) =>
                                              validatePhone(
                                                 phoneRef.current.value,
@@ -244,7 +244,7 @@ export const Register = () => {
                                           name="password"
                                           id="password"
                                           autoComplete="email"
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                        />
                                     </div>
 
@@ -258,7 +258,7 @@ export const Register = () => {
                                        <Select
                                           id="position"
                                           name="position"
-                                          className="mt-1 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 rounded-md shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                           options={positionOptions}
                                           onChange={handlePositionSelect}
                                        />
@@ -274,7 +274,7 @@ export const Register = () => {
                                        <Select
                                           id="secondary-position"
                                           name="secondary-position"
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                           options={positionOptions}
                                           onChange={
                                              handleSecondaryPositionSelect
@@ -292,7 +292,7 @@ export const Register = () => {
                                        <Select
                                           id="pronouns"
                                           name="pronouns"
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                           options={pronounOptions}
                                           onChange={handlePronounSelect}
                                        />
@@ -310,7 +310,7 @@ export const Register = () => {
                                           name="club"
                                           id="club"
                                           ref={clubRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                        />
                                     </div>
 
@@ -327,7 +327,7 @@ export const Register = () => {
                                           id="emergency-contact-name"
                                           required
                                           ref={emergencyNameRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                        />
                                     </div>
 
@@ -344,7 +344,7 @@ export const Register = () => {
                                           id="emergency-contact-phone"
                                           required
                                           ref={emergencyPhoneRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                           onBlur={(e) =>
                                              validatePhone(
                                                 emergencyPhoneRef.current.value,

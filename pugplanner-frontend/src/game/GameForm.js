@@ -108,7 +108,7 @@ export const GameForm = () => {
                                        id="title"
                                        required
                                        ref={titleRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -125,7 +125,7 @@ export const GameForm = () => {
                                        id="location"
                                        required
                                        ref={locationRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -142,7 +142,7 @@ export const GameForm = () => {
                                        id="address"
                                        required
                                        ref={addressRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -159,7 +159,7 @@ export const GameForm = () => {
                                        name="description"
                                        required
                                        ref={descriptionRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -176,7 +176,7 @@ export const GameForm = () => {
                                        name="max-players"
                                        required
                                        ref={maxPlayersRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -193,7 +193,7 @@ export const GameForm = () => {
                                        defaultValue={userOptions[1]}
                                        options={userOptions}
                                        onChange={handleUserSelect}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -210,7 +210,7 @@ export const GameForm = () => {
                                        name="game-date"
                                        required
                                        ref={gameDateRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -227,7 +227,7 @@ export const GameForm = () => {
                                        name="game-time"
                                        required
                                        ref={gameTimeRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -244,7 +244,7 @@ export const GameForm = () => {
                                        name="signup-date"
                                        required
                                        ref={signupDateRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -261,7 +261,7 @@ export const GameForm = () => {
                                        name="signup-time"
                                        required
                                        ref={signupTimeRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
                               </div>

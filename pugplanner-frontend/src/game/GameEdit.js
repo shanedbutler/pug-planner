@@ -137,7 +137,7 @@ export const GameEdit = () => {
                                        required
                                        defaultValue={game.title}
                                        ref={titleRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -155,7 +155,7 @@ export const GameEdit = () => {
                                        required
                                        defaultValue={game.location}
                                        ref={locationRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -173,7 +173,7 @@ export const GameEdit = () => {
                                        required
                                        defaultValue={game.address}
                                        ref={addressRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -185,13 +185,14 @@ export const GameEdit = () => {
                                        Description
                                     </label>
                                     <textarea
+                                       rows="4" 
                                        type="text"
                                        id="description"
                                        name="description"
                                        required
                                        defaultValue={game.description}
                                        ref={descriptionRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -209,7 +210,7 @@ export const GameEdit = () => {
                                        required
                                        defaultValue={game.maxPlayers}
                                        ref={maxPlayersRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -227,7 +228,7 @@ export const GameEdit = () => {
                                        value={secondaryHostDefault}
                                        isSearchable={false}
                                        onChange={handleUserSelect}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -245,7 +246,7 @@ export const GameEdit = () => {
                                        required
                                        defaultValue={game.gameDateFormString}
                                        ref={gameDateRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -263,7 +264,7 @@ export const GameEdit = () => {
                                        defaultValue={game.gameTimeFormString}
                                        required
                                        ref={gameTimeRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -281,7 +282,7 @@ export const GameEdit = () => {
                                        required
                                        defaultValue={game.signupDateFormString}
                                        ref={signupDateRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 
@@ -299,7 +300,7 @@ export const GameEdit = () => {
                                        required
                                        defaultValue={game.signupTimeFormString}
                                        ref={signupTimeRef}
-                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
 

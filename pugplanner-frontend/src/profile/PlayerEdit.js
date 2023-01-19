@@ -191,7 +191,7 @@ export const PlayerEdit = ({ userId }) => {
                                           required
                                           defaultValue={player.firstName}
                                           ref={firstNameRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                        />
                                     </div>
 
@@ -207,7 +207,7 @@ export const PlayerEdit = ({ userId }) => {
                                           required
                                           defaultValue={player.lastName}
                                           ref={lastNameRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                        />
                                     </div>
 
@@ -226,7 +226,7 @@ export const PlayerEdit = ({ userId }) => {
                                           required
                                           defaultValue={player.email}
                                           ref={emailRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                        />
                                     </div>
 
@@ -241,7 +241,7 @@ export const PlayerEdit = ({ userId }) => {
                                           required
                                           defaultValue={player.phone}
                                           ref={phoneRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                           onBlur={(e) => validatePhone(phoneRef.current.value, 'user')}
                                        />
                                        {!isPhoneValid && (
@@ -314,7 +314,7 @@ export const PlayerEdit = ({ userId }) => {
                                           placeholder="Club played in or supported..."
                                           defaultValue={player.club}
                                           ref={clubRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                        />
                                     </div>
 
@@ -332,7 +332,7 @@ export const PlayerEdit = ({ userId }) => {
                                           required
                                           defaultValue={player.emergencyName}
                                           ref={emergencyNameRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                        />
                                     </div>
 
@@ -350,7 +350,7 @@ export const PlayerEdit = ({ userId }) => {
                                           required
                                           defaultValue={player.emergencyPhone}
                                           ref={emergencyPhoneRef}
-                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                           onBlur={(e) => validatePhone(emergencyPhoneRef.current.value, 'emergency')}
                                        />
                                        {!isEmgPhoneValid && (
