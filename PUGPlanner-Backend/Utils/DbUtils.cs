@@ -78,6 +78,23 @@ namespace PUGPlanner_Backend.Utils
         }
 
         /// <summary>
+        ///  Get an string? (nullable string) from a data reader object and gracefully handle NULL values
+        /// </summary>
+        /// <param name="reader">A SqlDataReader that has not exhausted it's result set.</param>
+        /// <param name="column">The name of the column from the result set refereed to by the reader.</param>
+        /// <returns>The value of the given column or null.</returns>
+        public static string GetNullableString(SqlDataReader reader, string column)
+        {
+            var ordinal = reader.GetOrdinal(column);
+            if (reader.IsDBNull(ordinal))
+            {
+                return null;
+            }
+
+            return reader.GetString(ordinal);
+        }
+
+        /// <summary>
         ///  Get a DateTime? (nullable DateTime) from a data reader object and gracefully handle NULL values
         /// </summary>
         /// <param name="reader">A SqlDataReader that has not exhausted it's result set.</param>
