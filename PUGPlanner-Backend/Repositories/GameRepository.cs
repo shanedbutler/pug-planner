@@ -39,17 +39,23 @@ namespace PUGPlanner_Backend.Repositories
                                up2.EmergencyName as EmergencyName2, up2.EmergencyPhone as EmergencyPhone2, up2.Active as Active2,
                                p3.[Name] as PrimaryPositionName2, p4.[Name] as SecondaryPositionName2,
                                p3.FullName as PrimaryPositionFullName2, p4.FullName as SecondaryPositionFullName2,
-                               pn2.[Name] as PronounName2
+                               pn2.[Name] as PronounName2,
+                               PlayerCount
                         FROM Game g
                                LEFT JOIN UserProfile up ON g.PrimaryHostId = up.Id
                                LEFT JOIN UserProfile up2 ON g.SecondaryHostId = up2.Id
                                JOIN [Position] p ON up.PrimaryPositionId = p.Id
                                LEFT JOIN [Position] p2 ON up.SecondaryPositionId = p2.Id
-                               JOIN Pronoun pn ON up.PronounId = pn.Id
+                               LEFT JOIN Pronoun pn ON up.PronounId = pn.Id
                                LEFT JOIN [Position] p3 ON up2.PrimaryPositionId = p3.Id
                                LEFT JOIN [Position] p4 ON up2.SecondaryPositionId = p4.Id
                                LEFT JOIN Pronoun pn2 ON up2.PronounId = pn2.Id
-                        ORDER BY g.GameDate ASC";
+                               LEFT JOIN (
+                                    SELECT cg.Id, Count(cg.Id) as PlayerCount
+                                    FROM Game cg
+                                    LEFT JOIN GameRoster gr ON cg.Id = gr.GameId
+                                    GROUP BY cg.Id ) c ON g.Id = c.Id
+                               ORDER BY g.GameDate ASC";
 
                     List<Game> games = new();
 
@@ -104,7 +110,7 @@ namespace PUGPlanner_Backend.Repositories
                                LEFT JOIN UserProfile up2 ON g.SecondaryHostId = up2.Id
                                JOIN [Position] p ON up.PrimaryPositionId = p.Id
                                LEFT JOIN [Position] p2 ON up.SecondaryPositionId = p2.Id
-                               JOIN Pronoun pn ON up.PronounId = pn.Id
+                               LEFT JOIN Pronoun pn ON up.PronounId = pn.Id
                                LEFT JOIN [Position] p3 ON up2.PrimaryPositionId = p3.Id
                                LEFT JOIN [Position] p4 ON up2.SecondaryPositionId = p4.Id
                                LEFT JOIN Pronoun pn2 ON up2.PronounId = pn2.Id
@@ -139,7 +145,7 @@ namespace PUGPlanner_Backend.Repositories
         /// <returns>Game object</returns>
         private Game NewGameFromReader(SqlDataReader reader)
         {
-            return new Game()
+            Game game = new()
             {
                 Id = DbUtils.GetInt(reader, "Id"),
                 Title = DbUtils.GetString(reader, "Title"),
@@ -149,6 +155,7 @@ namespace PUGPlanner_Backend.Repositories
                 GameDate = DbUtils.GetDateTime(reader, "GameDate"),
                 SignupDate = DbUtils.GetDateTime(reader, "SignupDate"),
                 MaxPlayers = DbUtils.GetInt(reader, "MaxPlayers"),
+                CurrentPlayers = DbUtils.GetInt(reader, "PlayerCount"),
                 Recurring = DbUtils.GetBool(reader, "Recurring"),
                 PrimaryHostId = DbUtils.GetInt(reader, "PrimaryHostId"),
                 SecondaryHostId = DbUtils.GetNullableInt(reader, "SecondaryHostId"),
@@ -174,14 +181,20 @@ namespace PUGPlanner_Backend.Repositories
                         Secondary = DbUtils.GetString(reader, "SecondaryPositionName"),
                         PrimaryFull = DbUtils.GetString(reader, "PrimaryPositionFullName"),
                         SecondaryFull = DbUtils.GetString(reader, "SecondaryPositionFullName"),
-                    },
-                    Pronoun = new Pronoun()
-                    {
-                        Id = DbUtils.GetInt(reader, "PronounId"),
-                        Name = DbUtils.GetString(reader, "PronounName"),
                     }
                 }
             };
+
+            if (DbUtils.IsNotDbNull(reader, "PronounId"))
+            {
+                game.PrimaryHost.Pronoun = new Pronoun
+                {
+                    Id = DbUtils.GetNullableInt(reader, "PronounId"),
+                    Name = DbUtils.GetNullableString(reader, "PronounName"),
+                };
+            }
+
+            return game;
         }
 
         private Game AddSecondHostFromReader(Game game, SqlDataReader reader)
@@ -208,14 +221,17 @@ namespace PUGPlanner_Backend.Repositories
                     Secondary = DbUtils.GetString(reader, "SecondaryPositionName2"),
                     PrimaryFull = DbUtils.GetString(reader, "PrimaryPositionFullName2"),
                     SecondaryFull = DbUtils.GetString(reader, "SecondaryPositionFullName2"),
-                },
-                Pronoun = new Pronoun()
-                {
-                    Id = DbUtils.GetInt(reader, "PronounId2"),
-                    Name = DbUtils.GetString(reader, "PronounName2"),
                 }
             };
 
+            if (DbUtils.IsNotDbNull(reader, "PronounId"))
+            {
+                game.SecondaryHost.Pronoun = new Pronoun
+                {
+                    Id = DbUtils.GetNullableInt(reader, "PronounId"),
+                    Name = DbUtils.GetNullableString(reader, "PronounName"),
+                };
+            }
             return game;
         }
 
