@@ -30,7 +30,7 @@ namespace PUGPlanner_Backend.Repositories
                                p.FullName as PrimaryPositionFullName, p2.FullName as SecondaryPositionFullName,
                                pn.[Name] as PronounName
                           FROM [UserProfile] up
-                              JOIN Pronoun pn ON up.PronounId = pn.Id
+                              LEFT JOIN Pronoun pn ON up.PronounId = pn.Id
                               JOIN [Position] p ON up.PrimaryPositionId = p.id
                               JOIN [Position] p2 ON up.SecondaryPositionId = p2.id
                          WHERE up.Id = @id";
@@ -68,7 +68,7 @@ namespace PUGPlanner_Backend.Repositories
                                p.FullName as PrimaryPositionFullName, p2.FullName as SecondaryPositionFullName,
                                pn.[Name] as PronounName
                           FROM [UserProfile] up
-                              JOIN Pronoun pn ON up.PronounId = pn.Id
+                              LEFT JOIN Pronoun pn ON up.PronounId = pn.Id
                               JOIN [Position] p ON up.PrimaryPositionId = p.id
                               JOIN [Position] p2 ON up.SecondaryPositionId = p2.id
                           ORDER BY up.LastName";
@@ -185,7 +185,7 @@ namespace PUGPlanner_Backend.Repositories
         /// <returns>User object</returns>
         private User NewUserFromReader(SqlDataReader reader)
         {
-            return new User()
+            User user = new()
             {
                 Id = DbUtils.GetInt(reader, "UserId"),
                 FirstName = DbUtils.GetString(reader, "FirstName"),
@@ -207,13 +207,18 @@ namespace PUGPlanner_Backend.Repositories
                     Secondary = DbUtils.GetNullableString(reader, "SecondaryPositionName"),
                     PrimaryFull = DbUtils.GetNullableString(reader, "PrimaryPositionFullName"),
                     SecondaryFull = DbUtils.GetNullableString(reader, "SecondaryPositionFullName"),
-                },
-                Pronoun = new Pronoun()
+                }
+            };
+
+            if (DbUtils.IsNotDbNull(reader, "PronounId"))
+            {
+                user.Pronoun = new Pronoun
                 {
                     Id = DbUtils.GetNullableInt(reader, "PronounId"),
                     Name = DbUtils.GetNullableString(reader, "PronounName"),
-                }
-            };
+                };
+            }
+            return user;
         }
 
         public void Add(User user)
