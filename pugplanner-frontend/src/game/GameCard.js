@@ -1,12 +1,10 @@
 import { CheckIcon, LockClosedIcon, LockOpenIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchGameRosterCount } from '../managers/RosterManager';
 
 export const GameCard = ({ game }) => {
    const navigate = useNavigate();
 
-   const [rosterCount, setRosterCount] = useState({});
    const [isWaitList, setIsWaitList] = useState(false);
 
    const handleDetails = () => {
@@ -17,18 +15,14 @@ export const GameCard = ({ game }) => {
     * Checks if current roster count is over game's max-players.
     */
    const checkIsWaitList = () => {
-      if (rosterCount.currentPlayers > game.maxPlayers) {
+      if (game.currentPlayers > game.maxPlayers) {
          setIsWaitList(true);
       }
    };
 
    useEffect(() => {
-      fetchGameRosterCount(game.id).then((countObj) => setRosterCount(countObj));
-   }, [game.id]);
-
-   useEffect(() => {
       checkIsWaitList();
-   }, [rosterCount]);
+   }, []);
 
    return (
       <>
@@ -97,9 +91,9 @@ export const GameCard = ({ game }) => {
                         {game.signupDateStatus < 0
                            ? isWaitList
                               ? `${game.maxPlayers} / ${game.maxPlayers} with ${
-                                   rosterCount.currentPlayers - game.maxPlayers
+                                   game.currentPlayers - game.maxPlayers
                                 } on wait-list`
-                              : `${rosterCount.currentPlayers} / ${game.maxPlayers}`
+                              : `${game.currentPlayers} / ${game.maxPlayers}`
                            : game.maxPlayers}
                      </dd>
                   </div>
