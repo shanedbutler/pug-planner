@@ -104,7 +104,8 @@ namespace PUGPlanner_Backend.Repositories
                                up2.EmergencyName as EmergencyName2, up2.EmergencyPhone as EmergencyPhone2, up2.Active as Active2,
                                p3.[Name] as PrimaryPositionName2, p4.[Name] as SecondaryPositionName2,
                                p3.FullName as PrimaryPositionFullName2, p4.FullName as SecondaryPositionFullName2,
-                               pn2.[Name] as PronounName2
+                               pn2.[Name] as PronounName2,
+                               PlayerCount
                         FROM Game g
                                LEFT JOIN UserProfile up ON g.PrimaryHostId = up.Id
                                LEFT JOIN UserProfile up2 ON g.SecondaryHostId = up2.Id
@@ -114,6 +115,11 @@ namespace PUGPlanner_Backend.Repositories
                                LEFT JOIN [Position] p3 ON up2.PrimaryPositionId = p3.Id
                                LEFT JOIN [Position] p4 ON up2.SecondaryPositionId = p4.Id
                                LEFT JOIN Pronoun pn2 ON up2.PronounId = pn2.Id
+                               LEFT JOIN (
+                                    SELECT cg.Id, Count(cg.Id) as PlayerCount
+                                    FROM Game cg
+                                    LEFT JOIN GameRoster gr ON cg.Id = gr.GameId
+                                    GROUP BY cg.Id) c ON g.Id = c.Id
                         WHERE g.id = @Id";
 
                     cmd.Parameters.AddWithValue("@Id", id);
