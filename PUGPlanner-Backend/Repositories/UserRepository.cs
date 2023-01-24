@@ -30,7 +30,7 @@ namespace PUGPlanner_Backend.Repositories
                                p.FullName as PrimaryPositionFullName, p2.FullName as SecondaryPositionFullName,
                                pn.[Name] as PronounName
                           FROM [UserProfile] up
-                              JOIN Pronoun pn ON up.PronounId = pn.Id
+                              LEFT JOIN Pronoun pn ON up.PronounId = pn.Id
                               JOIN [Position] p ON up.PrimaryPositionId = p.id
                               JOIN [Position] p2 ON up.SecondaryPositionId = p2.id
                          WHERE up.Id = @id";
@@ -68,7 +68,7 @@ namespace PUGPlanner_Backend.Repositories
                                p.FullName as PrimaryPositionFullName, p2.FullName as SecondaryPositionFullName,
                                pn.[Name] as PronounName
                           FROM [UserProfile] up
-                              JOIN Pronoun pn ON up.PronounId = pn.Id
+                              LEFT JOIN Pronoun pn ON up.PronounId = pn.Id
                               JOIN [Position] p ON up.PrimaryPositionId = p.id
                               JOIN [Position] p2 ON up.SecondaryPositionId = p2.id
                           ORDER BY up.LastName";
@@ -185,17 +185,17 @@ namespace PUGPlanner_Backend.Repositories
         /// <returns>User object</returns>
         private User NewUserFromReader(SqlDataReader reader)
         {
-            return new User()
+            User user = new()
             {
                 Id = DbUtils.GetInt(reader, "UserId"),
                 FirstName = DbUtils.GetString(reader, "FirstName"),
                 LastName = DbUtils.GetString(reader, "LastName"),
                 Email = DbUtils.GetString(reader, "Email"),
                 Phone = DbUtils.GetString(reader, "Phone"),
-                Club = DbUtils.GetString(reader, "Club"),
+                Club = DbUtils.GetNullableString(reader, "Club"),
                 PrimaryPositionId = DbUtils.GetInt(reader, "PrimaryPositionId"),
                 SecondaryPositionId = DbUtils.GetInt(reader, "SecondaryPositionId"),
-                PronounId = DbUtils.GetInt(reader, "PronounId"),
+                PronounId = DbUtils.GetNullableInt(reader, "PronounId"),
                 CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
                 Admin = DbUtils.GetBool(reader, "Admin"),
                 EmergencyName = DbUtils.GetString(reader, "EmergencyName"),
@@ -203,17 +203,22 @@ namespace PUGPlanner_Backend.Repositories
                 Active = DbUtils.GetBool(reader, "Active"),
                 Position = new UserPosition()
                 {
-                    Primary = DbUtils.GetString(reader, "PrimaryPositionName"),
-                    Secondary = DbUtils.GetString(reader, "SecondaryPositionName"),
-                    PrimaryFull = DbUtils.GetString(reader, "PrimaryPositionFullName"),
-                    SecondaryFull = DbUtils.GetString(reader, "SecondaryPositionFullName"),
-                },
-                Pronoun = new Pronoun()
-                {
-                    Id = DbUtils.GetInt(reader, "PronounId"),
-                    Name = DbUtils.GetString(reader, "PronounName"),
+                    Primary = DbUtils.GetNullableString(reader, "PrimaryPositionName"),
+                    Secondary = DbUtils.GetNullableString(reader, "SecondaryPositionName"),
+                    PrimaryFull = DbUtils.GetNullableString(reader, "PrimaryPositionFullName"),
+                    SecondaryFull = DbUtils.GetNullableString(reader, "SecondaryPositionFullName"),
                 }
             };
+
+            if (DbUtils.IsNotDbNull(reader, "PronounId"))
+            {
+                user.Pronoun = new Pronoun
+                {
+                    Id = DbUtils.GetNullableInt(reader, "PronounId"),
+                    Name = DbUtils.GetNullableString(reader, "PronounName"),
+                };
+            }
+            return user;
         }
 
         public void Add(User user)

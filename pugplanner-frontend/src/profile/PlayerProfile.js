@@ -94,7 +94,7 @@ export const PlayerProfile = ({ isAdmin }) => {
                      {player.fullName}
                   </h3>
                   <div className="text-sm mt-0 mb-2 text-slate-400">
-                     ({player.pronoun?.name})
+                     {player.pronoun?.name}
                      <div className="mt-1">{player.club}</div>
                      {isAdmin && (
                         <>
