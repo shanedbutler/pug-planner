@@ -93,7 +93,9 @@ export const GameCard = ({ game }) => {
                               ? `${game.maxPlayers} / ${game.maxPlayers} with ${
                                    game.currentPlayers - game.maxPlayers
                                 } on wait-list`
-                              : `${game.currentPlayers} / ${game.maxPlayers}`
+                              : game.currentPlayers 
+                                 ? `${game.currentPlayers} / ${game.maxPlayers}`
+                                 : game.maxPlayers
                            : game.maxPlayers}
                      </dd>
                   </div>
