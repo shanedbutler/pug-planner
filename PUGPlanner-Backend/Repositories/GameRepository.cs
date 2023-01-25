@@ -51,7 +51,7 @@ namespace PUGPlanner_Backend.Repositories
                                LEFT JOIN [Position] p4 ON up2.SecondaryPositionId = p4.Id
                                LEFT JOIN Pronoun pn2 ON up2.PronounId = pn2.Id
                                LEFT JOIN (
-                                    SELECT cg.Id, Count(cg.Id) as PlayerCount
+                                    SELECT cg.Id, Count(gr.GameId) as PlayerCount
                                     FROM Game cg
                                     LEFT JOIN GameRoster gr ON cg.Id = gr.GameId
                                     GROUP BY cg.Id ) c ON g.Id = c.Id
@@ -116,7 +116,7 @@ namespace PUGPlanner_Backend.Repositories
                                LEFT JOIN [Position] p4 ON up2.SecondaryPositionId = p4.Id
                                LEFT JOIN Pronoun pn2 ON up2.PronounId = pn2.Id
                                LEFT JOIN (
-                                    SELECT cg.Id, Count(cg.Id) as PlayerCount
+                                    SELECT cg.Id, Count(gr.GameId) as PlayerCount
                                     FROM Game cg
                                     LEFT JOIN GameRoster gr ON cg.Id = gr.GameId
                                     GROUP BY cg.Id) c ON g.Id = c.Id
