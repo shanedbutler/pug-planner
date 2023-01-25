@@ -241,8 +241,8 @@ export const GameDetails = ({ isAdmin }) => {
                               {isRosterEmpty
                                  ? game.maxPlayers
                                  : isWaitList
-                                 ? `${game.maxPlayers} / ${game.maxPlayers} with ${waitList.length} on wait-list`
-                                 : `${game.currentPlayers} / ${game.maxPlayers}`}
+                                    ? `${game.maxPlayers} / ${game.maxPlayers} with ${waitList.length} on wait-list`
+                                    : `${game.currentPlayers} / ${game.maxPlayers}`}
                            </dd>
                         </div>
                         <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
