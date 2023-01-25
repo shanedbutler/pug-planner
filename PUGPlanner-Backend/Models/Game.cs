@@ -53,6 +53,6 @@ namespace PUGPlanner_Backend.Models
 
         public User PrimaryHost { get; set; }
         public User SecondaryHost { get; set; }
-
+        public int CurrentPlayers { get; set; }
     }
 }
