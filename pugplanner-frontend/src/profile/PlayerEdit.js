@@ -137,6 +137,7 @@ export const PlayerEdit = ({ userId }) => {
             emergencyName: emergencyNameRef.current.value,
             emergencyPhone: emergencyPhoneRef.current.value.replace(/\D/g, ''),
             active: player.active,
+            admin: player.admin,
          };
          editUserFetch(editedUser).then(() => navigate(`/profile/${userId}`));
       }
