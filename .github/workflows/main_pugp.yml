@@ -23,9 +23,12 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
+        run: cd PUGPlanner-Backend
+        run: dotnet restore
         run: dotnet build --configuration Release
 
       - name: dotnet publish
+        run: cd PUGPlanner-Backend
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job

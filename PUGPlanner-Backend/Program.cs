@@ -10,6 +10,9 @@ builder.Services.AddTransient<IGameRepository, GameRepository>();
 builder.Services.AddTransient<IRosterRepository, RosterRepository>();
 
 builder.Services.AddControllers();
+
+//builder.options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -21,8 +24,6 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
-    app.UseDeveloperExceptionPage();
 
     app.UseDeveloperExceptionPage();
 
