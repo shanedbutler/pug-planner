@@ -12,6 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+  defaults:
+    run:
+      working-directory: ./PUGPlanner-Backend
 
     steps:
       - uses: actions/checkout@v2
@@ -23,12 +26,10 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
-        run: cd PUGPlanner-Backend
         run: dotnet restore
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: cd PUGPlanner-Backend
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
