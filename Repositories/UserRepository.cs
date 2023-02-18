@@ -8,6 +8,45 @@ namespace PUGPlanner_FS.Repositories
     {
         public UserRepository(IConfiguration configuration) : base(configuration) { }
 
+        public User GetByFirebaseUserId(string firebaseUserId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT up.Id as UserId, up.FirebaseUserId,
+                               up.FirstName, up.LastName, 
+                               up.Email, up.Phone, up.Club,
+                               up.CreateDateTime, up.[Admin], up.PronounId,
+                               up.PrimaryPositionId, up.SecondaryPositionId,
+                               up.EmergencyName, up.EmergencyPhone, up.Active,
+                               p.[Name] as PrimaryPositionName, p2.[Name] as SecondaryPositionName,
+                               p.FullName as PrimaryPositionFullName, p2.FullName as SecondaryPositionFullName,
+                               pn.[Name] as PronounName
+                          FROM [UserProfile] up
+                              LEFT JOIN Pronoun pn ON up.PronounId = pn.Id
+                              JOIN [Position] p ON up.PrimaryPositionId = p.id
+                              JOIN [Position] p2 ON up.SecondaryPositionId = p2.id
+                         WHERE FirebaseUserId = @FirebaseuserId";
+
+                    DbUtils.AddParameter(cmd, "@FirebaseUserId", firebaseUserId);
+
+                    User userProfile = null;
+
+                    var reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        userProfile = NewUserFromReader(reader);
+                    }
+                    reader.Close();
+
+                    return userProfile;
+                }
+            }
+        }
+
         /// <summary>
         /// Queries the UserProfile table by id
         /// </summary>
