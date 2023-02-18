@@ -38,6 +38,7 @@ GO
 
 CREATE TABLE [UserProfile] (
   [Id] int PRIMARY KEY IDENTITY NOT NULL,
+  [FirebaseUserId] nvarchar(28) NOT NULL,
   [FirstName] nvarchar(50) NOT NULL,
   [LastName] nvarchar(50) NOT NULL,
   [Email] nvarchar(50) NOT NULL,
@@ -86,4 +87,7 @@ ALTER TABLE [UserProfile] ADD FOREIGN KEY ([SecondaryPositionId]) REFERENCES [Po
 GO
 
 ALTER TABLE [UserProfile] ADD FOREIGN KEY ([PronounId]) REFERENCES [Pronoun] ([Id])
+GO
+
+ALTER TABLE [UserProfile] ADD CONSTRAINT UQ_FirebaseUserId UNIQUE([FirebaseUserId])
 GO
