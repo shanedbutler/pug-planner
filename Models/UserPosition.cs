@@ -1,4 +1,4 @@
-﻿namespace PUGPlanner_Backend.Models
+﻿namespace PUGPlanner_FS.Models
 {
     public class UserPosition
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 
-namespace PUGPlanner_Backend.Repositories
+namespace PUGPlanner_FS.Repositories
 {
     public abstract class BaseRepository
     {

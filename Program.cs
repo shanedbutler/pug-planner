@@ -1,4 +1,4 @@
-using PUGPlanner_Backend.Repositories;
+using PUGPlanner_FS.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

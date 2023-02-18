@@ -1,6 +1,6 @@
-﻿using PUGPlanner_Backend.Models;
+﻿using PUGPlanner_FS.Models;
 
-namespace PUGPlanner_Backend.Repositories
+namespace PUGPlanner_FS.Repositories
 {
     public interface IPositionRepository
     {

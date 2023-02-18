@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 
-namespace PUGPlanner_Backend.Utils
+namespace PUGPlanner_FS.Utils
 {
     /// <summary>
     ///  A set of useful function for interacting with ADO.NET

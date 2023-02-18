@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PUGPlanner_Backend.Repositories;
-using PUGPlanner_Backend.Models;
+using PUGPlanner_FS.Repositories;
+using PUGPlanner_FS.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace PUGPlanner_Backend.Controllers
+namespace PUGPlanner_FS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

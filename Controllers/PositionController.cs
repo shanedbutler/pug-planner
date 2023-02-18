@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PUGPlanner_Backend.Repositories;
+using PUGPlanner_FS.Repositories;
 
-namespace PUGPlanner_Backend.Controllers
+namespace PUGPlanner_FS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

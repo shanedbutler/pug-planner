@@ -9,7 +9,7 @@
 		<SpaProxyServerUrl>https://localhost:44477</SpaProxyServerUrl>
 		<SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<RootNamespace>PUGPlanner_Backend</RootNamespace>
+		<RootNamespace>PUGPlanner_FS</RootNamespace>
 		<UserSecretsId>e450833b-9634-44e5-a141-2c461b79ce66</UserSecretsId>
 	</PropertyGroup>
 

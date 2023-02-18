@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 
-namespace PUGPlanner_Backend.Models
+namespace PUGPlanner_FS.Models
 {
     public class User
     {
