@@ -1,5 +1,6 @@
 import Avatar from 'boring-avatars';
 import { postOption, putOption } from './FetchOptions';
+import { getToken } from './AuthManager';
 
 const apiUrl = 'https://localhost:7066';
 
@@ -19,43 +20,78 @@ export const fetchUser = async (id) => {
  * @returns Array of user objects
  */
 export const fetchUsers = async () => {
-   const response = await fetch(`${apiUrl}/api/user/getall`);
-   const users = await response.json();
-   return users;
+   const token = await getToken();
+   const response = await fetch(`${apiUrl}/api/user/getall`, {
+      method: 'GET',
+      headers: {
+         Authorization: `Bearer ${token}`,
+      }
+   });
+   if (response.ok) {
+      return response.json();
+   }
+   else {
+      throw new Error('An unknown error occurred while trying to get users.')
+   }
 };
 
-/**
- * Get fetch user from database by email and sets user to localStorage
- * @param {string} email
- * @returns User object or undefined if user not found
- */
-export const login = (email) => {
-   return fetch(`${apiUrl}/api/user/get?email=${email}`)
-      .then((r) => r.json())
-      .then((user) => {
-         if (user.id) {
-            localStorage.setItem(
-               'userProfile',
-               JSON.stringify({
-                  id: user.id,
-                  fullName: user.fullName,
-                  email: user.email,
-                  admin: user.admin,
-               })
-            );
-            return user;
-         } else {
-            return undefined;
-         }
-      });
-};
+// export const fetchUsersPromise = () => {
+//    return getToken().then((token) => {
+//       return fetch(`{apiUrl}/api/user/getall`, {
+//          method: 'GET',
+//          headers: {
+//             Authorization: `Bearer ${token}`,
+//          },
+//       }).then((resp) => {
+//          if (resp.ok) {
+//             return resp.json();
+//          } else {
+//             throw new Error('An unknown error occurred while trying to get quotes.');
+//          }
+//       });
+//    });
+// };
 
-/**
- * Removes user by clearing localStorage
- */
-export const logout = () => {
-   localStorage.clear();
-};
+
+// export const fetchUsers = async () => {
+//    return get;
+//    const response = await fetch(`${apiUrl}/api/user/getall`);
+//    const users = await response.json();
+//    return users;
+// };
+
+// /**
+//  * Get fetch user from database by email and sets user to localStorage
+//  * @param {string} email
+//  * @returns User object or undefined if user not found
+//  */
+// export const login = (email) => {
+//    return fetch(`${apiUrl}/api/user/get?email=${email}`)
+//       .then((r) => r.json())
+//       .then((user) => {
+//          if (user.id) {
+//             localStorage.setItem(
+//                'userProfile',
+//                JSON.stringify({
+//                   id: user.id,
+//                   fullName: user.fullName,
+//                   email: user.email,
+//                   admin: user.admin,
+//                })
+//             );
+//             return user;
+//          } else {
+//             return undefined;
+//          }
+//       });
+// };
+
+// /**
+//  * Removes user by clearing localStorage
+//  */
+// export const logout = () => {
+//    localStorage.clear();
+// };
 
 /**
  * Create new user via POST
@@ -107,20 +143,12 @@ export const UserAvatar = ({ fullName, scale }) => {
       scale = 40;
    }
    const originalColor = ['#F88F89', '#EEC276', '#F2E8DF', '#79C3AA', '#DDB8D9'];
-   
+
    // Alternate colors
    // const altColor = ['#86A69D', '#F2B263', '#F2E8DF', '#F2C6C2', '#F28585'];
    // const altColor2 = ['#F2889B', '#F2E8DF', '#95BFA4', '#F29E38', '#F28444'];
 
-   return (
-      <Avatar
-         size={scale}
-         name={fullName}
-         square={false}
-         variant="beam"
-         colors={originalColor}
-      />
-   );
+   return <Avatar size={scale} name={fullName} square={false} variant="beam" colors={originalColor} />;
 };
 
 /**
@@ -129,9 +157,7 @@ export const UserAvatar = ({ fullName, scale }) => {
  * @returns An array of user objects
  */
 export const fetchRoster = async (gameId) => {
-   const response = await fetch(
-      `${apiUrl}/api/user/getRoster?gameId=${gameId}`
-   );
+   const response = await fetch(`${apiUrl}/api/user/getRoster?gameId=${gameId}`);
    const roster = await response.json();
    return roster;
 };
