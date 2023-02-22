@@ -1,22 +1,18 @@
 import { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../managers/UserManager';
+import { login } from '../managers/AuthManager';
 
 export const Login = () => {
    const emailRef = useRef();
+   const passwordRef = useRef();
    const navigate = useNavigate();
 
    const handleLogin = (e) => {
       e.preventDefault();
-      const loginUser = { email: emailRef.current.value };
-
-      login(loginUser.email).then((user) => {
-         if (user) {
-            navigate('/');
-         } else {
-            window.alert('Invalid email or password');
-         }
-      });
+      const loginUser = { email: emailRef.current.value, password: passwordRef.current.value };
+      login(loginUser.email, loginUser.password)
+      .then(() => navigate("/"))
+      .catch(() => alert("Login Failed"));
    };
 
    return (
@@ -66,6 +62,7 @@ export const Login = () => {
                            Password
                         </label>
                         <input
+                           ref={passwordRef}
                            id="password"
                            name="password"
                            type="password"
