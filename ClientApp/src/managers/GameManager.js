@@ -1,3 +1,4 @@
+import { getToken } from './AuthManager';
 import { deleteOption, postOption, putOption } from './FetchOptions';
 
 const apiUrl = 'https://localhost:7066';
