@@ -1,4 +1,5 @@
-import { postOption } from './FetchOptions';
+import { getToken } from './AuthManager';
+import { deleteOption, getOption, postOption } from './FetchOptions';
 import { getCurrentUser } from './UserManager';
 
 const apiUrl = 'https://localhost:7066';
@@ -9,8 +10,10 @@ const apiUrl = 'https://localhost:7066';
  * @returns rosterGameCount object
  */
 export const fetchGameRosterCount = async (gameId) => {
+   const token = await getToken();
    const response = await fetch(
-      `${apiUrl}/api/roster/getCount?gameId=${gameId}`
+      `${apiUrl}/api/roster/getCount?gameId=${gameId}`,
+      getOption(token)
    );
    const rosterGameCount = await response.json();
    return rosterGameCount;
@@ -22,8 +25,10 @@ export const fetchGameRosterCount = async (gameId) => {
  * @returns rosterUserCount object
  */
 export const fetchUserRosterCount = async (userId) => {
+   const token = await getToken();
    const response = await fetch(
-      `${apiUrl}/api/roster/getUserCount?userId=${userId}`
+      `${apiUrl}/api/roster/getUserCount?userId=${userId}`,
+      getOption(token)
    );
    const rosterUserCount = await response.json();
    return rosterUserCount;
@@ -37,15 +42,15 @@ export const fetchUserRosterCount = async (userId) => {
  */
 export const postUserToRoster = async (gameId) => {
    const userId = getCurrentUser().id;
-
    const rosterEntry = {
       userProfileId: userId,
       gameId: gameId,
    };
-
+   
+   const token = await getToken();
    const response = await fetch(
       `${apiUrl}/api/roster`,
-      postOption(rosterEntry)
+      postOption(rosterEntry, token)
    );
    const rosterReturnedEntry = await response.json();
    return rosterReturnedEntry;
@@ -58,9 +63,10 @@ export const postUserToRoster = async (gameId) => {
 export const deleteUserFromRoster = async (gameId) => {
    const userId = getCurrentUser().id;
 
+   const token = await getToken();
    const response = await fetch(
       `${apiUrl}/api/roster/delete?userId=${userId}&gameId=${gameId}`,
-      { method: 'DELETE' }
+      deleteOption(token)
    );
    return response;
 };

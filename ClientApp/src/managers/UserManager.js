@@ -1,5 +1,5 @@
 import Avatar from 'boring-avatars';
-import { postOption, putOption } from './FetchOptions';
+import { getOption, postOption, putOption } from './FetchOptions';
 import { getToken } from './AuthManager';
 
 const apiUrl = 'https://localhost:7066';
@@ -10,7 +10,8 @@ const apiUrl = 'https://localhost:7066';
  * @returns User object
  */
 export const fetchUser = async (id) => {
-   const response = await fetch(`${apiUrl}/api/user/get/${id}`);
+   const token = await getToken();
+   const response = await fetch(`${apiUrl}/api/user/get/${id}`, getOption(token));
    const user = await response.json();
    return user;
 };
@@ -21,37 +22,13 @@ export const fetchUser = async (id) => {
  */
 export const fetchUsers = async () => {
    const token = await getToken();
-   const response = await fetch(`${apiUrl}/api/user/getall`, {
-      method: 'GET',
-      headers: {
-         Authorization: `Bearer ${token}`,
-      }
-   });
+   const response = await fetch(`${apiUrl}/api/user/getall`, getOption(token));
    if (response.ok) {
       return response.json();
-   }
-   else {
-      throw new Error('An unknown error occurred while trying to get users.')
+   } else {
+      throw new Error('An unknown error occurred while trying to get users.');
    }
 };
-
-// export const fetchUsersPromise = () => {
-//    return getToken().then((token) => {
-//       return fetch(`{apiUrl}/api/user/getall`, {
-//          method: 'GET',
-//          headers: {
-//             Authorization: `Bearer ${token}`,
-//          },
-//       }).then((resp) => {
-//          if (resp.ok) {
-//             return resp.json();
-//          } else {
-//             throw new Error('An unknown error occurred while trying to get quotes.');
-//          }
-//       });
-//    });
-// };
-
 
 // export const fetchUsers = async () => {
 //    return get;
@@ -86,31 +63,26 @@ export const fetchUsers = async () => {
 //       });
 // };
 
-// /**
-//  * Removes user by clearing localStorage
-//  */
-// export const logout = () => {
-//    localStorage.clear();
-// };
-
 /**
  * Create new user via POST
  * @param {UserProfile} userBody
  * @returns GET newly created user object from database
  */
 export const registerUser = async (userBody) => {
-   const response = await fetch(`${apiUrl}/api/user`, postOption(userBody));
+   const token = await getToken();
+   const response = await fetch(`${apiUrl}/api/user`, postOption(userBody, token));
    const user = await response.json();
    return user;
 };
 
 /**
- * Edit user via PUT 
+ * Edit user via PUT
  * @param {UserProfile} userBody
  * @returns GET newly created user object from database
  */
 export const editUserFetch = async (userBody) => {
-   const response = await fetch(`${apiUrl}/api/user`, putOption(userBody));
+   const token = await getToken();
+   const response = await fetch(`${apiUrl}/api/user`, putOption(userBody, token));
    const user = await response.json();
    return user;
 };
@@ -157,7 +129,8 @@ export const UserAvatar = ({ fullName, scale }) => {
  * @returns An array of user objects
  */
 export const fetchRoster = async (gameId) => {
-   const response = await fetch(`${apiUrl}/api/user/getRoster?gameId=${gameId}`);
+   const token = await getToken();
+   const response = await fetch(`${apiUrl}/api/user/getRoster?gameId=${gameId}`, getOption(token));
    const roster = await response.json();
    return roster;
 };
