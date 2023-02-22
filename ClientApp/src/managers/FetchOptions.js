@@ -48,12 +48,17 @@ export const putOption = (body, token) => {
    return put;
 };
 
-export const deleteOption = (body, token) => {
+/**
+ * DELETE option for fetch
+ * @param {*} token 
+ * @returns 
+ */
+export const deleteOption = (token) => {
    return {
       method: 'DELETE',
       headers: {
          Authorization: `Bearer ${token}`,
          'Content-Type': 'application/json',
-      },
+      }
    };
 };
