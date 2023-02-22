@@ -2,6 +2,7 @@
 using PUGPlanner_FS.Repositories;
 using PUGPlanner_FS.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,6 +28,29 @@ namespace PUGPlanner_FS.Controllers
                 return NotFound();
             }
             return Ok(userProfile);
+        }
+
+        [HttpGet("Me")]
+        public IActionResult Me()
+        {
+            var userProfile = GetCurrentUserProfile();
+            if (userProfile == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(userProfile);
+        }
+
+        [HttpGet("DoesUserExist/{firebaseUserId}")]
+        public IActionResult DoesUserExist(string firebaseUserId)
+        {
+            var userProfile = _userRepository.GetByFirebaseUserId(firebaseUserId);
+            if (userProfile == null)
+            {
+                return NotFound();
+            }
+            return Ok();
         }
 
         // GET: api/<UserController>/Get/5
@@ -92,6 +116,11 @@ namespace PUGPlanner_FS.Controllers
 
             return AcceptedAtAction("Get", new { id = user.Id }, user);
         }
-
+        
+        private User GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userRepository.GetByFirebaseUserId(firebaseUserId);
+        }
     }
 }
