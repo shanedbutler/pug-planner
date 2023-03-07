@@ -1,16 +1,12 @@
-import firebase from "firebase/app";
-import "firebase/auth";
+import { auth } from "../index"
 
 const _apiUrl = "/api/userprofile";
-
-// As you work through the following checklist, make sure to use the WisdomAndGrace application as an example.
 
 // Use npm to install the firebase library: npm install firebase. <= Done, although look into only importing auth part of firebase
 // Create a UserProfileProvider component and a UserProfileContext context in a UserProfileProvider.js file.
 // Add login, logout and register functions to the UserProfileProvider.
 // Add an isLoggedIn boolean to the UserProfileProvider's state.
 // Update fetch() calls throughout the app to include an Authorization header that uses the Firebase token.
-
 
 const _doesUserExist = (firebaseUserId) => {
   return getToken().then((token) =>
@@ -36,11 +32,11 @@ const _saveUser = (userProfile) => {
 
 
 export const getToken = () => {
-  const currentUser = firebase.auth().currentUser;
-  if (!currentUser) {
+  const user = auth.currentUser;
+  if (!user) {
     throw new Error("Cannot get current user. Did you forget to login?");
   }
-  return currentUser.getIdToken();
+  return user.getIdToken();
 };
 
 /**
@@ -50,7 +46,7 @@ export const getToken = () => {
  * @returns 
  */
 export const login = (email, pw) => {
-  return firebase.auth().signInWithEmailAndPassword(email, pw)
+  return auth.signInWithEmailAndPassword(email, pw)
     .then((signInResponse) => _doesUserExist(signInResponse.user.uid))
     .then((doesUserExist) => {
       if (!doesUserExist) {
@@ -65,14 +61,12 @@ export const login = (email, pw) => {
     });
 };
 
-
 export const logout = () => {
-  firebase.auth().signOut()
+  auth.signOut()
 };
 
-
 export const register = (userProfile, password) => {
-  return firebase.auth().createUserWithEmailAndPassword(userProfile.email, password)
+  return auth.createUserWithEmailAndPassword(userProfile.email, password)
     .then((createResponse) => _saveUser({
       ...userProfile,
       firebaseUserId: createResponse.user.uid
@@ -89,7 +83,6 @@ export const me = () => {
     }).then((resp) => resp.json()),
   );
 };
-
 
 // This function will be overwritten when the react app calls `onLoginStatusChange`
 let _onLoginStatusChangedHandler = () => {
@@ -114,11 +107,11 @@ export const onLoginStatusChange = (onLoginStatusChangedHandler) => {
   //   functions located elsewhere in this module. We must handle login separately because we have to do a check
   //   against the app's web API in addition to authenticating with firebase to verify a user can login.
   const unsubscribeFromInitialLoginCheck =
-    firebase.auth().onAuthStateChanged(function initialLoadLoginCheck(user) {
+    auth.onAuthStateChanged(function initialLoadLoginCheck(user) {
       unsubscribeFromInitialLoginCheck();
       onLoginStatusChangedHandler(!!user);
 
-      firebase.auth().onAuthStateChanged(function logoutCheck(user) {
+      auth.onAuthStateChanged(function logoutCheck(user) {
         if (!user) {
           onLoginStatusChangedHandler(false);
         }
