@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { App } from './App';
 import firebase from "firebase/app";
-import { initializeApp } from "firebase/app";
+import 'firebase/auth';
 import { getAnalytics } from "firebase/analytics";
 
 // Firebase configuration
@@ -21,8 +21,8 @@ const firebaseConfig = {
    measurementId: process.env.REACT_APP_MEASUREMENT_ID
  };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// Initialize Firebase and export auth for use in AuthManager module
+const app = firebase.initializeApp(firebaseConfig);
 export const auth = app.auth();
 const analytics = getAnalytics(app);
 
