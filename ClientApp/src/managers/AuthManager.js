@@ -1,6 +1,7 @@
 import { auth } from "../index"
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 
-const _apiUrl = "/api/userprofile";
+const _apiUrl = "https://localhost:7066/api/User";
 
 // Use npm to install the firebase library: npm install firebase. <= Done, although look into only importing auth part of firebase
 // Create a UserProfileProvider component and a UserProfileContext context in a UserProfileProvider.js file.
@@ -46,7 +47,7 @@ export const getToken = () => {
  * @returns 
  */
 export const login = (email, pw) => {
-  return auth.signInWithEmailAndPassword(email, pw)
+  return signInWithEmailAndPassword(auth, email, pw)
     .then((signInResponse) => _doesUserExist(signInResponse.user.uid))
     .then((doesUserExist) => {
       if (!doesUserExist) {
@@ -66,7 +67,7 @@ export const logout = () => {
 };
 
 export const register = (userProfile, password) => {
-  return auth.createUserWithEmailAndPassword(userProfile.email, password)
+  return createUserWithEmailAndPassword(auth, userProfile.email, password)
     .then((createResponse) => _saveUser({
       ...userProfile,
       firebaseUserId: createResponse.user.uid
