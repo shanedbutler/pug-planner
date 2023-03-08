@@ -5,8 +5,8 @@ import './input.css';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { App } from './App';
-import firebase from "firebase/app";
-import 'firebase/auth';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 import { getAnalytics } from "firebase/analytics";
 
 // Firebase configuration
@@ -22,9 +22,9 @@ const firebaseConfig = {
  };
 
 // Initialize Firebase and export auth for use in AuthManager module
-const app = firebase.initializeApp(firebaseConfig);
-export const auth = app.auth();
-const analytics = getAnalytics(app);
+const firebaseApp = initializeApp(firebaseConfig);
+export const auth = getAuth(firebaseApp);
+const analytics = getAnalytics(firebaseApp);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
