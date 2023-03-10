@@ -9,6 +9,11 @@ const _apiUrl = "https://localhost:7066/api/User";
 // Add an isLoggedIn boolean to the UserProfileProvider's state.
 // Update fetch() calls throughout the app to include an Authorization header that uses the Firebase token.
 
+/**
+ * Checks if firebase user exists in application database
+ * @param {*} firebaseUserId 
+ * @returns 
+ */
 const _doesUserExist = (firebaseUserId) => {
   return getToken().then((token) =>
     fetch(`${_apiUrl}/DoesUserExist/${firebaseUserId}`, {
@@ -19,6 +24,12 @@ const _doesUserExist = (firebaseUserId) => {
     }).then(resp => resp.ok));
 };
 
+/**
+ * Saves newly registered user to application with Firebase Id
+ * TODO: link to correct API URL
+ * @param {} userProfile 
+ * @returns 
+ */
 const _saveUser = (userProfile) => {
   return getToken().then((token) =>
     fetch(_apiUrl, {
@@ -31,7 +42,10 @@ const _saveUser = (userProfile) => {
     }).then(resp => resp.json()));
 };
 
-
+/**
+ * Calls Firebase getIdToken() for the current user.
+ * @returns a deserialized JSON Web Token (JWT) used to identify the user to a Firebase service
+ */
 export const getToken = () => {
   const user = auth.currentUser;
   if (!user) {
@@ -41,7 +55,7 @@ export const getToken = () => {
 };
 
 /**
- * Use Firebase to authenticate user with Email and Password. Ensures user exists in application database.
+ * Use Firebase to authenticate user with Email and Password. Checks if user exists in application database.
  * @param {string} email 
  * @param {string} pw 
  * @returns 
@@ -62,6 +76,9 @@ export const login = (email, pw) => {
     });
 };
 
+/**
+ * Signs out the current user from Firebase auth
+ */
 export const logout = () => {
   auth.signOut()
 };
@@ -74,6 +91,10 @@ export const register = (userProfile, password) => {
     }).then(() => _onLoginStatusChangedHandler(true)));
 };
 
+/**
+ * 
+ * @returns Current firebase authenticated user object from application database
+ */
 export const me = () => {
   return getToken().then((token) =>
     fetch(`${_apiUrl}/me`, {
@@ -85,15 +106,15 @@ export const me = () => {
   );
 };
 
-// This function will be overwritten when the react app calls `onLoginStatusChange`
+// This function will be overwritten when the react app calls `onLoginStatusChange` with callback function
 let _onLoginStatusChangedHandler = () => {
   throw new Error("There's no login status change handler. Did you forget to call 'onLoginStatusChange()'?")
 };
 
-// This function acts as a link between this module.
-// It sets up the mechanism for notifying the react app when the user logs in or out.
-// You might argue that this is all wrong and you might be right, but I promise there are reasons,
-//   and at least this mess is relatively contained in one place.
+/**
+ * Sets up mechanism for notifying the react app when the user logs in or out.
+ * @param {*} onLoginStatusChangedHandler 
+ */
 export const onLoginStatusChange = (onLoginStatusChangedHandler) => {
 
   // Here we take advantage of the firebase 'onAuthStateChanged' observer in a couple of different ways.
