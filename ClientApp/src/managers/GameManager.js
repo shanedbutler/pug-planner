@@ -1,5 +1,5 @@
 import { getToken } from './AuthManager';
-import { deleteOption, postOption, putOption } from './FetchOptions';
+import { deleteOption, getOption, postOption, putOption } from './FetchOptions';
 
 const apiUrl = 'https://localhost:7066';
 
@@ -9,7 +9,7 @@ const apiUrl = 'https://localhost:7066';
  */
 export const fetchGames = async () => {
    const token = await getToken();
-   const response = await fetch(`${apiUrl}/api/game/get`, putOption(token));
+   const response = await fetch(`${apiUrl}/api/game/get`, getOption(token));
    const games = await response.json();
    return games;
 };
@@ -21,7 +21,7 @@ export const fetchGames = async () => {
  */
 export const fetchGame = async (gameId) => {
    const token = await getToken();
-   const response = await fetch(`${apiUrl}/api/game/get/${gameId}`, putOption(token));
+   const response = await fetch(`${apiUrl}/api/game/get/${gameId}`, getOption(token));
    const game = await response.json();
    return game;
 };
