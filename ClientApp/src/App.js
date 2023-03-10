@@ -19,16 +19,18 @@ export const App = () => {
 
    useEffect(() => {
       if (isLoggedIn) {
-         me().then(setUserProfile);
-         localStorage.setItem(
-            'userProfile',
-            JSON.stringify({
-               id: userProfile.id,
-               fullName: userProfile.fullName,
-               email: userProfile.email,
-               admin: userProfile.admin,
-            })
-         );
+         me().then(res => {
+            setUserProfile(res);
+            localStorage.setItem(
+               'userProfile',
+               JSON.stringify({
+                  id: res.id,
+                  fullName: res.fullName,
+                  email: res.email,
+                  admin: res.admin,
+               })
+            );
+         });
       } else {
          setUserProfile(null);
          localStorage.removeItem("userProfile");
