@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { UserAvatar, getCurrentUser } from '../managers/UserManager';
+import { UserAvatar, getLocalUser } from '../managers/UserManager';
 import { logout } from '../managers/AuthManager';
 import { useNavigate } from 'react-router-dom';
 
@@ -42,7 +42,7 @@ export const AppNav = () => {
    }
 
    useEffect(() => {
-      setUser(getCurrentUser());
+      setUser(getLocalUser());
    }, []);
    return (
       <>

@@ -2,7 +2,7 @@ import { ChevronLeftIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { fetchUserRosterCount } from '../managers/RosterManager';
-import { fetchUser, getCurrentUser, UserAvatar } from '../managers/UserManager';
+import { fetchUser, getLocalUser, UserAvatar } from '../managers/UserManager';
 
 export const PlayerProfile = ({ isAdmin }) => {
    const { id } = useParams();
@@ -21,7 +21,7 @@ export const PlayerProfile = ({ isAdmin }) => {
     * Use local storage object to check if current user is at their own profile page
     */
    const checkAndSet = (userObj) => {
-      const userId = getCurrentUser().id;
+      const userId = getLocalUser().id;
       if (userId === userObj.id) {
          setIsOwn(true);
       }

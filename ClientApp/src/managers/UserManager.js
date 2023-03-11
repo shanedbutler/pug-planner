@@ -88,19 +88,19 @@ export const editUserFetch = async (userBody) => {
 };
 
 /**
- * Parses current user from localStorage
+ * Parses current logged in user from localStorage
  * @returns User object
  */
-export const getCurrentUser = () => {
+export const getLocalUser = () => {
    const currentUser = localStorage.getItem('userProfile');
    return JSON.parse(currentUser);
 };
 
 /**
- * Returns admin boolean for current user from localStorage
+ * Returns admin boolean for current logged in user from localStorage
  * @returns Boolean
  */
-export const isCurrentUserAdmin = () => {
+export const isLocalUserAdmin = () => {
    const currentUser = localStorage.getItem('userProfile');
    const parsedUser = JSON.parse(currentUser);
    return parsedUser.admin;

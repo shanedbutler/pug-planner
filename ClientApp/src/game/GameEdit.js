@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select';
 import { fetchGame, fetchPutGame } from '../managers/GameManager';
-import { fetchUsers, getCurrentUser } from '../managers/UserManager';
+import { fetchUsers, getLocalUser } from '../managers/UserManager';
 
 export const GameEdit = () => {
    const { id } = useParams();
@@ -76,7 +76,7 @@ export const GameEdit = () => {
          gameDate: gameDateRef.current.value + 'T' + gameTimeRef.current.value,
          signupDate: signupDateRef.current.value + 'T' + signupTimeRef.current.value,
          maxPlayers: parseInt(maxPlayersRef.current.value),
-         primaryHostId: getCurrentUser().id,
+         primaryHostId: getLocalUser().id,
          secondaryHostId: parseInt(secondaryHostSelection),
       };
 

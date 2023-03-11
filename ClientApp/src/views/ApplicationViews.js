@@ -1,9 +1,9 @@
-import { getCurrentUser } from '../managers/UserManager';
+import { getLocalUser } from '../managers/UserManager';
 import { AdminViews } from './AdminViews';
 import { PlayerViews } from './PlayerViews';
 
 export const ApplicationViews = () => {
-   const localUser = getCurrentUser();
+   const localUser = getLocalUser();
 
    if (localUser.admin) {
       //return admin views

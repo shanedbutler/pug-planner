@@ -1,6 +1,6 @@
 import { getToken } from './AuthManager';
 import { deleteOption, getOption, postOption } from './FetchOptions';
-import { getCurrentUser } from './UserManager';
+import { getLocalUser } from './UserManager';
 
 const apiUrl = 'https://localhost:7066';
 
@@ -41,7 +41,7 @@ export const fetchUserRosterCount = async (userId) => {
  * @returns Newly created roster object
  */
 export const postUserToRoster = async (gameId) => {
-   const userId = getCurrentUser().id;
+   const userId = getLocalUser().id;
    const rosterEntry = {
       userProfileId: userId,
       gameId: gameId,
@@ -61,7 +61,7 @@ export const postUserToRoster = async (gameId) => {
  * @param {int} gameId
  */
 export const deleteUserFromRoster = async (gameId) => {
-   const userId = getCurrentUser().id;
+   const userId = getLocalUser().id;
 
    const token = await getToken();
    const response = await fetch(
