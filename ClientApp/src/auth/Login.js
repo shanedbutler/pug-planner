@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../managers/AuthManager';
+import { firebaseLogin } from '../managers/AuthManager';
 
 export const Login = () => {
    const emailRef = useRef();
@@ -10,7 +10,7 @@ export const Login = () => {
    const handleLogin = (e) => {
       e.preventDefault();
       const loginUser = { email: emailRef.current.value, password: passwordRef.current.value };
-      login(loginUser.email, loginUser.password)
+      firebaseLogin(loginUser.email, loginUser.password)
       .then(() => navigate("/"))
       .catch(() => alert("Login Failed"));
    };

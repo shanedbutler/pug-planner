@@ -4,7 +4,7 @@ import Select from 'react-select';
 import { fetchPositions } from '../managers/PositionManager';
 import { fetchPronouns } from '../managers/PronounManager';
 import { registerUser } from '../managers/UserManager';
-import { login } from '../managers/AuthManager';
+import { firebaseLogin } from '../managers/AuthManager';
 
 export const Register = () => {
    const navigate = useNavigate();
@@ -113,6 +113,7 @@ export const Register = () => {
             firstName: firstNameRef.current.value,
             lastName: lastNameRef.current.value,
             email: emailRef.current.value,
+            password: passwordRef.current.value,
             phone: phoneRef.current.value.replace(/\D/g, ''),
             primaryPositionId: parseInt(positionSelection),
             secondaryPositionId: parseInt(secondaryPositionSelection),
@@ -123,7 +124,7 @@ export const Register = () => {
             active: true,
          };
          registerUser(newUser)
-            .then((user) => login(user.email, passwordRef.current.value))
+            .then((user) => firebaseLogin(user.email, passwordRef.current.value))
             .then(() => navigate('/'));
       }
    };

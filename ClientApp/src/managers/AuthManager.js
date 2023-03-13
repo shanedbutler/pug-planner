@@ -60,7 +60,7 @@ export const getToken = () => {
  * @param {string} pw 
  * @returns 
  */
-export const login = (email, pw) => {
+export const firebaseLogin = (email, pw) => {
   return signInWithEmailAndPassword(auth, email, pw)
     .then((signInResponse) => _doesUserExist(signInResponse.user.uid))
     .then((doesUserExist) => {
@@ -83,7 +83,7 @@ export const logout = () => {
   auth.signOut()
 };
 
-export const register = (userProfile, password) => {
+export const firebaseRegister = (userProfile, password) => {
   return createUserWithEmailAndPassword(auth, userProfile.email, password)
     .then((createResponse) => _saveUser({
       ...userProfile,
