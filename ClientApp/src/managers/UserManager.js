@@ -1,6 +1,6 @@
 import Avatar from 'boring-avatars';
 import { getOption, postOption, putOption } from './FetchOptions';
-import { getToken } from './AuthManager';
+import { getToken, firebaseRegister } from './AuthManager';
 
 const apiUrl = 'https://localhost:7066';
 
@@ -66,12 +66,14 @@ export const fetchUsers = async () => {
 /**
  * Create new user via POST
  * @param {UserProfile} userBody
+ * @param {string} password
  * @returns GET newly created user object from database
  */
-export const registerUser = async (userBody) => {
+export const registerUser = async (userBody, password) => {
    const token = await getToken();
    const response = await fetch(`${apiUrl}/api/user`, postOption(userBody, token));
    const user = await response.json();
+   firebaseRegister(user, password);
    return user;
 };
 
