@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { fetchPositions } from '../managers/PositionManager';
 import { fetchPronouns } from '../managers/PronounManager';
-import { registerUser } from '../managers/UserManager';
-import { firebaseLogin } from '../managers/AuthManager';
+import { firebaseRegister } from '../managers/AuthManager';
 
 export const Register = () => {
    const navigate = useNavigate();
@@ -113,7 +112,6 @@ export const Register = () => {
             firstName: firstNameRef.current.value,
             lastName: lastNameRef.current.value,
             email: emailRef.current.value,
-            password: passwordRef.current.value,
             phone: phoneRef.current.value.replace(/\D/g, ''),
             primaryPositionId: parseInt(positionSelection),
             secondaryPositionId: parseInt(secondaryPositionSelection),
@@ -123,8 +121,7 @@ export const Register = () => {
             emergencyPhone: emergencyPhoneRef.current.value.replace(/\D/g, ''),
             active: true,
          };
-         registerUser(newUser)
-            .then((user) => firebaseLogin(user.email, passwordRef.current.value))
+         firebaseRegister(newUser, passwordRef.current.value)
             .then(() => navigate('/'));
       }
    };
