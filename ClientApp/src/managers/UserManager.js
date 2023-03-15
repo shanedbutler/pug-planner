@@ -1,6 +1,6 @@
 import Avatar from 'boring-avatars';
-import { getOption, postOption, putOption } from './FetchOptions';
-import { getToken, firebaseRegister } from './AuthManager';
+import { getOption, putOption } from './FetchOptions';
+import { getToken } from './AuthManager';
 
 const apiUrl = 'https://localhost:7066';
 
@@ -28,53 +28,6 @@ export const fetchUsers = async () => {
    } else {
       throw new Error('An unknown error occurred while trying to get users.');
    }
-};
-
-// export const fetchUsers = async () => {
-//    return get;
-//    const response = await fetch(`${apiUrl}/api/user/getall`);
-//    const users = await response.json();
-//    return users;
-// };
-
-// /**
-//  * Get fetch user from database by email and sets user to localStorage
-//  * @param {string} email
-//  * @returns User object or undefined if user not found
-//  */
-// export const login = (email) => {
-//    return fetch(`${apiUrl}/api/user/get?email=${email}`)
-//       .then((r) => r.json())
-//       .then((user) => {
-//          if (user.id) {
-//             localStorage.setItem(
-//                'userProfile',
-//                JSON.stringify({
-//                   id: user.id,
-//                   fullName: user.fullName,
-//                   email: user.email,
-//                   admin: user.admin,
-//                })
-//             );
-//             return user;
-//          } else {
-//             return undefined;
-//          }
-//       });
-// };
-
-/**
- * Create new user via POST
- * @param {UserProfile} userBody
- * @param {string} password
- * @returns GET newly created user object from database
- */
-export const registerUser = async (userBody, password) => {
-   const token = await getToken();
-   const response = await fetch(`${apiUrl}/api/user`, postOption(userBody, token));
-   const user = await response.json();
-   firebaseRegister(user, password);
-   return user;
 };
 
 /**

@@ -1,5 +1,6 @@
 import { auth } from "../index"
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getOption, postOption } from "./FetchOptions";
 
 const _apiUrl = "https://localhost:7066/api/User";
 
@@ -10,36 +11,27 @@ const _apiUrl = "https://localhost:7066/api/User";
 // Update fetch() calls throughout the app to include an Authorization header that uses the Firebase token.
 
 /**
- * Checks if firebase user exists in application database
+ * Checks if Firebase user exists in application database
  * @param {*} firebaseUserId 
  * @returns 
  */
-const _doesUserExist = (firebaseUserId) => {
-  return getToken().then((token) =>
-    fetch(`${_apiUrl}/DoesUserExist/${firebaseUserId}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).then(resp => resp.ok));
+const _doesUserExist = async (firebaseUserId) => {
+  const token = await getToken();
+  const response = await fetch(`${_apiUrl}/DoesUserExist/${firebaseUserId}`, getOption(token));
+  const user = await response.json();
+  return user;
 };
 
 /**
- * Saves newly registered user to application with Firebase Id
- * TODO: link to correct API URL
- * @param {} userProfile 
- * @returns 
+ * Saves newly registered user to application database with Firebase Id
+ * @param {user} userBody 
+ * @returns {user}
  */
-const _saveUser = (userProfile) => {
-  return getToken().then((token) =>
-    fetch(_apiUrl, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(userProfile)
-    }).then(resp => resp.json()));
+const _saveUser = async (userBody) => {
+  const token = await getToken();
+  const response = await fetch(`${_apiUrl}/api/user`, postOption(userBody, token));
+  const user = await response.json();
+  return user;
 };
 
 /**
@@ -56,33 +48,51 @@ export const getToken = () => {
 
 /**
  * Use Firebase to authenticate user with Email and Password. Checks if user exists in application database.
+ * Sets user data to localStorage if login is successful.
  * @param {string} email 
  * @param {string} pw 
  * @returns 
  */
-export const firebaseLogin = (email, pw) => {
-  return signInWithEmailAndPassword(auth, email, pw)
-    .then((signInResponse) => _doesUserExist(signInResponse.user.uid))
-    .then((doesUserExist) => {
-      if (!doesUserExist) {
-        logout();
-        throw new Error("Something's wrong. The user exists in firebase, but not in the application database.");
-      } else {
-        _onLoginStatusChangedHandler(true);
-      }
-    }).catch(err => {
-      console.error(err);
-      throw err;
-    });
+export const firebaseLogin = async (email, pw) => {
+  try {
+    const signInResponse = await signInWithEmailAndPassword(auth, email, pw);
+    const user = await _doesUserExist(signInResponse.user.uid);
+    if (!user) {
+      logout();
+      throw new Error("Something's wrong. The user exists in firebase, but not in the application database.");
+    } else {
+      _onLoginStatusChangedHandler(true);
+      localStorage.setItem(
+        'userProfile',
+        JSON.stringify({
+          id: user.id,
+          fullName: user.fullName,
+          email: user.email,
+          admin: user.admin,
+        })
+      );
+    }
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 };
 
 /**
- * Signs out the current user from Firebase auth
+ * Signs out the current user from Firebase auth and removes object from local storage.
  */
 export const logout = () => {
-  auth.signOut()
+  auth.signOut();
+  localStorage.removeItem('userProfile');
 };
 
+/**
+ * Registers new user with Firebase and saves to application database.
+ * Automatically logs in user on successful creation of account.
+ * @param {user} userProfile 
+ * @param {string} password 
+ * @returns 
+ */
 export const firebaseRegister = (userProfile, password) => {
   return createUserWithEmailAndPassword(auth, userProfile.email, password)
     .then((createResponse) => _saveUser({
@@ -92,8 +102,8 @@ export const firebaseRegister = (userProfile, password) => {
 };
 
 /**
- * 
- * @returns Current firebase authenticated user object from application database
+ * Get currently logged in Firebase user from application database.
+ * @returns User object
  */
 export const me = () => {
   return getToken().then((token) =>

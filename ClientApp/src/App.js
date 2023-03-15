@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { Login } from './auth/Login';
 import { Register } from './auth/Register';
 import { AppNav } from './nav/AppNav';
@@ -19,25 +19,13 @@ export const App = () => {
 
    useEffect(() => {
       if (isLoggedIn) {
-         me().then(res => {
-            setUserProfile(res);
-            localStorage.setItem(
-               'userProfile',
-               JSON.stringify({
-                  id: res.id,
-                  fullName: res.fullName,
-                  email: res.email,
-                  admin: res.admin,
-               })
-            );
-         });
+         me().then((res) => setUserProfile(res))
       } else {
          setUserProfile(null);
-         localStorage.removeItem("userProfile");
       }
    }, [isLoggedIn]);
 
-   // The "isLoggedIn" state variable will be null until //  the app's connection to firebase has been established.
+   // The "isLoggedIn" state variable will be null until the app's connection to firebase has been established.
    //  Then it will be set to true or false by the "onLoginStatusChange" function
    if (isLoggedIn === null) {
       // Until we know whether or not the user is logged in or not, we could show a spinner
@@ -46,7 +34,7 @@ export const App = () => {
    }
 
    return (
-      <UserContext.Provider value={(userProfile, isLoggedIn)}>
+      <UserContext.Provider value={ isLoggedIn }>
          <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -54,14 +42,16 @@ export const App = () => {
             <Route
                path="*"
                element={
-                  <Authorized isLoggedIn={isLoggedIn}>
+                  isLoggedIn ? (
                      <>
                         <AppNav />
                         <div className="content-wrapper selection:bg-lime-100">
                            <ApplicationViews />
                         </div>
                      </>
-                  </Authorized>
+                  ) : (
+                     <Navigate to="/login" />
+                  )
                }
             />
          </Routes>

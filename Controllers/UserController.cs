@@ -50,7 +50,7 @@ namespace PUGPlanner_FS.Controllers
             {
                 return NotFound();
             }
-            return Ok();
+            return Ok(userProfile);
         }
 
         // GET: api/<UserController>/Get/5
