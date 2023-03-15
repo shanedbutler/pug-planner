@@ -105,15 +105,15 @@ export const firebaseRegister = (userProfile, password) => {
  * Get currently logged in Firebase user from application database.
  * @returns User object
  */
-export const me = () => {
-  return getToken().then((token) =>
-    fetch(`${_apiUrl}/me`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).then((resp) => resp.json()),
-  );
+export const me = async () => {
+  const token = await getToken();
+  const resp = await fetch(`${_apiUrl}/me`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return await resp.json();
 };
 
 // This function will be overwritten when the react app calls `onLoginStatusChange` with callback function
