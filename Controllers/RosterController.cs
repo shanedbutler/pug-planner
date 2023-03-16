@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PUGPlanner_FS.Models;
 using PUGPlanner_FS.Repositories;
 
 namespace PUGPlanner_FS.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RosterController : ControllerBase

@@ -13,16 +13,18 @@ export const AdminViews = ({ userId }) => {
 
    return (
       <Routes>
-         <Route path="/" element={<Dashboard isAdmin={isAdmin} />} />
-         <Route path="/game/:id" element={<GameDetails isAdmin={isAdmin} />} />
-         <Route path="/new-game" element={<GameForm />} />
-         <Route path="/edit-game/:id" element={<GameEdit />} />
-         <Route
-            path="/profile/:id"
-            element={<PlayerProfile isAdmin={isAdmin} />}
-         />
-         <Route path="/profile/edit" element={<PlayerEdit userId={userId} />} />
-         <Route path="/players" element={<PlayerManagement />} />
+         <Route path="/">
+            <Route index element={<Dashboard isAdmin={isAdmin} />} />
+            <Route path="/game/:id" element={<GameDetails isAdmin={isAdmin} />} />
+            <Route path="/new-game" element={<GameForm />} />
+            <Route path="/edit-game/:id" element={<GameEdit />} />
+            <Route
+               path="/profile/:id"
+               element={<PlayerProfile isAdmin={isAdmin} />}
+            />
+            <Route path="/profile/edit" element={<PlayerEdit userId={userId} />} />
+            <Route path="/players" element={<PlayerManagement />} />
+         </Route>
       </Routes>
    );
 };

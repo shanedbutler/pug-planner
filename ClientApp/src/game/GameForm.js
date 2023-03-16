@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { fetchPostGame } from '../managers/GameManager';
-import { fetchUsers, getCurrentUser } from '../managers/UserManager';
+import { fetchUsers, getLocalUser } from '../managers/UserManager';
 
 export const GameForm = () => {
    const navigate = useNavigate();
@@ -59,7 +59,7 @@ export const GameForm = () => {
          gameDate: gameDateRef.current.value + 'T' + gameTimeRef.current.value,
          signupDate: signupDateRef.current.value + 'T' + signupTimeRef.current.value,
          maxPlayers: parseInt(maxPlayersRef.current.value),
-         primaryHostId: getCurrentUser().id,
+         primaryHostId: getLocalUser().id,
          secondaryHostId: parseInt(secondaryHostSelection),
       };
 

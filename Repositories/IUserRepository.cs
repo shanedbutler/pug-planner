@@ -4,6 +4,7 @@ namespace PUGPlanner_FS.Repositories
 {
     public interface IUserRepository
     {
+        User GetByFirebaseUserId(string firebaseUserId);
         User Get(int id);
         List<User> GetAll();
         User GetByEmail(string email);

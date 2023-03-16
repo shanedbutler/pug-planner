@@ -8,6 +8,10 @@ namespace PUGPlanner_FS.Models
         public int Id { get; set; }
 
         [Required]
+        [StringLength(28, MinimumLength = 28)]
+        public string FirebaseUserId { get; set; }
+
+        [Required]
         [MaxLength(50)]
         public string FirstName { get; set; }
 

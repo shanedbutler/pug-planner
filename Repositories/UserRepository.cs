@@ -8,6 +8,45 @@ namespace PUGPlanner_FS.Repositories
     {
         public UserRepository(IConfiguration configuration) : base(configuration) { }
 
+        public User GetByFirebaseUserId(string firebaseUserId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT up.Id as UserId, up.FirebaseUserId,
+                               up.FirstName, up.LastName, 
+                               up.Email, up.Phone, up.Club,
+                               up.CreateDateTime, up.[Admin], up.PronounId,
+                               up.PrimaryPositionId, up.SecondaryPositionId,
+                               up.EmergencyName, up.EmergencyPhone, up.Active,
+                               p.[Name] as PrimaryPositionName, p2.[Name] as SecondaryPositionName,
+                               p.FullName as PrimaryPositionFullName, p2.FullName as SecondaryPositionFullName,
+                               pn.[Name] as PronounName
+                          FROM [UserProfile] up
+                              LEFT JOIN Pronoun pn ON up.PronounId = pn.Id
+                              JOIN [Position] p ON up.PrimaryPositionId = p.id
+                              JOIN [Position] p2 ON up.SecondaryPositionId = p2.id
+                         WHERE FirebaseUserId = @FirebaseuserId";
+
+                    DbUtils.AddParameter(cmd, "@FirebaseUserId", firebaseUserId);
+
+                    User userProfile = null;
+
+                    var reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        userProfile = NewUserFromReader(reader);
+                    }
+                    reader.Close();
+
+                    return userProfile;
+                }
+            }
+        }
+
         /// <summary>
         /// Queries the UserProfile table by id
         /// </summary>
@@ -21,7 +60,8 @@ namespace PUGPlanner_FS.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT up.Id as UserId, up.FirstName, up.LastName, 
+                        SELECT up.Id as UserId, up.FirebaseUserId,
+                               up.FirstName, up.LastName, 
                                up.Email, up.Phone, up.Club,
                                up.CreateDateTime, up.[Admin], up.PronounId,
                                up.PrimaryPositionId, up.SecondaryPositionId,
@@ -59,7 +99,8 @@ namespace PUGPlanner_FS.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT up.Id as UserId, up.FirstName, up.LastName, 
+                        SELECT up.Id as UserId, up.FirebaseUserId,
+                               up.FirstName, up.LastName,
                                up.Email, up.Phone, up.Club,
                                up.CreateDateTime, up.[Admin], up.PronounId,
                                up.PrimaryPositionId, up.SecondaryPositionId,
@@ -101,7 +142,8 @@ namespace PUGPlanner_FS.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT up.Id as UserId, up.FirstName, up.LastName, 
+                        SELECT up.Id as UserId, up.FirebaseUserId,
+                               up.FirstName, up.LastName,
                                up.Email, up.Phone, up.Club,
                                up.CreateDateTime, up.[Admin], up.PronounId,
                                up.PrimaryPositionId, up.SecondaryPositionId,
@@ -145,7 +187,8 @@ namespace PUGPlanner_FS.Repositories
                 {
                     cmd.CommandText = @"
                         SELECT r.Id, r.GameId, r.UserProfileId,
-                               up.Id as UserId, up.FirstName, up.LastName, 
+                               up.Id as UserId, up.FirebaseUserId,
+                               up.FirstName, up.LastName, 
                                up.Email, up.Phone, up.Club,
                                up.CreateDateTime, up.[Admin], up.PronounId,
                                up.PrimaryPositionId, up.SecondaryPositionId,
@@ -188,6 +231,7 @@ namespace PUGPlanner_FS.Repositories
             User user = new()
             {
                 Id = DbUtils.GetInt(reader, "UserId"),
+                FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId"),
                 FirstName = DbUtils.GetString(reader, "FirstName"),
                 LastName = DbUtils.GetString(reader, "LastName"),
                 Email = DbUtils.GetString(reader, "Email"),
@@ -228,14 +272,14 @@ namespace PUGPlanner_FS.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO UserProfile (FirstName, LastName, Email, Phone, Club, CreateDateTime, 
+                    cmd.CommandText = @"INSERT INTO UserProfile (FirebaseUserId, FirstName, LastName, Email, Phone, Club, CreateDateTime, 
                                                                  PrimaryPositionId, SecondaryPositionId, Admin,
                                                                  PronounId, EmergencyName, EmergencyPhone, Active)
                                         OUTPUT INSERTED.ID
-                                        VALUES (@FirstName, @LastName, @Email, @Phone, @Club, @CreateDateTime, 
+                                        VALUES (@FirebaseUserId, @FirstName, @LastName, @Email, @Phone, @Club, @CreateDateTime, 
                                                 @PrimaryPositionId, @SecondaryPositionId, @Admin,
                                                 @PronounId, @EmergencyName, @EmergencyPhone, @Active)";
-                    //DbUtils.AddParameter(cmd, "@FirebaseUserId", userProfile.FirebaseUserId);
+                    DbUtils.AddParameter(cmd, "@FirebaseUserId", user.FirebaseUserId);
                     DbUtils.AddParameter(cmd, "@FirstName", user.FirstName);
                     DbUtils.AddParameter(cmd, "@LastName", user.LastName);
                     DbUtils.AddParameter(cmd, "@Email", user.Email);
@@ -265,6 +309,7 @@ namespace PUGPlanner_FS.Repositories
                     cmd.CommandText = @"
                         UPDATE UserProfile
                             SET
+                                FirebaseUserId = @FirebaseUserId,
                                 FirstName = @FirstName,
                                 LastName = @LastName,
                                 Email = @Email,
@@ -280,6 +325,7 @@ namespace PUGPlanner_FS.Repositories
                             WHERE Id = @Id";
 
                     DbUtils.AddParameter(cmd, "@Id", user.Id);
+                    DbUtils.AddParameter(cmd, "@FirebaseUserId", user.FirebaseUserId);
                     DbUtils.AddParameter(cmd, "@FirstName", user.FirstName);
                     DbUtils.AddParameter(cmd, "@LastName", user.LastName);
                     DbUtils.AddParameter(cmd, "@Email", user.Email);

@@ -1,4 +1,5 @@
-import { postOption, putOption } from './FetchOptions';
+import { getToken } from './AuthManager';
+import { deleteOption, getOption, postOption, putOption } from './FetchOptions';
 
 const apiUrl = 'https://localhost:7066';
 
@@ -7,7 +8,8 @@ const apiUrl = 'https://localhost:7066';
  * @returns An array of game objects
  */
 export const fetchGames = async () => {
-   const response = await fetch(`${apiUrl}/api/game/get`);
+   const token = await getToken();
+   const response = await fetch(`${apiUrl}/api/game/get`, getOption(token));
    const games = await response.json();
    return games;
 };
@@ -18,7 +20,8 @@ export const fetchGames = async () => {
  * @returns A game object
  */
 export const fetchGame = async (gameId) => {
-   const response = await fetch(`${apiUrl}/api/game/get/${gameId}`);
+   const token = await getToken();
+   const response = await fetch(`${apiUrl}/api/game/get/${gameId}`, getOption(token));
    const game = await response.json();
    return game;
 };
@@ -29,7 +32,8 @@ export const fetchGame = async (gameId) => {
  * @returns A game object
  */
 export const fetchPostGame = async (gameBody) => {
-   const response = await fetch(`${apiUrl}/api/game/`, postOption(gameBody));
+   const token = await getToken();
+   const response = await fetch(`${apiUrl}/api/game/`, postOption(gameBody, token));
    const game = await response.json();
    return game;
 };
@@ -40,7 +44,8 @@ export const fetchPostGame = async (gameBody) => {
  * @returns A game object
  */
 export const fetchPutGame = async (gameBody) => {
-   const response = await fetch(`${apiUrl}/api/game/`, putOption(gameBody));
+   const token = await getToken();
+   const response = await fetch(`${apiUrl}/api/game/`, putOption(gameBody, token));
    const game = await response.json();
    return game;
 };
@@ -50,8 +55,7 @@ export const fetchPutGame = async (gameBody) => {
  * @param {int} gameId
  */
 export const fetchDeleteGame = async (gameId) => {
-   const response = await fetch(`${apiUrl}/api/game/delete/?id=${gameId}`, {
-      method: 'DELETE',
-   });
+   const token = await getToken();
+   const response = await fetch(`${apiUrl}/api/game/delete/?id=${gameId}`, deleteOption(token));
    return response;
 };

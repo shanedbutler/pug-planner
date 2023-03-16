@@ -27,6 +27,7 @@ export const PlayerListItem = ({ player, i }) => {
    const handleDeactivate = () => {
       const deactivatedPlayer = {
          id: player.id,
+         firebaseUserId: player.firebaseUserId,
          firstName: player.firstName,
          lastName: player.lastName,
          email: player.email,
@@ -49,6 +50,7 @@ export const PlayerListItem = ({ player, i }) => {
    const handleActivate = () => {
       const activatedPlayer = {
          id: player.id,
+         firebaseUserId: player.firebaseUserId,
          firstName: player.firstName,
          lastName: player.lastName,
          email: player.email,

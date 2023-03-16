@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { fetchDeleteGame, fetchGame } from '../managers/GameManager';
 import { deleteUserFromRoster, postUserToRoster } from '../managers/RosterManager';
-import { fetchRoster, getCurrentUser } from '../managers/UserManager';
+import { fetchRoster, getLocalUser } from '../managers/UserManager';
 import { RegistrationModal } from '../modals/RegistrationModal';
 import { RegLockModal } from '../modals/RegLockModal';
 import { UnregisterModal } from '../modals/UnregisterModal';
@@ -121,7 +121,7 @@ export const GameDetails = ({ isAdmin }) => {
     * * @param {object} gameObj
     */
    const checkCanRegister = (rosterArr, gameObj) => {
-      const userId = getCurrentUser().id;
+      const userId = getLocalUser().id;
       const isAlreadyRegistered = rosterArr.some((player) => player.id === userId);
 
       if (gameObj.gameDateStatus > 0) {

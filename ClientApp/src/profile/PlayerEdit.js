@@ -126,6 +126,7 @@ export const PlayerEdit = ({ userId }) => {
       } else {
          editedUser = {
             id: player.id,
+            firebaseUserId: player.firebaseUserId,
             firstName: firstNameRef.current.value,
             lastName: lastNameRef.current.value,
             email: emailRef.current.value,
