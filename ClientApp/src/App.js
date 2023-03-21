@@ -6,20 +6,23 @@ import { ApplicationViews } from './views/ApplicationViews';
 import { Authorized } from './views/Authorized';
 import { onLoginStatusChange, me } from './managers/AuthManager';
 import { createContext, useEffect, useState } from 'react';
+import { getLocalUser } from './managers/UserManager';
 
+// Currently unused user context hook
 const UserContext = createContext(null);
 
 export const App = () => {
    const [isLoggedIn, setIsLoggedIn] = useState(null);
    const [userProfile, setUserProfile] = useState(null);
-
+   const localUser = getLocalUser();
+   
    useEffect(() => {
       onLoginStatusChange(setIsLoggedIn);
    }, []);
 
    useEffect(() => {
       if (isLoggedIn) {
-         me().then((res) => setUserProfile(res))
+         me().then((res) => setUserProfile(res));
       } else {
          setUserProfile(null);
       }
@@ -42,7 +45,7 @@ export const App = () => {
             <Route
                path="*"
                element={
-                  isLoggedIn ? (
+                  localUser ? (
                      <>
                         <AppNav />
                         <div className="content-wrapper selection:bg-lime-100">

@@ -122,7 +122,8 @@ export const Register = () => {
             active: true,
          };
          firebaseRegister(newUser, passwordRef.current.value)
-            .then(() => navigate('/'));
+            .then(() => navigate("/"))
+            .catch(() => alert("Registration Failed"));
       }
    };
 
