@@ -1,7 +1,7 @@
 {
   "name": "PUGPlanner",
   "version": "0.1.0",
-  "homepage": "https://pugp.azurewebsites.net,
+  "homepage": "https://pugp.azurewebsites.net",
   "private": true,
   "dependencies": {
     "@firebase/auth": "^0.21.3",
