@@ -29,10 +29,26 @@ const _doesUserExist = async (firebaseUserId) => {
  */
 const _saveUser = async (userBody) => {
   const token = await getToken();
-  const response = await fetch(`${_apiUrl}/api/user`, postOption(userBody, token));
+  const response = await fetch(_apiUrl, postOption(userBody, token));
   const user = await response.json();
   return user;
 };
+
+/**
+ * Sets relevant user properties to localStorage
+ * @param {user} user 
+ */
+const _setLocalUser = (user) => {
+  localStorage.setItem(
+    'userProfile',
+    JSON.stringify({
+      id: user.id,
+      fullName: user.fullName,
+      email: user.email,
+      admin: user.admin,
+    })
+  );
+}
 
 /**
  * Calls Firebase getIdToken() for the current user.
@@ -62,15 +78,7 @@ export const firebaseLogin = async (email, pw) => {
       throw new Error("Something's wrong. The user exists in firebase, but not in the application database.");
     } else {
       _onLoginStatusChangedHandler(true);
-      localStorage.setItem(
-        'userProfile',
-        JSON.stringify({
-          id: user.id,
-          fullName: user.fullName,
-          email: user.email,
-          admin: user.admin,
-        })
-      );
+      _setLocalUser(user);
     }
   } catch (err) {
     console.error(err);
@@ -93,12 +101,21 @@ export const logout = () => {
  * @param {string} password 
  * @returns 
  */
-export const firebaseRegister = (userProfile, password) => {
-  return createUserWithEmailAndPassword(auth, userProfile.email, password)
-    .then((createResponse) => _saveUser({
-      ...userProfile,
-      firebaseUserId: createResponse.user.uid
-    }).then(() => _onLoginStatusChangedHandler(true)));
+export const firebaseRegister = async (userProfile, password) => {
+  try {
+    const createResponse = await createUserWithEmailAndPassword(auth, userProfile.email, password);
+    const user = await _saveUser({...userProfile, firebaseUserId: createResponse.user.uid});
+    if (!user) {
+      logout();
+      throw new Error("Something went wrong with registering Firebase user to the application database.");
+    } else {
+      _onLoginStatusChangedHandler(true);
+      _setLocalUser(user);
+    }
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 };
 
 /**
