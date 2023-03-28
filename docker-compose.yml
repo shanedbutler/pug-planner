@@ -1,0 +1,14 @@
+services:
+  pup-api:
+    image: pup-api
+    container_name: pup-api-service
+    ports:
+      - "5000:80"
+  sql:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    container_name: sql-server
+    ports: # not actually needed, because the two services are on the same network
+      - "1433:1433" 
+    environment:
+      - ACCEPT_EULA=y
+      - SA_PASSWORD=RJYQmPo&v%b%k5s
