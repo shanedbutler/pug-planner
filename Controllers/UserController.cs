@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PUGPlanner_FS.Repositories;
-using PUGPlanner_FS.Models;
+using PUGPlannerAPI.Repositories;
+using PUGPlannerAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace PUGPlanner_FS.Controllers
+namespace PUGPlannerAPI.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]

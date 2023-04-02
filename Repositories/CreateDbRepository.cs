@@ -1,4 +1,4 @@
-﻿namespace PUGPlanner_FS.Repositories
+﻿namespace PUGPlannerAPI.Repositories
 {
     public class CreateDbRepository : BaseRepository
     {

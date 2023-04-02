@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace PUGPlanner_FS.Models
+namespace PUGPlannerAPI.Models
 {
     public class Game
     {
