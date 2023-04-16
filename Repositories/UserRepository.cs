@@ -1,8 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
-using PUGPlanner_FS.Models;
-using PUGPlanner_FS.Utils;
+using PUGPlannerAPI.Models;
+using PUGPlannerAPI.Utils;
 
-namespace PUGPlanner_FS.Repositories
+namespace PUGPlannerAPI.Repositories
 {
     public class UserRepository : BaseRepository, IUserRepository
     {

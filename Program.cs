@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using PUGPlanner_FS.Repositories;
+using PUGPlannerAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

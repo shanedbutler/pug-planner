@@ -8,19 +8,20 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "PUGPlanner_FS": {
+    "PUGPlannerAPI": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
+      "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7066;http://localhost:5293"
     },
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "publishAllPorts": true,
       "useSSL": true
     }

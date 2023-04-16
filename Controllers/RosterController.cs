@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PUGPlanner_FS.Models;
-using PUGPlanner_FS.Repositories;
+using PUGPlannerAPI.Models;
+using PUGPlannerAPI.Repositories;
 
-namespace PUGPlanner_FS.Controllers
+namespace PUGPlannerAPI.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
