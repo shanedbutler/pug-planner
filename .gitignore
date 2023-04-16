@@ -479,3 +479,4 @@ $RECYCLE.BIN/
 !.vscode/launch.json
 !.vscode/extensions.json
 /data
+/docker-entrypoint.sh
