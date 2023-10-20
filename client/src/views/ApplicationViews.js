@@ -1,13 +1,11 @@
-import { getLocalUser } from '../managers/UserManager';
 import { AdminViews } from './AdminViews';
 import { PlayerViews } from './PlayerViews';
 
-export const ApplicationViews = () => {
-   const localUser = getLocalUser();
+export const ApplicationViews = ({ user }) => {
 
-   if (localUser.admin) {
-      return <AdminViews userId={localUser.id} />;
+   if (user.admin) {
+      return <AdminViews user={user} />;
    } else {
-      return <PlayerViews userId={localUser.id} />;
+      return <PlayerViews user={user} />;
    }
 };

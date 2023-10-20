@@ -7,22 +7,19 @@ import { PlayerEdit } from '../profile/PlayerEdit';
 import { PlayerManagement } from '../profile/PlayerManagement';
 import { PlayerProfile } from '../profile/PlayerProfile';
 
-export const AdminViews = ({ userId }) => {
-
-   const isAdmin = true;
-
+export const AdminViews = ({ user }) => {
    return (
       <Routes>
          <Route path="/">
-            <Route index element={<Dashboard isAdmin={isAdmin} />} />
-            <Route path="/game/:id" element={<GameDetails isAdmin={isAdmin} />} />
+            <Route index element={<Dashboard isAdmin={user.admin} />} />
+            <Route path="/game/:id" element={<GameDetails isAdmin={user.admin} />} />
             <Route path="/new-game" element={<GameForm />} />
             <Route path="/edit-game/:id" element={<GameEdit />} />
             <Route
                path="/profile/:id"
-               element={<PlayerProfile isAdmin={isAdmin} />}
+               element={<PlayerProfile isAdmin={user.admin} />}
             />
-            <Route path="/profile/edit" element={<PlayerEdit userId={userId} />} />
+            <Route path="/profile/edit" element={<PlayerEdit userId={user.id} />} />
             <Route path="/players" element={<PlayerManagement />} />
          </Route>
       </Routes>

@@ -4,15 +4,14 @@ import { GameDetails } from '../game/GameDetails';
 import { PlayerEdit } from '../profile/PlayerEdit';
 import { PlayerProfile } from '../profile/PlayerProfile';
 
-export const PlayerViews = ({ userId }) => {
-
+export const PlayerViews = ({ user }) => {
    return (
       <Routes>
          <Route path="/">
             <Route index element={<Dashboard />} />
             <Route path="/game/:id" element={<GameDetails />} />
             <Route path="/profile/:id" element={<PlayerProfile />} />
-            <Route path="/profile/edit" element={<PlayerEdit userId={userId} />} />
+            <Route path="/profile/edit" element={<PlayerEdit userId={user.id} />} />
          </Route> 
       </Routes>
    );
