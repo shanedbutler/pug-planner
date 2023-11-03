@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { fetchProfile, fetchProfileWithForeign } from '../managers/UserManager';
+import { fetchProfileWithForeign } from '../managers/UserManager';
 import { AdminViews } from './AdminViews';
 import { PlayerViews } from './PlayerViews';
 
@@ -13,7 +13,6 @@ export const ApplicationViews = ({ user }) => {
    useEffect(() => {
       //get profile for current user and set to application context
       fetchProfileWithForeign(user.id).then(data => {
-         //console.log(data);
          setUserProfile(data);
       });
    }, []);

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseUtils/supabaseClient';
 import { ForgotPasswordModal } from '../modals/ForgotPasswordModal';
-import { saveProfile } from '../supabaseUtils/authUtils';
 
 export const Login = () => {
    const [email, setEmail] = useState('');
@@ -20,15 +19,13 @@ export const Login = () => {
          console.error(error);
          alert("Login Failed");
       } else {
-         console.log(`data: ${data}`);
-         //saveProfile(user);
+         console.log("Login successful");
          navigate("/");
       }
    };
 
    const handleRecovery = async (e) => {
       e.preventDefault();
-
       try {
          await supabase.auth.resetPasswordForEmail(email, {
             redirectTo: 'https://peoplespickup.com/update-password',
