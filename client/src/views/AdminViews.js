@@ -6,11 +6,8 @@ import { GameForm } from '../game/GameForm';
 import { PlayerEdit } from '../profile/PlayerEdit';
 import { PlayerManagement } from '../profile/PlayerManagement';
 import { PlayerProfile } from '../profile/PlayerProfile';
-import { useUserProfileContext } from './ApplicationViews';
 
-export const AdminViews = () => {
-   const { userProfile } = useUserProfileContext();
-
+export const AdminViews = ({ userId }) => {
    return (
       <Routes>
          <Route path="/">
@@ -18,8 +15,8 @@ export const AdminViews = () => {
             <Route path="/game/:id" element={<GameDetails isAdmin={true} />} />
             <Route path="/new-game" element={<GameForm />} />
             <Route path="/edit-game/:id" element={<GameEdit />} />
-            <Route path="/profile/:id" element={<PlayerProfile isAdmin={true} />} />
-            <Route path="/profile/edit" element={<PlayerEdit userId={userProfile.id} />} />
+            <Route path="/profile/:id" element={<PlayerProfile />} />
+            <Route path="/profile/edit" element={<PlayerEdit userId={userId} />} />
             <Route path="/players" element={<PlayerManagement />} />
          </Route>
       </Routes>

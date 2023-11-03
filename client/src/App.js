@@ -33,12 +33,9 @@ export const App = () => {
                   <Route
                      path="*"
                      element={
-                        <>
-                           <AppNav user={session?.user} />
-                           <div className="content-wrapper selection:bg-lime-100">
-                              <ApplicationViews user={session?.user} />
-                           </div>
-                        </>
+                        <div className="content-wrapper selection:bg-lime-100">
+                           <ApplicationViews user={session?.user} />
+                        </div>
                      }
                   />
                   :

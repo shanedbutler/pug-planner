@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { fetchProfileWithForeign } from '../managers/UserManager';
 import { AdminViews } from './AdminViews';
 import { PlayerViews } from './PlayerViews';
+import { AppNav } from '../nav/AppNav';
 
 const UserProfileContext = createContext();
 
@@ -17,17 +18,12 @@ export const ApplicationViews = ({ user }) => {
       });
    }, []);
 
-   if (userProfile.admin) {
-      return (
+   return (
+      <>
+         <AppNav user={userProfile} />
          <UserProfileContext.Provider value={{ userProfile }}>
-            <AdminViews />;
+            {userProfile.admin ? <AdminViews userId={user.id} /> : <PlayerViews userId={user.id} />}
          </UserProfileContext.Provider>
-      );
-   } else {
-      return (
-         <UserProfileContext.Provider value={{ userProfile }}>
-            <PlayerViews />;
-         </UserProfileContext.Provider>
-      )
-   }
+      </>
+   );
 };
