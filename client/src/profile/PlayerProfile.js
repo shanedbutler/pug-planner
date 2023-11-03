@@ -12,7 +12,6 @@ export const PlayerProfile = () => {
 
    const [isLoading, setIsLoading] = useState(true);
    const [player, setPlayer] = useState([]);
-   const [isOwn, setIsOwn] = useState(false);
 
    const navToProfileEdit = () => {
       navigate('/profile/edit');
@@ -20,7 +19,6 @@ export const PlayerProfile = () => {
 
    useEffect(() => {
       if (userProfile.id === id) {
-         setIsOwn(true);
          setPlayer(userProfile);
          setIsLoading(false);
       }
@@ -35,7 +33,7 @@ export const PlayerProfile = () => {
    if (!isLoading) {
       return (
          <div className="px-5 py-5 max-w-md mx-auto sm:max-w-lg">
-            {isOwn && (
+            {userProfile.id === id && (
                <div className="flex -mb-12 pb-1">
                   <button
                      className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-4 pl-3 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-300 focus:bg-lime-300"
