@@ -34,7 +34,7 @@ export const PlayerProfile = () => {
       return (
          <div className="px-5 py-5 max-w-md mx-auto sm:max-w-lg">
             {userProfile.id === id && (
-               <div className="flex -mb-12 pb-1">
+               <div className="flex -mb-10">
                   <button
                      className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-4 pl-3 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-300 focus:bg-lime-300"
                      onClick={navToProfileEdit}
