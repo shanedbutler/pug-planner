@@ -1,0 +1,41 @@
+/**
+ * Coverts snake_cased property keys to camelCased keys
+ * @param {*} obj Supabase response object
+ * @returns object with camelCased keys
+ */
+export const camelCaseKeys = (obj) => {
+    const newObj = {};
+    for (let key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            newObj[toCamelCase(key)] = obj[key];
+        }
+    }
+    return newObj;
+};
+
+/**
+ * Coverts camelCased property keys to snake_cased keys
+ * @param {*} obj
+ * @returns object with snake_cased keys
+ */
+export const snakeCaseKeys = (obj) => {
+    const newObj = {};
+    for (let key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            newObj[toSnakeCase(key)] = obj[key];
+        }
+    }
+    return newObj;
+};
+
+// Function to convert snake case to camel case
+const toCamelCase = (str) => {
+    return str.replace(/([-_][a-z])/g, (group) => group.toUpperCase()
+    .replace('-', '')
+    .replace('_', ''));
+}
+
+// Function to convert camel case to snake case
+const toSnakeCase = (str) => {
+    return str.replace(/([A-Z])/g, "_$1").toLowerCase();
+}
