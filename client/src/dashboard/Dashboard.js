@@ -2,40 +2,58 @@ import { ClockIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GameCard } from '../game/GameCard';
-import { fetchGames } from '../managers/GameManager';
+import { fetchPastGames, fetchUpcomingGames } from '../managers/GameManager';
 
 export const Dashboard = ({ isAdmin }) => {
-   const [allGames, setAllGames] = useState([]);
    const [games, setGames] = useState([]);
+   const [upcomingGames, setUpcomingGames] = useState([]);
+   const [pastGames, setPastGames] = useState([]);
    const [isPast, setIsPast] = useState(false);
+   const [isLoading, setIsLoading] = useState(true);
 
    const navigate = useNavigate();
 
    const navToGameForm = () => navigate('/new-game');
 
    /**
-    * Filter games based on if their game date has past or not
+    * Handle fetching of past games
     */
-   const filterGames = () => {
-      let filteredGames = [];
+   const togglePast = async () => {
+      getSetGames(!isPast);
+      setIsPast(!isPast);
+   };
 
-      if (!isPast) {
-         filteredGames = allGames.filter((game) => game.gameDateStatus > -1);
-         setGames(filteredGames);
-      } else {
-         filteredGames = allGames.filter((game) => game.gameDateStatus < 0);
-         setGames(filteredGames);
+   const getSetGames = async (past) => {
+      if (!past) {
+         if (upcomingGames.length === 0) {
+            setIsLoading(true);
+            fetchUpcomingGames().then(data => {
+               setUpcomingGames(data);
+               setGames(data);
+               setIsLoading(false);
+            });
+         }
+         else {
+            setGames(upcomingGames);
+         }
+      }
+      else {
+         if (pastGames.length === 0) {
+            setIsLoading(true);
+            fetchPastGames().then(data => {
+               setPastGames(data);
+               setGames(data);
+               setIsLoading(false);
+            });
+         }
+         else {
+            setGames(pastGames);
+         }
       }
    };
 
-   const toggleDateFilter = () => setIsPast(!isPast);
-
    useEffect(() => {
-      filterGames(games);
-   }, [isPast, allGames]);
-
-   useEffect(() => {
-      fetchGames().then((games) => setAllGames(games));
+      getSetGames();
    }, []);
 
    return (
@@ -44,7 +62,7 @@ export const Dashboard = ({ isAdmin }) => {
             <div className="flex">
                <button
                   className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-4 pl-3 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-300"
-                  onClick={toggleDateFilter}
+                  onClick={togglePast}
                >
                   <ClockIcon
                      className="h-5 w-5 mr-1 flex-shrink text-slate-600"
@@ -65,9 +83,10 @@ export const Dashboard = ({ isAdmin }) => {
                   </button>
                )}
             </div>
-            {games.map((game) => (
-               <GameCard key={game.id} game={game} />
-            ))}
+            {!isLoading &&
+               games.map((game) => (
+                  <GameCard key={game.id} game={game} isPast={isPast} />
+               ))}
          </div>
       </div>
    );
