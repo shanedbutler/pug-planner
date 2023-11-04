@@ -4,29 +4,39 @@
  * @returns object with camelCased keys
  */
 export const camelCaseKeys = (obj) => {
-    const newObj = {};
-    for (let key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            newObj[toCamelCase(key)] = obj[key];
-        }
+    if (Array.isArray(obj)) {
+      return obj.map(v => camelCaseKeys(v));
+    } else if (obj !== null && obj.constructor === Object) {
+      return Object.keys(obj).reduce(
+        (result, key) => ({
+          ...result,
+          [toCamelCase(key)]: camelCaseKeys(obj[key]),
+        }),
+        {}
+      );
     }
-    return newObj;
-};
-
-/**
- * Coverts camelCased property keys to snake_cased keys
- * @param {*} obj
- * @returns object with snake_cased keys
- */
-export const snakeCaseKeys = (obj) => {
-    const newObj = {};
-    for (let key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            newObj[toSnakeCase(key)] = obj[key];
-        }
+    return obj;
+  };
+  
+  /**
+   * Coverts camelCased property keys to snake_cased keys
+   * @param {*} obj
+   * @returns object with snake_cased keys
+   */
+  export const snakeCaseKeys = (obj) => {
+    if (Array.isArray(obj)) {
+      return obj.map(v => snakeCaseKeys(v));
+    } else if (obj !== null && obj.constructor === Object) {
+      return Object.keys(obj).reduce(
+        (result, key) => ({
+          ...result,
+          [toSnakeCase(key)]: snakeCaseKeys(obj[key]),
+        }),
+        {}
+      );
     }
-    return newObj;
-};
+    return obj;
+  };
 
 // Function to convert snake case to camel case
 const toCamelCase = (str) => {
