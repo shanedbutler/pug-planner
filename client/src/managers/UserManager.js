@@ -64,7 +64,7 @@ export const fetchUsers = async () => {
 export const fetchProfiles = async () => {
    const { data, error } = await supabase
       .from('profiles')
-      .select()
+      .select();
    if (!error) {
       return data;
    }
