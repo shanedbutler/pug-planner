@@ -25,17 +25,7 @@ export const Dashboard = ({ isAdmin }) => {
 
    const getSetGames = async (past) => {
       if (!past) {
-         if (upcomingGames.length === 0) {
-            setIsLoading(true);
-            fetchUpcomingGames().then(data => {
-               setUpcomingGames(data);
-               setGames(data);
-               setIsLoading(false);
-            });
-         }
-         else {
-            setGames(upcomingGames);
-         }
+         setGames(upcomingGames);
       }
       else {
          if (pastGames.length === 0) {
@@ -53,7 +43,11 @@ export const Dashboard = ({ isAdmin }) => {
    };
 
    useEffect(() => {
-      getSetGames();
+      fetchUpcomingGames().then(data => {
+         setUpcomingGames(data);
+         setGames(data);
+         setIsLoading(false);
+      });
    }, []);
 
    return (
