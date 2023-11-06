@@ -93,15 +93,22 @@ export const fetchGameById = async (gameId) => {
       .from('games')
       .select(`
          *,
-         primary_host:primary_host_id(id, full_name),
-         secondary_host:secondary_host_id(id, full_name),
-         roster_profile:profiles(*)
+         primary_host:primary_host_id(id, full_name, first_name, phone),
+         secondary_host:secondary_host_id(id, full_name, first_name, phone),
+         game_roster(
+            *, 
+            profile:user_profile_id(
+               *, 
+               primary_position:primary_position_id(*), 
+               secondary_position:secondary_position_id(*)
+            )
+         )
       `)
       .eq('id', gameId);
 
    if (!error) {
       const casedData = camelCaseKeys(data);
-      return Object.values(casedData[0]);
+      return (casedData[0]);
    }
    else {
       console.error(error);
