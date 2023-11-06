@@ -16,36 +16,30 @@ export const Dashboard = ({ isAdmin }) => {
    const navToGameForm = () => navigate('/new-game');
 
    /**
-    * Handle fetching of past games
+    * Handle toggling and fetching of past games
     */
    const togglePast = async () => {
-      getSetGames(!isPast);
-      setIsPast(!isPast);
-   };
-
-   const getSetGames = async (past) => {
-      if (!past) {
+      if (isPast) { // Set games to upcoming games when toggling from isPast
          setGames(upcomingGames);
       }
-      else {
+      else { // Fetch past games if not already fetched
          if (pastGames.length === 0) {
-            setIsLoading(true);
             fetchPastGames().then(data => {
                setPastGames(data);
                setGames(data);
-               setIsLoading(false);
             });
          }
          else {
             setGames(pastGames);
          }
       }
+      setIsPast(!isPast);
    };
 
    useEffect(() => {
       fetchUpcomingGames().then(data => {
-         setUpcomingGames(data);
          setGames(data);
+         setUpcomingGames(data);
          setIsLoading(false);
       });
    }, []);
@@ -77,9 +71,8 @@ export const Dashboard = ({ isAdmin }) => {
                   </button>
                )}
             </div>
-            {!isLoading &&
-               games.map((game) => (
-                  <GameCard key={game.id} game={game} isPast={isPast} />
+            {games.map(game => (
+                  <GameCard key={game.id} game={game} isPast={isPast} isLoading={isLoading} setIsLoading={setIsLoading} />
                ))}
          </div>
       </div>
