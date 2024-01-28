@@ -3,8 +3,10 @@ import { Dashboard } from '../dashboard/Dashboard';
 import { GameDetails } from '../game/GameDetails';
 import { PlayerEdit } from '../profile/PlayerEdit';
 import { PlayerProfile } from '../profile/PlayerProfile';
+import { useUserProfileContext } from './ApplicationViews';
 
-export const PlayerViews = ({ userId }) => {
+export const PlayerViews = () => {
+   const { userProfile } = useUserProfileContext();
 
    return (
       <Routes>
@@ -12,7 +14,7 @@ export const PlayerViews = ({ userId }) => {
             <Route index element={<Dashboard />} />
             <Route path="/game/:id" element={<GameDetails />} />
             <Route path="/profile/:id" element={<PlayerProfile />} />
-            <Route path="/profile/edit" element={<PlayerEdit userId={userId} />} />
+            <Route path="/profile/edit" element={<PlayerEdit userId={userProfile.id} />} />
          </Route> 
       </Routes>
    );

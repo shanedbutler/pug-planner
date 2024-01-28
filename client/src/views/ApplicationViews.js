@@ -1,13 +1,29 @@
-import { getLocalUser } from '../managers/UserManager';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { fetchProfileWithForeign } from '../managers/UserManager';
 import { AdminViews } from './AdminViews';
 import { PlayerViews } from './PlayerViews';
+import { AppNav } from '../nav/AppNav';
 
-export const ApplicationViews = () => {
-   const localUser = getLocalUser();
+const UserProfileContext = createContext();
 
-   if (localUser.admin) {
-      return <AdminViews userId={localUser.id} />;
-   } else {
-      return <PlayerViews userId={localUser.id} />;
-   }
+export const useUserProfileContext = () => useContext(UserProfileContext);
+
+export const ApplicationViews = ({ user }) => {
+   const [userProfile, setUserProfile] = useState({});
+
+   useEffect(() => {
+      //get profile for current user and set to application context
+      fetchProfileWithForeign(user.id).then(data => {
+         setUserProfile(data);
+      });
+   }, []);
+
+   return (
+      <>
+         <AppNav user={userProfile} />
+         <UserProfileContext.Provider value={{ userProfile }}>
+            {userProfile.admin ? <AdminViews userId={user.id} /> : <PlayerViews userId={user.id} />}
+         </UserProfileContext.Provider>
+      </>
+   );
 };

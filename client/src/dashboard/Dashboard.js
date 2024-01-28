@@ -2,40 +2,46 @@ import { ClockIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GameCard } from '../game/GameCard';
-import { fetchGames } from '../managers/GameManager';
+import { fetchPastGames, fetchUpcomingGames } from '../managers/GameManager';
 
 export const Dashboard = ({ isAdmin }) => {
-   const [allGames, setAllGames] = useState([]);
    const [games, setGames] = useState([]);
+   const [upcomingGames, setUpcomingGames] = useState([]);
+   const [pastGames, setPastGames] = useState([]);
    const [isPast, setIsPast] = useState(false);
+   const [isLoading, setIsLoading] = useState(true);
 
    const navigate = useNavigate();
 
    const navToGameForm = () => navigate('/new-game');
 
    /**
-    * Filter games based on if their game date has past or not
+    * Handle toggling and fetching of past games
     */
-   const filterGames = () => {
-      let filteredGames = [];
-
-      if (!isPast) {
-         filteredGames = allGames.filter((game) => game.gameDateStatus > -1);
-         setGames(filteredGames);
-      } else {
-         filteredGames = allGames.filter((game) => game.gameDateStatus < 0);
-         setGames(filteredGames);
+   const togglePast = async () => {
+      if (isPast) { // Set games to upcoming games when toggling from isPast
+         setGames(upcomingGames);
       }
+      else { // Fetch past games if not already fetched
+         if (pastGames.length === 0) {
+            fetchPastGames().then(data => {
+               setPastGames(data);
+               setGames(data);
+            });
+         }
+         else {
+            setGames(pastGames);
+         }
+      }
+      setIsPast(!isPast);
    };
 
-   const toggleDateFilter = () => setIsPast(!isPast);
-
    useEffect(() => {
-      filterGames(games);
-   }, [isPast, allGames]);
-
-   useEffect(() => {
-      fetchGames().then((games) => setAllGames(games));
+      fetchUpcomingGames().then(data => {
+         setGames(data);
+         setUpcomingGames(data);
+         setIsLoading(false);
+      });
    }, []);
 
    return (
@@ -44,7 +50,7 @@ export const Dashboard = ({ isAdmin }) => {
             <div className="flex">
                <button
                   className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-4 pl-3 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-300"
-                  onClick={toggleDateFilter}
+                  onClick={togglePast}
                >
                   <ClockIcon
                      className="h-5 w-5 mr-1 flex-shrink text-slate-600"
@@ -65,9 +71,9 @@ export const Dashboard = ({ isAdmin }) => {
                   </button>
                )}
             </div>
-            {games.map((game) => (
-               <GameCard key={game.id} game={game} />
-            ))}
+            {games.map(game => (
+                  <GameCard key={game.id} game={game} isPast={isPast} isLoading={isLoading} setIsLoading={setIsLoading} />
+               ))}
          </div>
       </div>
    );

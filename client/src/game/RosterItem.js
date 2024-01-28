@@ -20,7 +20,7 @@ export const RosterItem = ({ player, i, isWaitList }) => {
                </div>
                <div className="ml-4">
                   <span className="w-0">
-                     {player.position?.primary} / {player.position?.secondary}
+                     {player.primaryPosition?.name} / {player.secondaryPosition?.name}
                   </span>
                </div>
             </li>
@@ -38,7 +38,7 @@ export const RosterItem = ({ player, i, isWaitList }) => {
                </div>
                <div className="ml-4">
                   <span className="w-0">
-                     {player.position?.primary} / {player.position?.secondary}
+                     {player.primaryPosition?.name} / {player.secondaryPosition?.name}
                   </span>
                </div>
             </li>

@@ -1,37 +1,51 @@
-import { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { firebaseLogin, firebaseRecovery } from '../managers/AuthManager';
+import { supabase } from '../supabaseUtils/supabaseClient';
 import { ForgotPasswordModal } from '../modals/ForgotPasswordModal';
 
-
 export const Login = () => {
+   const [email, setEmail] = useState('');
+   const [password, setPassword] = useState('');
    const [modalOpen, setModalOpen] = useState(false);
-
-   const emailRef = useRef();
-   const passwordRef = useRef();
    const navigate = useNavigate();
-   
-   const handleLogin = (e) => {
+
+   const handleLogin = async (e) => {
       e.preventDefault();
-      const loginUser = { email: emailRef.current.value, password: passwordRef.current.value };
-      firebaseLogin(loginUser.email, loginUser.password)
-         .then(() => navigate("/"))
-         .catch(() => alert("Login Failed"));
+      const { data, error } = await supabase.auth.signInWithPassword({
+         email: email,
+         password: password
+      });
+      if (error) {
+         console.error(error);
+         alert("Login Failed");
+      } else {
+         console.log("Login successful");
+         navigate("/");
+      }
+   };
+
+   const handleRecovery = async (e) => {
+      e.preventDefault();
+      try {
+         await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: 'https://peoplespickup.com/update-password',
+         });
+         setModalOpen(false);
+      } catch (error) {
+         console.error(error);
+         alert('Password reset failed, check your email address');
+         setModalOpen(false);
+      }
    };
 
    const handleOpenRecoveryModal = (e) => {
       e.preventDefault();
-      if (!emailRef.current.value) {
+      if (!email) {
          alert("Please enter your email address before requesting a password reset.");
       }
       else {
          setModalOpen(true);
       }
-   };
-
-   const handleRecovery = (e) => {
-      e.preventDefault();
-      firebaseRecovery(emailRef.current.value);
    };
 
    return (
@@ -58,7 +72,7 @@ export const Login = () => {
                      </Link>
                   </p>
                </div>
-               <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+               <form className="mt-8 space-y-6">
                   <input type="hidden" name="remember" value="true" />
                   <div className="-space-y-px rounded-md shadow-sm">
                      <div>
@@ -66,7 +80,8 @@ export const Login = () => {
                            Email address
                         </label>
                         <input
-                           ref={emailRef}
+                           value={email}
+                           onChange={(e) => setEmail(e.target.value)}
                            id="email-address"
                            name="email"
                            type="email"
@@ -81,7 +96,8 @@ export const Login = () => {
                            Password
                         </label>
                         <input
-                           ref={passwordRef}
+                           value={password}
+                           onChange={(e) => setPassword(e.target.value)}
                            id="password"
                            name="password"
                            type="password"
@@ -121,7 +137,7 @@ export const Login = () => {
 
                   <div>
                      <button
-                        type="submit"
+                        onClick={handleLogin}
                         className="group relative flex w-full justify-center rounded-md border border-transparent bg-violet-300 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-violet-200 focus:bg-violet-200"
                      >
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -145,7 +161,7 @@ export const Login = () => {
                </form>
             </div>
          </div>
-         <ForgotPasswordModal open={modalOpen} setOpen={setModalOpen} email={emailRef.current.value} handleRecovery={handleRecovery} />
+         <ForgotPasswordModal open={modalOpen} setOpen={setModalOpen} email={email} handleRecovery={handleRecovery} />
       </>
    );
 };

@@ -1,4 +1,6 @@
 import Avatar from 'boring-avatars';
+import { supabase } from '../supabaseUtils/supabaseClient';
+import { camelCaseKeys } from '../supabaseUtils/casingUtils';
 import { getOption, putOption } from './FetchOptions';
 import { getToken } from './AuthManager';
 
@@ -6,7 +8,7 @@ const apiUrl = 'https://localhost:7066';
 
 /**
  * Get fetch user from database by primary key id
- * @param {int} in
+ * @param {int} id
  * @returns User object
  */
 export const fetchUser = async (id) => {
@@ -15,6 +17,31 @@ export const fetchUser = async (id) => {
    const user = await response.json();
    return user;
 };
+
+/**
+ * Get user profile with foreign tables from Supabase by id
+ * @param {int} id
+ * @returns Superbase response data object
+ */
+export const fetchProfileWithForeign = async (id) => {
+   const { data, error } = await supabase
+      .from('profiles')
+      .select(`
+         *,
+         pronoun:pronoun_id(name),
+         primary_position:primary_position_id(name),
+         secondary_position:secondary_position_id(name),
+         appearances:game_roster(count)
+      `)
+      .eq('id', id);
+
+   if (!error) {
+      return camelCaseKeys(data[0]);
+   }
+   else {
+      console.error(error);
+   }
+}
 
 /**
  * Get fetch all users from database
@@ -29,6 +56,23 @@ export const fetchUsers = async () => {
       throw new Error('An unknown error occurred while trying to get users.');
    }
 };
+
+/**
+ * Get all user profiles from Supabase
+ * @returns Superbase response object
+ */
+export const fetchProfiles = async () => {
+   const { data, error } = await supabase
+      .from('profiles')
+      .select();
+   if (!error) {
+      return data;
+   }
+   else {
+      console.error(error);
+      return error;
+   }
+}
 
 /**
  * Edit user via PUT

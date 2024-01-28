@@ -1,3 +1,5 @@
+import { camelCaseArray, camelCaseKeys } from '../supabaseUtils/casingUtils';
+import { supabase } from '../supabaseUtils/supabaseClient';
 import { getToken } from './AuthManager';
 import { deleteOption, getOption, postOption, putOption } from './FetchOptions';
 
@@ -13,6 +15,105 @@ export const fetchGames = async () => {
    const games = await response.json();
    return games;
 };
+
+/**
+ * Get all games from supabase
+ * @returns Supabase response object
+ */
+export const fetchAllGames = async () => {
+   const { data, error } = await supabase
+      .from('games')
+      .select();
+
+   if (!error) {
+      const casedData = camelCaseKeys(data);
+      return Object.values(casedData);
+   }
+   else {
+      console.error(error);
+   }
+}
+
+/**
+ * Get upcoming games from supabase
+ * @returns Supabase response object
+ */
+export const fetchUpcomingGames = async () => {
+   const { data, error } = await supabase
+      .from('games')
+      .select(`
+      *,
+      primary_host:primary_host_id(id, full_name),
+      secondary_host:secondary_host_id(id, full_name),
+      current_players:game_roster(count)
+      rosterProfile:profiles(*)
+      `)
+      .gt('game_date', new Date().toISOString());
+
+   if (!error) {
+      const casedData = camelCaseKeys(data);
+      return Object.values(casedData);
+   }
+   else {
+      console.error(error);
+   }
+}
+
+/**
+ * Get past games from supabase
+ * @returns Supabase response object
+ */
+export const fetchPastGames = async () => {
+   const { data, error } = await supabase
+      .from('games')
+      .select(`
+         *,
+         primary_host:primary_host_id(id, full_name),
+         secondary_host:secondary_host_id(id, full_name),
+         rosterCount:game_roster(count)
+      `)
+      .lt('game_date', new Date().toISOString());
+
+   if (!error) {
+      const casedData = camelCaseKeys(data);
+      return Object.values(casedData);
+   }
+   else {
+      console.error(error);
+   }
+}
+
+/**
+ * Get a single game with player data from supabase by game id pk
+ * @param {int} gameId
+ * @returns Supabase response object
+ */
+export const fetchGameById = async (gameId) => {
+   const { data, error } = await supabase
+      .from('games')
+      .select(`
+         *,
+         primary_host:primary_host_id(id, full_name, first_name, phone),
+         secondary_host:secondary_host_id(id, full_name, first_name, phone),
+         game_roster(
+            *, 
+            profile:user_profile_id(
+               *, 
+               primary_position:primary_position_id(*), 
+               secondary_position:secondary_position_id(*)
+            )
+         )
+      `)
+      .eq('id', gameId);
+
+   if (!error) {
+      const casedData = camelCaseKeys(data);
+      return (casedData[0]);
+   }
+   else {
+      console.error(error);
+   }
+}
 
 /**
  * Get single game from API by game id pk

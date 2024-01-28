@@ -1,62 +1,51 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { supabase } from './supabaseUtils/supabaseClient';
 import { Login } from './auth/Login';
 import { Register } from './auth/Register';
 import { AppNav } from './nav/AppNav';
 import { ApplicationViews } from './views/ApplicationViews';
-import { onLoginStatusChange, me } from './managers/AuthManager';
-import { createContext, useEffect, useState } from 'react';
-import { getLocalUser } from './managers/UserManager';
-
-// Currently unused user context hook
-const UserContext = createContext(null);
 
 export const App = () => {
-   const [isLoggedIn, setIsLoggedIn] = useState(null);
-   const [userProfile, setUserProfile] = useState(null);
-   const localUser = getLocalUser();
-   
-   useEffect(() => {
-      onLoginStatusChange(setIsLoggedIn);
-   }, []);
+   const [session, setSession] = useState(null)
+   const [loading, setLoading] = useState(true);
 
    useEffect(() => {
-      if (isLoggedIn) {
-         me().then((res) => setUserProfile(res));
-      } else {
-         setUserProfile(null);
-      }
-   }, [isLoggedIn]);
+      // Listen for changes to the user authentication state
+      const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+         setSession(session ?? null);
+         setLoading(false);
+      });
 
-   // The "isLoggedIn" state variable will be null until the app's connection to firebase has been established.
-   //  Then it will be set to true or false by the "onLoginStatusChange" function
-   if (isLoggedIn === null) {
-      // Until we know whether or not the user is logged in or not, we could show a spinner
-      // NOTE: To-do, add spinner
-      return null;
-   }
+      // Unsubscribe from the listener when the component unmounts
+      return () => {
+         if (authListener && typeof authListener.unsubscribe === 'function') {
+            authListener.unsubscribe();
+         }
+      };
+   }, [supabase.auth]);
 
    return (
-      <UserContext.Provider value={ isLoggedIn }>
-         <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-
-            <Route
-               path="*"
-               element={
-                  localUser ? (
-                     <>
-                        <AppNav />
+      <BrowserRouter>
+         {!loading &&
+            <Routes>
+               {session ?
+                  <Route
+                     path="*"
+                     element={
                         <div className="content-wrapper selection:bg-lime-100">
-                           <ApplicationViews />
+                           <ApplicationViews user={session?.user} />
                         </div>
-                     </>
-                  ) : (
-                     <Navigate to="/login" />
-                  )
+                     }
+                  />
+                  :
+                  <>
+                     <Route path="*" element={<Login />} />
+                     <Route path="/register" element={<Register />} />
+                  </>
                }
-            />
-         </Routes>
-      </UserContext.Provider>
+            </Routes>
+         }
+      </BrowserRouter>
    );
 };
