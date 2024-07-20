@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html {
   height:100%;
 }
@@ -12,7 +16,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('/public/background.svg'), url('/public/background-flip.svg');
+  background-image: url('/background.svg'), url('/background-flip.svg');
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;

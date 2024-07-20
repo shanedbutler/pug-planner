@@ -1,4 +1,4 @@
-import { camelCaseArray, camelCaseKeys } from '../supabaseUtils/casingUtils';
+import { camelCaseKeys } from '../supabaseUtils/casingUtils';
 import { supabase } from '../supabaseUtils/supabaseClient';
 import { getToken } from './AuthManager';
 import { deleteOption, getOption, postOption, putOption } from './FetchOptions';
