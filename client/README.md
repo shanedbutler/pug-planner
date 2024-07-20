@@ -5,7 +5,7 @@ Pick-Up Game Planner, also known as PUG Planner, or PUP is a web application to 
 
 ## Getting Started with PUG Planner
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). The CSS has been built with [Tailwind CSS](https://tailwindcss.com/). Backend services are available through the separate web api application.
+This project was built with [Vite](https://vitejs.dev). The CSS has been built with [Tailwind CSS](https://tailwindcss.com/). Backend services are available through the separate web api application.
 
 ## To run the client in development mode
 
@@ -15,7 +15,7 @@ From the project directory to install packages
 ### `npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch`
 To update and watch for TailwindCSS style changes
 
-### `npm start`
+### `npm run dev`
 Runs the app in the development mode.\
 Open [https://localhost:44477](https://localhost:44477) to view it in your browser.
 

@@ -16,7 +16,7 @@ export const ApplicationViews = ({ user }) => {
       fetchProfileWithForeign(user.id).then(data => {
          setUserProfile(data);
       });
-   }, []);
+   }, [user.id]);
 
    return (
       <>

@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { supabase } from './supabaseUtils/supabaseClient';
 import { Login } from './auth/Login';
 import { Register } from './auth/Register';
-import { AppNav } from './nav/AppNav';
 import { ApplicationViews } from './views/ApplicationViews';
 
 export const App = () => {

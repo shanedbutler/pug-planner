@@ -1,4 +1,4 @@
-import { auth } from "../index"
+import { auth } from "../main"
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { getOption, postOption } from "./FetchOptions";
 
