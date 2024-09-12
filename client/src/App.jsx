@@ -5,6 +5,7 @@ import { Login } from './auth/Login';
 import { Register } from './auth/Register';
 import { ApplicationViews } from './views/ApplicationViews';
 import { GameDetails } from './game/GameDetails';
+import ProtectedRoute from './views/ProtectedRoute';
 
 export const App = () => {
    const [session, setSession] = useState(null)
@@ -35,52 +36,40 @@ export const App = () => {
          element: <Register />,
       },
       {
-         path: '/game/:id',
-         element: (
-         <ProtectedRoute>
-            <GameDetails />
-         </ProtectedRoute>
-         )
-      },
-      {
-         path: '/profile/:id',
-         element: (
-         <ProtectedRoute>
-            <PlayerProfile />
-         </ProtectedRoute>
-         )
-      },
-      {
-         path: '/profile/edit',
-         element: (
-         <ProtectedRoute>
-            <PlayerEdit />
-         </ProtectedRoute>
-         )
-      },
-      {
-         path: '/game/:id/edit',
-         element: (
-            <ProtectedRoute adminOnly>
-               <GameEdit />
-            </ProtectedRoute>
-         )
-      },
-      {
-         path: '/new-game',
-         element: (
-            <ProtectedRoute adminOnly>
-               <GameForm />
-            </ProtectedRoute>
-         )
-      },
-      {
-         path: '/players',
-         element: (
-            <ProtectedRoute adminOnly>
-               <PlayerManagement />
-            </ProtectedRoute>
-         )
+         path: '/',
+         element: <ProtectedRoute />,
+         children: [
+            {
+               path: 'game/:id',
+               element: <GameDetails />,
+            },
+            {
+               path: 'profile/:id',
+               element: <PlayerProfile />,
+            },
+            {
+               path: 'profile/edit',
+               element: <PlayerEdit />,
+            },
+            {
+               path: '/',
+               element: <ProtectedRoute adminOnly />,
+               children: [
+                  {
+                     path: 'game/:id/edit',
+                     element: <GameEdit />,
+                  },
+                  {
+                     path: 'new-game',
+                     element: <GameForm />,
+                  },
+                  {
+                     path: 'players',
+                     element: <PlayerManagement />,
+                  },
+               ],
+            },
+         ],
       },
    ]);
 
