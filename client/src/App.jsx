@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, createBrowserRouter, Route, Routes } from 'react-router-dom';
 import { supabase } from './supabaseUtils/supabaseClient';
 import { Login } from './auth/Login';
 import { Register } from './auth/Register';
 import { ApplicationViews } from './views/ApplicationViews';
+import { GameDetails } from './game/GameDetails';
 
 export const App = () => {
    const [session, setSession] = useState(null)
@@ -23,6 +24,65 @@ export const App = () => {
          }
       };
    }, [supabase.auth]);
+
+   const router = createBrowserRouter([
+      {
+         path: '/',
+         element: <Login />,
+      },
+      {
+         path: '/register',
+         element: <Register />,
+      },
+      {
+         path: '/game/:id',
+         element: (
+         <ProtectedRoute>
+            <GameDetails />
+         </ProtectedRoute>
+         )
+      },
+      {
+         path: '/profile/:id',
+         element: (
+         <ProtectedRoute>
+            <PlayerProfile />
+         </ProtectedRoute>
+         )
+      },
+      {
+         path: '/profile/edit',
+         element: (
+         <ProtectedRoute>
+            <PlayerEdit />
+         </ProtectedRoute>
+         )
+      },
+      {
+         path: '/game/:id/edit',
+         element: (
+            <ProtectedRoute adminOnly>
+               <GameEdit />
+            </ProtectedRoute>
+         )
+      },
+      {
+         path: '/new-game',
+         element: (
+            <ProtectedRoute adminOnly>
+               <GameForm />
+            </ProtectedRoute>
+         )
+      },
+      {
+         path: '/players',
+         element: (
+            <ProtectedRoute adminOnly>
+               <PlayerManagement />
+            </ProtectedRoute>
+         )
+      },
+   ]);
 
    return (
       <BrowserRouter>
