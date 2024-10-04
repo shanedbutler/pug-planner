@@ -23,30 +23,18 @@ export const App = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (session) {
-      // Get profile for current session user and set to application context
-      fetchProfileWithForeign(session.user.id).then(data => {
-        setUserProfile(data);
-        setLoading(false);
-      });
-    } else {
-      setLoading(false);
-    }
-  }, [session]);
-
-  useEffect(() => {
-    // Listen for changes to the user authentication state
-    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session ?? null);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
     });
 
-    // Unsubscribe from the listener when the component unmounts
-    return () => {
-      if (authListener && typeof authListener.unsubscribe === 'function') {
-        authListener.unsubscribe();
-      }
-    };
-  }, [supabase.auth]);
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const router = createBrowserRouter([
     {
