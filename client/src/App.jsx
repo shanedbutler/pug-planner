@@ -11,16 +11,11 @@ import { PlayerEdit } from './profile/PlayerEdit';
 import { GameEdit } from './game/GameEdit';
 import { GameForm } from './game/GameForm';
 import { PlayerManagement } from './profile/PlayerManagement';
-import { fetchProfileWithForeign } from './managers/UserManager';
-
-const UserProfileContext = createContext();
-
-export const useUserProfileContext = () => useContext(UserProfileContext);
+import { fetchProfiles, fetchProfileWithForeign } from './managers/UserManager';
+import { fetchGameById } from './managers/GameManager';
 
 export const App = () => {
   const [session, setSession] = useState(null);
-  const [userProfile, setUserProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -88,8 +83,6 @@ export const App = () => {
   ]);
 
   return (
-    <UserProfileContext.Provider value={{ userProfile }}>
       <RouterProvider router={router} />
-    </UserProfileContext.Provider>
   );
 };
