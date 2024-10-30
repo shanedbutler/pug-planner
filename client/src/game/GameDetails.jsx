@@ -1,24 +1,23 @@
 import { LockClosedIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { fetchDeleteGame, fetchGame, fetchGameById } from '../managers/GameManager';
+import { Link, useLoaderData, useNavigate, useParams, useRouteLoaderData } from 'react-router-dom';
+import { fetchDeleteGame, fetchGameById } from '../managers/GameManager';
 import { deleteUserFromRoster, postUserToRoster } from '../managers/RosterManager';
-import { fetchRoster } from '../managers/UserManager';
 import { RegistrationModal } from '../modals/RegistrationModal';
 import { RegLockModal } from '../modals/RegLockModal';
 import { UnregisterModal } from '../modals/UnregisterModal';
 import { RosterItem } from './RosterItem';
-import { useUserProfileContext } from '../views/ApplicationViews';
 import { isPastDate } from '../utils/dateUtils';
 
 export const GameDetails = ({ isAdmin }) => {
+   const { gameDetails } = useLoaderData();
+   const userProfile = useRouteLoaderData('protected').userProfile;
    const { id } = useParams();
-   const { userProfile } = useUserProfileContext();
 
    const navigate = useNavigate();
 
    const [isLoading, setIsLoading] = useState(true);
-   const [game, setGame] = useState({});
+   const [game, setGame] = useState(gameDetails || {});
    const [isRosterEmpty, setIsRosterEmpty] = useState(true);
    const [roster, setRoster] = useState([]);
    const [isWaitList, setIsWaitList] = useState(false);
