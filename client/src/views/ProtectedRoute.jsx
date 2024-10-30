@@ -1,19 +1,23 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useUserProfileContext } from './context/UserProfileContext';
+import { Navigate, Outlet, useLoaderData } from 'react-router-dom';
+import { AppNav } from '../nav/AppNav';
 
-const ProtectedRoute = ({ adminOnly = false }) => {
-  const { userProfile } = useUserProfileContext();
-  const location = useLocation();
+const ProtectedRoute = ({ adminOnly }) => {
+  const { session, userProfile } = useLoaderData();
 
-  if (!userProfile) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  if (!session || !userProfile) {
+    return <Navigate to="/" />;
   }
 
   if (adminOnly && !userProfile.admin) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/" />;
   }
 
-  return <Outlet />;
+  return (
+    <div className="content-wrapper selection:bg-lime-100">
+      <AppNav user={userProfile} />
+      <Outlet />
+    </div>
+  );
 };
 
 export default ProtectedRoute;
