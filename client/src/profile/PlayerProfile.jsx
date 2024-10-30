@@ -1,34 +1,16 @@
 import { ChevronLeftIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { fetchProfileWithForeign, UserAvatar } from '../managers/UserManager';
-import { useUserProfileContext } from '../views/ApplicationViews';
+import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
+import { UserAvatar } from '../managers/UserManager';
 
 export const PlayerProfile = () => {
    const { id } = useParams();
-   const { userProfile } = useUserProfileContext();
+   const { userProfile, isLoading } = useLoaderData();
 
    const navigate = useNavigate();
-
-   const [isLoading, setIsLoading] = useState(true);
-   const [player, setPlayer] = useState([]);
 
    const navToProfileEdit = () => {
       navigate('/profile/edit');
    };
-
-   useEffect(() => {
-      if (userProfile.id === id) {
-         setPlayer(userProfile);
-         setIsLoading(false);
-      }
-      else {
-         fetchProfileWithForeign(id).then(data => {
-            setPlayer(data);
-            setIsLoading(false);
-         });
-      }
-   }, [userProfile, id]);
 
    if (!isLoading) {
       return (
@@ -55,14 +37,14 @@ export const PlayerProfile = () => {
                   <div className="flex flex-wrap justify-center">
                      <div className="w-full flex justify-center">
                         <div className="border-none -m-16">
-                           <UserAvatar fullName={player.fullName} scale={110} />
+                           <UserAvatar fullName={userProfile.fullName} scale={110} />
                         </div>
                      </div>
                      <div className="w-full text-center mt-10">
                         <div className="flex justify-center pt-2">
                            <div className="w-35 p-3 text-center">
                               <span className="block uppercase tracking-wide text-slate-700">
-                                 {player.appearances[0].count}
+                                 {userProfile.appearances[0].count}
                               </span>
                               <span className="text-sm text-slate-400">
                                  Appearances
@@ -70,7 +52,7 @@ export const PlayerProfile = () => {
                            </div>
                            <div className="w-35 p-3 text-center">
                               <span className="block uppercase tracking-wide text-slate-700">
-                                 {player.primaryPosition.name} / {player.secondaryPosition.name}
+                                 {userProfile.primaryPosition.name} / {userProfile.secondaryPosition.name}
                               </span>
                               <span className="text-sm text-slate-400">
                                  Positions
@@ -78,7 +60,7 @@ export const PlayerProfile = () => {
                            </div>
                            <div className="w-35 p-3 text-center">
                               <span className="block uppercase tracking-wide text-slate-700">
-                                 {parseInt(player.createDateTime)}
+                                 {parseInt(userProfile.createDateTime)}
                               </span>
                               <span className="text-sm text-slate-400">
                                  Member Since
@@ -89,17 +71,17 @@ export const PlayerProfile = () => {
                   </div>
                   <div className="text-center mt-1">
                      <h3 className="text-xl text-slate-700 font-medium leading-normal">
-                        {player.fullName}
+                        {userProfile.fullName}
                      </h3>
                      <div className="text-sm mt-0 mb-2 text-slate-400">
-                        {player.pronoun?.name}
-                        <div className="mt-1">{player.club}</div>
+                        {userProfile.pronoun?.name}
+                        <div className="mt-1">{userProfile.club}</div>
                         {userProfile.admin && (
                            <>
-                              <div className="mt-1">{player.phone}</div>
-                              <div className="mt-1">{player.email}</div>
+                              <div className="mt-1">{userProfile.phone}</div>
+                              <div className="mt-1">{userProfile.email}</div>
                               <div className="mt-1">
-                                 Emergency contact: {player.emergencyName} at {player.emergencyPhone}
+                                 Emergency contact: {userProfile.emergencyName} at {userProfile.emergencyPhone}
                               </div>
                            </>
                         )}
@@ -109,10 +91,10 @@ export const PlayerProfile = () => {
                      <div className="flex flex-wrap justify-center">
                         <div className="w-full px-4">
                            <p className="text-sm text-slate-700 mb-4">
-                              A player of considerable range, {player.firstName} is the name taken
-                              by the LA-based athlete. {player.firstName} is
-                              considered to excel at shear speed and determination. {player.firstName} is
-                              a supporter of {player.club}.
+                              A player of considerable range, {userProfile.firstName} is the name taken
+                              by the LA-based athlete. {userProfile.firstName} is
+                              considered to excel at shear speed and determination. {userProfile.firstName} is
+                              a supporter of {userProfile.club}.
                            </p>
                         </div>
                      </div>
