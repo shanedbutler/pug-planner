@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { supabase } from './supabaseUtils/supabaseClient';
 import { Login } from './auth/Login';
@@ -11,8 +11,10 @@ import { PlayerEdit } from './profile/PlayerEdit';
 import { GameEdit } from './game/GameEdit';
 import { GameForm } from './game/GameForm';
 import { PlayerManagement } from './profile/PlayerManagement';
-import { fetchProfiles, fetchProfileWithForeign } from './managers/UserManager';
-import { fetchGameById } from './managers/GameManager';
+import { sessionLoader } from './managers/sessionLoader';
+import { gameByIdEditLoader, gameByIdLoader } from './managers/gameLoader';
+import { userProfileByIdLoader, userProfilesLoader } from './managers/userProfileLoader';
+import Unauthorized from './auth/Unauthorized';
 
 export const App = () => {
   const [session, setSession] = useState(null);
@@ -42,31 +44,42 @@ export const App = () => {
     },
     {
       path: '/',
-      element: <ProtectedRoute loading={loading} />,
+      element: <ProtectedRoute />,
+      id: 'protected',
+      loader: sessionLoader,
       children: [
         {
-          path: '/dashboard',
-          element: <Dashboard />, // previously passed isAdmin={true}
+          path: 'dashboard',
+          element: <Dashboard />,
         },
         {
           path: 'game/:id',
-          element: <GameDetails />, // fetchGameById, previously passed isAdmin={true}
+          element: <GameDetails />,
+          loader: gameByIdLoader,
         },
         {
           path: 'profile/:id',
-          element: <PlayerProfile />, // fetchProfileWithForeign
+          element: <PlayerProfile />,
+          loader: userProfileByIdLoader,
         },
         {
           path: 'profile/edit',
-          element: <PlayerEdit userId={session?.user?.id} />,
+          element: <PlayerEdit />,
+        },
+        {
+          path: 'players',
+          element: <PlayerManagement />,
+          loader: userProfilesLoader,
         },
         {
           path: '/',
-          element: <ProtectedRoute adminOnly loading={loading} />,
+          element: <ProtectedRoute adminOnly />,
+          id: 'protected-admin',
           children: [
             {
               path: 'game/:id/edit',
               element: <GameEdit />,
+              loader: gameByIdEditLoader,
             },
             {
               path: 'new-game',
@@ -75,14 +88,19 @@ export const App = () => {
             {
               path: 'players',
               element: <PlayerManagement />,
+              loader: userProfilesLoader,
             },
           ],
         },
       ],
     },
+    {
+      path: '/unauthorized',
+      element: <Unauthorized />,
+    },
   ]);
 
   return (
-      <RouterProvider router={router} />
+    <RouterProvider router={router} />
   );
 };
