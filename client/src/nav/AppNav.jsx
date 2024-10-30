@@ -9,7 +9,7 @@ export const AppNav = ({ user }) => {
    const navigate = useNavigate();
 
    // Main nav bar handlers
-   const navToDashboard = () => navigate('/');
+   const navToDashboard = () => navigate('/dashboard');
    const navToPlayerAdmin = () => navigate('/players');
 
    // User menu handlers
