@@ -1,22 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import Select from 'react-select';
-import { fetchGame, fetchPutGame } from '../managers/GameManager';
-import { fetchUsers, getLocalUser } from '../managers/UserManager';
+import { fetchPutGame } from '../managers/GameManager';
+import { getLocalUser } from '../managers/UserManager';
 
 export const GameEdit = () => {
+   const { game, profiles } = useLoaderData();
    const { id } = useParams();
-
    const navigate = useNavigate();
 
-   const [game, setGame] = useState({});
-
-   // React-select state variables for secondary host selection from users array
+   // State Declarations
    const [userOptions, setUserOptions] = useState([]);
-   const [secondaryHostSelection, setSecondaryHostSelection] = useState();
-   const [secondaryHostDefault, setSecondaryHostDefault] = useState();
-   
-   // UseRef hooks for all non-select inputs
+   const [secondaryHostSelection, setSecondaryHostSelection] = useState("");
+   const [secondaryHostDefault, setSecondaryHostDefault] = useState({ value: "", label: "None" });
+
+   // Refs for all non-select inputs
    const titleRef = useRef();
    const locationRef = useRef();
    const addressRef = useRef();
@@ -27,43 +25,33 @@ export const GameEdit = () => {
    const signupTimeRef = useRef();
    const maxPlayersRef = useRef();
 
-   /**
-    * Push array values to option array and set to state for use by react-select
-    * Create null value object at beginning of array as 'none' option
-    * @param {*} usersArr 
-    */
-   const handleSetUsers = (usersArr) => {
-      let userOptionsArr = [{
-         value: "",
-         label: "None",
-      }];
-      usersArr.forEach((user) => {
-         const userOptionObj =
-         {
-            value: user.id,
-            label: user.fullName,
-         };
-         userOptionsArr.push(userOptionObj);
-      });
-      setUserOptions(userOptionsArr);
+   // Initialize State Variables
+   useEffect(() => {
+      // Initialize userOptions with "None" and profiles
+      const initialUserOptions = [
+         { value: "", label: "None" },
+         ...profiles.map(user => ({ value: user.id, label: user.fullName }))
+      ];
+      setUserOptions(initialUserOptions);
+
+      // Initialize secondaryHostSelection
+      setSecondaryHostSelection(game.secondaryHostId || "");
+
+      // Initialize secondaryHostDefault based on game.secondaryHostId
+      const host = profiles.find(user => user.id === game.secondaryHostId);
+      if (host) {
+         setSecondaryHostDefault({ value: host.id, label: host.fullName });
+      } else {
+         setSecondaryHostDefault({ value: "", label: "None" });
+      }
+   }, [game, profiles]);
+
+   // Handle selection change for Co-Host
+   const handleUserSelect = (selectedOption) => {
+      setSecondaryHostSelection(selectedOption ? selectedOption.value : "");
    };
 
-   const handleUserSelect = (e) => setSecondaryHostSelection(e.value);
-
-   /**
-    * Find the game's currently chosen co-host and set to state in a react-select format object
-    */
-      const handleSetDefaults = (game, users) => {
-         const gameSecondaryHost = users.find((user) => user.id === game.secondaryHostId);
-         
-         const gameSecondaryHostOption = {
-            value: gameSecondaryHost.id,
-            label: gameSecondaryHost.fullName,
-         };
-
-         setSecondaryHostDefault(gameSecondaryHostOption);
-      };
-
+   // Handle form submission
    const handleSubmit = (e) => {
       e.preventDefault();
 
@@ -73,35 +61,21 @@ export const GameEdit = () => {
          location: locationRef.current.value,
          address: addressRef.current.value,
          description: descriptionRef.current.value,
-         gameDate: gameDateRef.current.value + 'T' + gameTimeRef.current.value,
-         signupDate: signupDateRef.current.value + 'T' + signupTimeRef.current.value,
+         gameDate: `${gameDateRef.current.value}T${gameTimeRef.current.value}`,
+         signupDate: `${signupDateRef.current.value}T${signupTimeRef.current.value}`,
          maxPlayers: parseInt(maxPlayersRef.current.value),
          primaryHostId: getLocalUser().id,
-         secondaryHostId: parseInt(secondaryHostSelection),
+         secondaryHostId: secondaryHostSelection ? parseInt(secondaryHostSelection) : null,
       };
 
-      fetchPutGame(editedGame).then(navigate(`/game/${id}`));
+      fetchPutGame(editedGame).then(() => navigate(`/game/${id}`));
    };
 
+   // Handle cancel action
    const handleCancel = (e) => {
       e.preventDefault();
       navigate(`/game/${id}`);
    };
-
-   useEffect(() => {
-
-      // Get data responses from api and set to variables
-      const gameRes = fetchGame(id);
-      const usersRes = fetchUsers();
-
-      // Group values into promise all, and when their values are returned set state with setter functions
-      Promise.all([gameRes, usersRes]).then((values) => {
-         setGame(values[0]);
-         handleSetUsers(values[1]);
-         handleSetDefaults(values[0], values[1]);
-      });
-
-   }, []);
 
    return (
       <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -123,11 +97,9 @@ export const GameEdit = () => {
                         <div>
                            <div className="bg-white shadow sm:rounded-md px-4 py-5 sm:p-6">
                               <div className="grid grid-cols-6 gap-6">
+                                 {/* Title */}
                                  <div className="col-span-6 sm:col-span-3">
-                                    <label
-                                       htmlFor="title"
-                                       className="block text-sm font-medium text-gray-700"
-                                    >
+                                    <label htmlFor="title" className="block text-sm font-medium text-gray-700">
                                        Title
                                     </label>
                                     <input
@@ -140,12 +112,9 @@ export const GameEdit = () => {
                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
-
+                                 {/* Location Name */}
                                  <div className="col-span-6 sm:col-span-3">
-                                    <label
-                                       htmlFor="location"
-                                       className="block text-sm font-medium text-gray-700"
-                                    >
+                                    <label htmlFor="location" className="block text-sm font-medium text-gray-700">
                                        Location Name
                                     </label>
                                     <input
@@ -158,12 +127,9 @@ export const GameEdit = () => {
                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
-
+                                 {/* Address */}
                                  <div className="col-span-6 sm:col-span-6">
-                                    <label
-                                       htmlFor="address"
-                                       className="block text-sm font-medium text-gray-700"
-                                    >
+                                    <label htmlFor="address" className="block text-sm font-medium text-gray-700">
                                        Location Address
                                     </label>
                                     <input
@@ -176,17 +142,13 @@ export const GameEdit = () => {
                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
-
+                                 {/* Description */}
                                  <div className="col-span-6 sm:col-span-6">
-                                    <label
-                                       htmlFor="description"
-                                       className="block text-sm font-medium text-gray-700"
-                                    >
+                                    <label htmlFor="description" className="block text-sm font-medium text-gray-700">
                                        Description
                                     </label>
                                     <textarea
-                                       rows="4" 
-                                       type="text"
+                                       rows="4"
                                        id="description"
                                        name="description"
                                        required
@@ -195,12 +157,9 @@ export const GameEdit = () => {
                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
-
+                                 {/* Max Players */}
                                  <div className="col-span-6 sm:col-span-3">
-                                    <label
-                                       htmlFor="max-players"
-                                       className="block text-sm font-medium text-gray-700"
-                                    >
+                                    <label htmlFor="max-players" className="block text-sm font-medium text-gray-700">
                                        Max Players
                                     </label>
                                     <input
@@ -213,12 +172,9 @@ export const GameEdit = () => {
                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
-
+                                 {/* Co-Host */}
                                  <div className="col-span-6 sm:col-span-3">
-                                    <label
-                                       htmlFor="secondaryHost"
-                                       className="block text-sm font-medium text-gray-700"
-                                    >
+                                    <label htmlFor="secondaryHost" className="block text-sm font-medium text-gray-700">
                                        Co-Host
                                     </label>
                                     <Select
@@ -226,17 +182,14 @@ export const GameEdit = () => {
                                        name="secondary-host"
                                        options={userOptions}
                                        value={secondaryHostDefault}
-                                       isSearchable={false}
+                                       isClearable
                                        onChange={handleUserSelect}
                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
-
+                                 {/* Game Date */}
                                  <div className="col-span-6 sm:col-span-3">
-                                    <label
-                                       htmlFor="game-date"
-                                       className="block text-sm font-medium text-gray-700"
-                                    >
+                                    <label htmlFor="game-date" className="block text-sm font-medium text-gray-700">
                                        Game Date
                                     </label>
                                     <input
@@ -244,35 +197,29 @@ export const GameEdit = () => {
                                        id="game-date"
                                        name="game-date"
                                        required
-                                       defaultValue={game.gameDateFormString}
+                                       defaultValue={new Date(game.gameDate).toISOString().split('T')[0]}
                                        ref={gameDateRef}
                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
-
+                                 {/* Game Time */}
                                  <div className="col-span-6 sm:col-span-3">
-                                    <label
-                                       htmlFor="game-time"
-                                       className="block text-sm font-medium text-gray-700"
-                                    >
+                                    <label htmlFor="game-time" className="block text-sm font-medium text-gray-700">
                                        Game Time
                                     </label>
                                     <input
                                        type="time"
                                        id="game-time"
                                        name="game-time"
-                                       defaultValue={game.gameTimeFormString}
+                                       defaultValue={new Date(game.gameDate).toTimeString().slice(0,5)}
                                        required
                                        ref={gameTimeRef}
                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
-
+                                 {/* Sign-up Date */}
                                  <div className="col-span-6 sm:col-span-3">
-                                    <label
-                                       htmlFor="signup-date"
-                                       className="block text-sm font-medium text-gray-700"
-                                    >
+                                    <label htmlFor="signup-date" className="block text-sm font-medium text-gray-700">
                                        Sign-up Date
                                     </label>
                                     <input
@@ -280,17 +227,14 @@ export const GameEdit = () => {
                                        id="signup-date"
                                        name="signup-date"
                                        required
-                                       defaultValue={game.signupDateFormString}
+                                       defaultValue={new Date(game.signupDate).toISOString().split('T')[0]}
                                        ref={signupDateRef}
                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
-
+                                 {/* Sign-up Time */}
                                  <div className="col-span-6 sm:col-span-3">
-                                    <label
-                                       htmlFor="signup-time"
-                                       className="block text-sm font-medium text-gray-700"
-                                    >
+                                    <label htmlFor="signup-time" className="block text-sm font-medium text-gray-700">
                                        Sign-up Time
                                     </label>
                                     <input
@@ -298,16 +242,17 @@ export const GameEdit = () => {
                                        id="signup-time"
                                        name="signup-time"
                                        required
-                                       defaultValue={game.signupTimeFormString}
+                                       defaultValue={new Date(game.signupDate).toTimeString().slice(0,5)}
                                        ref={signupTimeRef}
                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                     />
                                  </div>
-
                               </div>
                            </div>
+                           {/* Action Buttons */}
                            <div className="bg-gray-50 shadow rounded-md text-right -mt-2 py-6 px-3 sm:px-6">
                               <button
+                                 type="button"
                                  className="rounded-md border border-transparent bg-rose-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
                                  onClick={handleCancel}
                               >
