@@ -1,10 +1,23 @@
+import { camelCaseKeys } from "../supabaseUtils/casingUtils";
 import { supabase } from "../supabaseUtils/supabaseClient";
 import { userProfilesLoader } from "./userProfileLoader";
 
 export const gameByIdLoader = async ({ params }) => {
     const { data: game, error } = await supabase
       .from('games')
-      .select('*')
+      .select(`
+        *,
+        primary_host:primary_host_id(id, full_name, first_name, phone),
+        secondary_host:secondary_host_id(id, full_name, first_name, phone),
+        game_roster(
+            *, 
+            profile:user_profile_id(
+              *, 
+              primary_position:primary_position_id(*), 
+              secondary_position:secondary_position_id(*)
+            )
+        )
+      `)
       .eq('id', params.id)
       .single();
   
@@ -12,7 +25,7 @@ export const gameByIdLoader = async ({ params }) => {
       throw new Error('Failed to fetch game details');
     }
   
-    return { game };
+    return { game: camelCaseKeys(game) };
   };
 
   export const gameByIdEditLoader = async (args) => {
