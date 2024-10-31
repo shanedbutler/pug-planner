@@ -137,34 +137,6 @@ export const Register = () => {
       }
    };
 
-      // const firebaseHandleSubmit = (e) => {
-      //    e.preventDefault();
-      //    let newUser = {};
-
-      //    if (positionSelection === '') {
-      //       //handlePrimaryRequired();
-      //    } else if (secondaryPositionSelection === '') {
-      //       //handleSecondaryRequired();
-      //    } else {
-      //       newUser = {
-      //          firstName: firstNameRef.current.value,
-      //          lastName: lastNameRef.current.value,
-      //          email: emailRef.current.value,
-      //          phone: phoneRef.current.value.replace(/\D/g, ''),
-      //          primaryPositionId: parseInt(positionSelection),
-      //          secondaryPositionId: parseInt(secondaryPositionSelection),
-      //          pronounId: parseInt(pronounSelection),
-      //          club: clubRef.current.value,
-      //          emergencyName: emergencyNameRef.current.value,
-      //          emergencyPhone: emergencyPhoneRef.current.value.replace(/\D/g, ''),
-      //          active: true,
-      //       };
-      //       firebaseRegister(newUser, passwordRef.current.value)
-      //          .then(() => navigate("/"))
-      //          .catch(() => alert("Registration Failed"));
-      //    }
-      // };
-
       const handleCancel = (e) => {
          e.preventDefault();
          navigate('/login');

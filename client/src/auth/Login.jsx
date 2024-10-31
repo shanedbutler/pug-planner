@@ -20,7 +20,7 @@ export const Login = () => {
          alert("Login Failed");
       } else {
          console.log("Login successful");
-         navigate("/");
+         navigate("/dashboard");
       }
    };
 
