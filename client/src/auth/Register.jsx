@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import { fetchPositions } from '../managers/PositionManager';
-import { fetchPronouns } from '../managers/PronounManager';
+import { fetchAllPronouns } from '../managers/PronounManager';
 import { supabase } from '../supabaseUtils/supabaseClient';
+import { fetchAllPositions } from '../managers/PositionManager';
 
 export const Register = () => {
    const navigate = useNavigate();
@@ -143,8 +143,8 @@ export const Register = () => {
       };
 
       useEffect(() => {
-         fetchPositions().then((pos) => handleSetPositions(pos));
-         fetchPronouns().then((pro) => handleSetPronouns(pro));
+         fetchAllPositions().then((pos) => handleSetPositions(pos));
+         fetchAllPronouns().then((pro) => handleSetPronouns(pro));
       }, []);
 
       return (

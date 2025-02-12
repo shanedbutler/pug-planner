@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import { fetchPositions } from '../managers/PositionManager';
-import { fetchPronouns } from '../managers/PronounManager';
-import { editUserFetch, fetchUser } from '../managers/UserManager';
+import { fetchAllPositions } from '../managers/PositionManager';
+import { fetchAllPronouns } from '../managers/PronounManager';
+import { fetchProfileWithForeign } from '../managers/UserManager';
 
 export const PlayerEdit = ({ userId }) => {
    const navigate = useNavigate();
@@ -140,7 +140,8 @@ export const PlayerEdit = ({ userId }) => {
             active: player.active,
             admin: player.admin,
          };
-         editUserFetch(editedUser).then(() => navigate(`/profile/${userId}`));
+         console.log('user dto to send', editedUser); // TODO: implement edit fetch
+         //editUserFetch(editedUser).then(() => navigate(`/profile/${userId}`));
       }
    };
 
@@ -149,11 +150,13 @@ export const PlayerEdit = ({ userId }) => {
       navigate(`/profile/${userId}`);
    };
 
+
+   // TODO: Broken when moving to supabase
    useEffect(() => {
       // Get data responses from api and set to variables
-      const userRes = fetchUser(userId);
-      const positionsRes = fetchPositions();
-      const pronounsRes = fetchPronouns();
+      const userRes = fetchProfileWithForeign(userId);
+      const positionsRes = fetchAllPositions();
+      const pronounsRes = fetchAllPronouns();
 
       // Group values into promise all, and when their values are returned set state with setter functions
       Promise.all([userRes, positionsRes, pronounsRes]).then((values) => {

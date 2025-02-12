@@ -2,7 +2,6 @@ import { LockClosedIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24
 import { useEffect, useState } from 'react';
 import { Link, useLoaderData, useNavigate, useParams, useRouteLoaderData } from 'react-router-dom';
 import { fetchDeleteGame } from '../managers/GameManager';
-import { deleteUserFromRoster, postUserToRoster } from '../managers/RosterManager';
 import { RegistrationModal } from '../modals/RegistrationModal';
 import { RegLockModal } from '../modals/RegLockModal';
 import { UnregisterModal } from '../modals/UnregisterModal';
@@ -40,7 +39,8 @@ export const GameDetails = ({ isAdmin }) => {
    };
 
    const handleRegister = () => {
-      postUserToRoster(game.id);
+      console.log('Registering user to game roster'); // TODO: Implement
+      //postUserToRoster(game.id);
       setCanRegister(false);
       setCanUnregister(true);
       setModalOpen(true);
@@ -62,7 +62,8 @@ export const GameDetails = ({ isAdmin }) => {
       if (waitList.length === 1) {
          setIsWaitList(false);
       }
-      deleteUserFromRoster(game.id);
+      console.log('Unregistering user from game roster'); // TODO: Implement
+      //deleteUserFromRoster(game.id);
       setCanUnregister(false);
       setUnregisterModalOpen(false);
    };
