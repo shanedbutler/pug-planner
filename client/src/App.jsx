@@ -15,6 +15,7 @@ import { sessionLoader } from './managers/sessionLoader';
 import { gameByIdEditLoader, gameByIdLoader } from './managers/gameLoader';
 import { userProfileByIdLoader, userProfilesLoader } from './managers/userProfileLoader';
 import Unauthorized from './auth/Unauthorized';
+import Fallback from './auth/Fallback';
 
 export const App = () => {
   const [session, setSession] = useState(null);
@@ -45,6 +46,7 @@ export const App = () => {
     {
       path: '/',
       element: <ProtectedRoute />,
+      hydrateFallbackElement: <Fallback />,
       id: 'protected',
       loader: sessionLoader,
       children: [
