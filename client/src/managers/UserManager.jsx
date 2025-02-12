@@ -2,7 +2,6 @@ import Avatar from 'boring-avatars';
 import { supabase } from '../supabaseUtils/supabaseClient';
 import { camelCaseKeys } from '../supabaseUtils/casingUtils';
 import { getOption, putOption } from './FetchOptions';
-import { getToken } from './AuthManager';
 
 const apiUrl = 'https://localhost:7066';
 
@@ -12,7 +11,8 @@ const apiUrl = 'https://localhost:7066';
  * @returns User object
  */
 export const fetchUser = async (id) => {
-   const token = await getToken();
+   // const token = await getToken();
+   const token = { token: 'fakeToken' };
    const response = await fetch(`${apiUrl}/api/user/get/${id}`, getOption(token));
    const user = await response.json();
    return user;
@@ -48,7 +48,8 @@ export const fetchProfileWithForeign = async (id) => {
  * @returns Array of user objects
  */
 export const fetchUsers = async () => {
-   const token = await getToken();
+   // const token = await getToken();
+   const token = { token: 'fakeToken' };
    const response = await fetch(`${apiUrl}/api/user/getall`, getOption(token));
    if (response.ok) {
       return response.json();
@@ -109,17 +110,16 @@ export const isLocalUserAdmin = () => {
  * React component for current user's Boring Avatar
  * @returns Avatar Component
  */
-export const UserAvatar = ({ fullName, scale }) => {
-   if (scale == null) {
-      scale = 40;
-   }
+export const UserAvatar = ({ fullName, scale = 40 }) => {
    const originalColor = ['#F88F89', '#EEC276', '#F2E8DF', '#79C3AA', '#DDB8D9'];
 
-   // Alternate colors
-   // const altColor = ['#86A69D', '#F2B263', '#F2E8DF', '#F2C6C2', '#F28585'];
-   // const altColor2 = ['#F2889B', '#F2E8DF', '#95BFA4', '#F29E38', '#F28444'];
-
-   return <Avatar size={scale} name={fullName} square={false} variant="beam" colors={originalColor} />;
+   return <Avatar 
+      size={scale} 
+      name={fullName} 
+      square={false} 
+      variant="beam" 
+      colors={originalColor} 
+   />;
 };
 
 /**

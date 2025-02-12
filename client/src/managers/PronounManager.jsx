@@ -1,11 +1,19 @@
-const apiUrl = 'https://localhost:7066';
-
+import { supabase } from "../supabaseUtils/supabaseClient"
+import { camelCaseKeys } from "../supabaseUtils/casingUtils";
 /**
- * Get all pronouns from API
- * @returns An array of pronouns
+ * Get all pronouns from supabase
+ * @returns Supabase response object
  */
-export const fetchPronouns = async () => {
-   const response = await fetch(`${apiUrl}/api/pronoun/get`);
-   const games = await response.json();
-   return games;
+export const fetchAllPronouns = async () => {
+   const { data, error } = await supabase
+      .from('pronouns')
+      .select();
+
+   if (!error) {
+      const casedData = camelCaseKeys(data);
+      return Object.values(casedData);
+   }
+   else {
+      console.error(error);
+   }
 };

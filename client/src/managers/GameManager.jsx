@@ -1,16 +1,17 @@
 import { camelCaseKeys } from '../supabaseUtils/casingUtils';
 import { supabase } from '../supabaseUtils/supabaseClient';
-import { getToken } from './AuthManager';
 import { deleteOption, getOption, postOption, putOption } from './FetchOptions';
 
 const apiUrl = 'https://localhost:7066';
 
 /**
  * Get all games from API
+ * TODO: Must be updated to use Supabase
  * @returns An array of game objects
  */
 export const fetchGames = async () => {
-   const token = await getToken();
+   // const token = await getToken();
+   const token = { token: 'fakeToken' };
    const response = await fetch(`${apiUrl}/api/game/get`, getOption(token));
    const games = await response.json();
    return games;
@@ -117,11 +118,13 @@ export const fetchGameById = async (gameId) => {
 
 /**
  * Get single game from API by game id pk
+ * TODO: Must be updated to use Supabase
  * @param {int} gameId
  * @returns A game object
  */
 export const fetchGame = async (gameId) => {
-   const token = await getToken();
+   // const token = await getToken();
+   const token = { token: 'fakeToken' };
    const response = await fetch(`${apiUrl}/api/game/get/${gameId}`, getOption(token));
    const game = await response.json();
    return game;
@@ -129,11 +132,13 @@ export const fetchGame = async (gameId) => {
 
 /**
  * Post a new game to API and get it back
+ * TODO: Must be updated to use Supabase
  * @param {object} game
  * @returns A game object
  */
 export const fetchPostGame = async (gameBody) => {
-   const token = await getToken();
+   // const token = await getToken();
+   const token = { token: 'fakeToken' };
    const response = await fetch(`${apiUrl}/api/game/`, postOption(gameBody, token));
    const game = await response.json();
    return game;
@@ -141,11 +146,13 @@ export const fetchPostGame = async (gameBody) => {
 
 /**
  * Put edited game to API and get it back
+ * TODO: Must be updated to use Supabase
  * @param {object} game
  * @returns A game object
  */
 export const fetchPutGame = async (gameBody) => {
-   const token = await getToken();
+   // const token = await getToken();
+   const token = { token: 'fakeToken' };
    const response = await fetch(`${apiUrl}/api/game/`, putOption(gameBody, token));
    const game = await response.json();
    return game;
@@ -153,10 +160,12 @@ export const fetchPutGame = async (gameBody) => {
 
 /**
  * Delete game by id from database
+ * TODO: Must be updated to use Supabase
  * @param {int} gameId
  */
 export const fetchDeleteGame = async (gameId) => {
-   const token = await getToken();
+   // const token = await getToken();
+   const token = { token: 'fakeToken' };
    const response = await fetch(`${apiUrl}/api/game/delete/?id=${gameId}`, deleteOption(token));
    return response;
 };

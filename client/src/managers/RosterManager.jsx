@@ -1,4 +1,3 @@
-import { getToken } from './AuthManager';
 import { deleteOption, getOption, postOption } from './FetchOptions';
 import { getLocalUser } from './UserManager';
 
@@ -10,7 +9,8 @@ const apiUrl = 'https://localhost:7066';
  * @returns rosterGameCount object
  */
 export const fetchGameRosterCount = async (gameId) => {
-   const token = await getToken();
+   // const token = await getToken();
+   const token = { token: 'fakeToken' };
    const response = await fetch(
       `${apiUrl}/api/roster/getCount?gameId=${gameId}`,
       getOption(token)
@@ -25,7 +25,8 @@ export const fetchGameRosterCount = async (gameId) => {
  * @returns rosterUserCount object
  */
 export const fetchUserRosterCount = async (userId) => {
-   const token = await getToken();
+   // const token = await getToken();
+   const token = { token: 'fakeToken' };
    const response = await fetch(
       `${apiUrl}/api/roster/getUserCount?userId=${userId}`,
       getOption(token)
@@ -46,7 +47,7 @@ export const postUserToRoster = async (gameId) => {
       userProfileId: userId,
       gameId: gameId,
    };
-   
+
    const token = await getToken();
    const response = await fetch(
       `${apiUrl}/api/roster`,
@@ -63,7 +64,8 @@ export const postUserToRoster = async (gameId) => {
 export const deleteUserFromRoster = async (gameId) => {
    const userId = getLocalUser().id;
 
-   const token = await getToken();
+   // const token = await getToken();
+   const token = { token: 'fakeToken' };
    const response = await fetch(
       `${apiUrl}/api/roster/delete?userId=${userId}&gameId=${gameId}`,
       deleteOption(token)
