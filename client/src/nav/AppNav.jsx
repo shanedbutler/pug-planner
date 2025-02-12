@@ -54,7 +54,7 @@ export const AppNav = ({ user }) => {
                            <div className="flex h-16 items-center justify-between">
                               <div className="flex items-center">
                                  <div
-                                    className="cursor-pointer flex-shrink-0 border-double border-4 border-stone-500 px-3"
+                                    className="cursor-pointer shrink-0 border-double border-4 border-stone-500 px-3"
                                     onClick={navToDashboard}
                                  >
                                     <p className="text-stone-800 font-bold text-lg">
@@ -92,7 +92,7 @@ export const AppNav = ({ user }) => {
                                  <div className="ml-4 flex items-center sm:ml-6">
                                     <button
                                        type="button"
-                                       className="rounded-full bg-red-200 p-1 text-stone-700 hover:text-black hover:bg-red-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800"
+                                       className="rounded-full bg-red-200 p-1 text-stone-700 hover:text-black hover:bg-red-300 focus:outline-hidden focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800"
                                     >
                                        <span className="sr-only">
                                           View notifications
@@ -106,7 +106,7 @@ export const AppNav = ({ user }) => {
                                     {/* Profile dropdown */}
                                     <Menu as="div" className="relative ml-3">
                                        <div>
-                                          <Menu.Button className="flex max-w-xs items-center rounded-full bg-red-100 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800">
+                                          <Menu.Button className="flex max-w-xs items-center rounded-full bg-red-100 text-sm focus:outline-hidden focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800">
                                              <span className="sr-only">
                                                 Open user menu
                                              </span>
@@ -122,8 +122,8 @@ export const AppNav = ({ user }) => {
                                           leaveFrom="transform opacity-100 scale-100"
                                           leaveTo="transform opacity-0 scale-95"
                                        >
-                                          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 py-1 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                             <div className="flex-shrink-0 block px-4 py-2 text-sm text-stone-700 bg-violet-50">
+                                          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 py-1 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-hidden">
+                                             <div className="shrink-0 block px-4 py-2 text-sm text-stone-700 bg-violet-50">
                                                 {user.fullName} <em>{user.email}</em>
                                              </div>
                                              {userNavigation.map((item) => (
@@ -150,7 +150,7 @@ export const AppNav = ({ user }) => {
                               </div>
                               <div className="-mr-2 flex sm:hidden">
                                  {/* Mobile menu button */}
-                                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-stone-800 hover:bg-yellow-100 hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800">
+                                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-stone-800 hover:bg-yellow-100 hover:text-black focus:outline-hidden focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800">
                                     <span className="sr-only">Open main menu</span>
                                     {open ? (
                                        <XMarkIcon
@@ -191,7 +191,7 @@ export const AppNav = ({ user }) => {
                            </div>
                            <div className="border-t border-stone-800 pt-4 pb-3">
                               <div className="flex items-center px-5">
-                                 <div className="flex-shrink-0">
+                                 <div className="shrink-0">
                                     <UserAvatar fullName={user.fullName} />
                                  </div>
                                  <div className="ml-3">
@@ -204,7 +204,7 @@ export const AppNav = ({ user }) => {
                                  </div>
                                  <button
                                     type="button"
-                                    className="ml-auto flex-shrink-0 rounded-full bg-yellow-200 p-1 text-stone-800 hover:text-black focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800"
+                                    className="ml-auto shrink-0 rounded-full bg-yellow-200 p-1 text-stone-800 hover:text-black focus:outline-hidden focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-stone-800"
                                  >
                                     <span className="sr-only">
                                        View notifications

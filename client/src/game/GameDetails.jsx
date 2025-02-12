@@ -143,7 +143,7 @@ export const GameDetails = ({ isAdmin }) => {
       <>
          <div className="px-5 pt-10 last:pb-6">
             <div className="mx-auto max-w-3xl sm:px-6 lg:px-8">
-               <div className="overflow-hidden bg-white shadow rounded-md">
+               <div className="overflow-hidden bg-white shadow-sm rounded-md">
                   <div className="flex justify-between px-4 py-5 sm:px-6">
                      <div>
                         <h3 className="text-lg font-medium leading-6 text-gray-900">{game.title}</h3>
@@ -157,11 +157,11 @@ export const GameDetails = ({ isAdmin }) => {
                         {isAdmin && (
                            <button
                               title="Edit Game"
-                              className="flex h-10 rounded-md border border-transparent bg-lime-200 py-2 pr-2 pl-3 mb-2 mr-2 text-sm font-medium text-black shadow-sm hover:bg-lime-300 focus:bg-lime-300"
+                              className="flex h-10 rounded-md border border-transparent bg-lime-200 py-2 pr-2 pl-3 mb-2 mr-2 text-sm font-medium text-black shadow-xs hover:bg-lime-300 focus:bg-lime-300"
                               onClick={navToGameEdit}
                            >
                               <PencilSquareIcon
-                                 className="h-5 w-5 mr-1 flex-shrink text-slate-600"
+                                 className="h-5 w-5 mr-1 shrink text-slate-600"
                                  aria-hidden="true"
                               />
                            </button>
@@ -169,10 +169,10 @@ export const GameDetails = ({ isAdmin }) => {
                         {canDelete && (
                            <button
                               title="Delete Game"
-                              className="flex h-10 rounded-md border border-transparent bg-red-200 py-2 pr-2 pl-3 mb-2 text-sm font-medium text-black shadow-sm hover:bg-red-300 focus:bg-red-300"
+                              className="flex h-10 rounded-md border border-transparent bg-red-200 py-2 pr-2 pl-3 mb-2 text-sm font-medium text-black shadow-xs hover:bg-red-300 focus:bg-red-300"
                               onClick={handleDelete}
                            >
-                              <TrashIcon className="h-5 w-5 mr-1 flex-shrink text-slate-600" aria-hidden="true" />
+                              <TrashIcon className="h-5 w-5 mr-1 shrink text-slate-600" aria-hidden="true" />
                            </button>
                         )}
                      </div>
@@ -272,14 +272,14 @@ export const GameDetails = ({ isAdmin }) => {
                               <ul>
                                  <li className="flex items-center justify-end py-2 pl-2 text-sm">
                                     <button
-                                       className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-200 focus:bg-lime-200"
+                                       className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-xs hover:bg-lime-200 focus:bg-lime-200"
                                        onClick={navToDashboard}
                                     >
                                        Back to dashboard
                                     </button>
                                     {canRegister && (
                                        <button
-                                          className="rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
+                                          className="rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-xs hover:bg-rose-200 focus:bg-rose-200"
                                           onClick={handleRegister}
                                        >
                                           {!isWaitList
@@ -291,7 +291,7 @@ export const GameDetails = ({ isAdmin }) => {
                                     )}
                                     {canUnregister && (
                                        <button
-                                          className="rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
+                                          className="rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-black shadow-xs hover:bg-rose-200 focus:bg-rose-200"
                                           onClick={handleUnregisterClick}
                                        >
                                           Unregister
@@ -299,11 +299,11 @@ export const GameDetails = ({ isAdmin }) => {
                                     )}
                                     {registrationNotOpen && (
                                        <button
-                                          className="disabled flex rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-slate-600 shadow-sm"
+                                          className="disabled flex rounded-md border border-transparent bg-rose-100 py-2 px-4 text-sm font-medium text-slate-600 shadow-xs"
                                           onClick={handleRegLockClick}
                                        >
                                           <LockClosedIcon
-                                             className="h-5 w-4 mr-1 flex-shrink text-slate-600"
+                                             className="h-5 w-4 mr-1 shrink text-slate-600"
                                              aria-hidden="true"
                                           />
                                           <div>Registration</div>

@@ -49,22 +49,22 @@ export const Dashboard = ({ isAdmin }) => {
          <div className="px-5 py-5 mx-auto max-w-lg">
             <div className="flex">
                <button
-                  className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-4 pl-3 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-300"
+                  className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-4 pl-3 mr-3 text-sm font-medium text-black shadow-xs hover:bg-lime-300"
                   onClick={togglePast}
                >
                   <ClockIcon
-                     className="h-5 w-5 mr-1 flex-shrink text-slate-600"
+                     className="h-5 w-5 mr-1 shrink text-slate-600"
                      aria-hidden="true"
                   />
                   {isPast ? 'Show Upcoming' : 'Show Past'}
                </button>
                {isAdmin && (
                   <button
-                     className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-4 pl-3 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-300"
+                     className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-4 pl-3 mr-3 text-sm font-medium text-black shadow-xs hover:bg-lime-300"
                      onClick={navToGameForm}
                   >
                      <PlusCircleIcon
-                        className="h-5 w-5 mr-1 flex-shrink text-slate-600"
+                        className="h-5 w-5 mr-1 shrink text-slate-600"
                         aria-hidden="true"
                      />
                      New Game

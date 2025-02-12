@@ -18,18 +18,18 @@ export const PlayerProfile = () => {
             {userProfile.id === id && (
                <div className="flex -mb-10">
                   <button
-                     className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-4 pl-3 mr-3 text-sm font-medium text-black shadow-sm hover:bg-lime-300 focus:bg-lime-300"
+                     className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-4 pl-3 mr-3 text-sm font-medium text-black shadow-xs hover:bg-lime-300 focus:bg-lime-300"
                      onClick={navToProfileEdit}
                   >
                      <PencilSquareIcon
-                        className="h-5 w-5 mr-1 flex-shrink text-slate-600"
+                        className="h-5 w-5 mr-1 shrink text-slate-600"
                         aria-hidden="true"
                      />
                      Edit
                   </button>
                </div>
             )}
-            <div className="max-w-md mx-auto sm:max-w-lg bg-white mb-6 mt-16 shadow rounded-md">
+            <div className="max-w-md mx-auto sm:max-w-lg bg-white mb-6 mt-16 shadow-sm rounded-md">
                <div className="px-4 py-6 sm:px-6">
                   <div className='px-2'>
                      <ChevronLeftIcon className="h-6 w-6 text-slate-600 cursor-pointer hover:text-violet-500" aria-hidden="true" onClick={() => navigate(-1)} />

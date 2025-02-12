@@ -31,7 +31,7 @@ export const RegLockModal = ({ open, setOpen, signUpTime }) => {
                   >
                      <Dialog.Panel className="relative transform overflow-hidden rounded-md max-w-sm bg-white text-center shadow-xl transition-all">
                         <div className="bg-white px-7 py-4">
-                           <div className="mx-auto flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-rose-50">
+                           <div className="mx-auto flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-rose-50">
                               <LockClosedIcon
                                  className="h-5 w-5 text-gray-600"
                                  aria-hidden="true"
@@ -56,7 +56,7 @@ export const RegLockModal = ({ open, setOpen, signUpTime }) => {
                         <div className="bg-gray-50 px-2 pt-3 pb-4 flex sm:px-6">
                            <button
                               type="button"
-                              className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mx-auto text-sm font-medium text-gray-700 shadow-sm hover:bg-lime-200 focus:bg-lime-200 hover:text-black focus:text-black"
+                              className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mx-auto text-sm font-medium text-gray-700 shadow-xs hover:bg-lime-200 focus:bg-lime-200 hover:text-black focus:text-black"
                               onClick={() => setOpen(false)}
                            >
                               Back to details
