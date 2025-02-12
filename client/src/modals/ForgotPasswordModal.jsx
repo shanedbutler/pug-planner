@@ -36,7 +36,7 @@ export const ForgotPasswordModal = ({
                   >
                      <Dialog.Panel className="relative transform overflow-hidden rounded-md max-w-sm bg-white text-center shadow-xl transition-all">
                         <div className="bg-white px-7 py-4">
-                           <div className="mx-auto flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-red-50">
+                           <div className="mx-auto flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-50">
                               <ExclamationCircleIcon
                                  className="h-6 w-6 text-red-600"
                                  aria-hidden="true"
@@ -63,14 +63,14 @@ export const ForgotPasswordModal = ({
                         <div className="bg-gray-50 px-2 pt-3 pb-4 flex sm:px-6">
                            <button
                               type="button"
-                              className="rounded-md border border-transparent bg-red-100 py-2 px-4 mx-auto text-sm font-medium text-gray-700 shadow-sm hover:bg-red-200 focus:bg-red-200 hover:text-black focus:text-black"
+                              className="rounded-md border border-transparent bg-red-100 py-2 px-4 mx-auto text-sm font-medium text-gray-700 shadow-xs hover:bg-red-200 focus:bg-red-200 hover:text-black focus:text-black"
                               onClick={handleRecovery}
                            >
                               Request
                            </button>
                            <button
                               type="button"
-                              className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mx-auto text-sm font-medium text-gray-700 shadow-sm hover:bg-lime-200 focus:bg-lime-200 hover:text-black focus:text-black"
+                              className="rounded-md border border-transparent bg-lime-100 py-2 px-4 mx-auto text-sm font-medium text-gray-700 shadow-xs hover:bg-lime-200 focus:bg-lime-200 hover:text-black focus:text-black"
                               onClick={() => setOpen(false)}
                            >
                               Cancel

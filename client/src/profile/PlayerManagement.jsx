@@ -14,7 +14,7 @@ export const PlayerManagement = () => {
                      <p className="mt-3 text-sm text-gray-600">Disable or enable player accounts</p>
                   </div>
                </div>
-               <div className="mt-5 overflow-hidden bg-white shadow rounded-md">
+               <div className="mt-5 overflow-hidden bg-white shadow-sm rounded-md">
                   <ul>
                      {players.map((player, i) => (
                         <PlayerListItem player={player} i={i} key={player.id} />

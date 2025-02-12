@@ -13,7 +13,7 @@ export const RosterItem = ({ player, i, isWaitList }) => {
          <div className={i % 2 ? 'bg-gray-50' : 'bg-white'}>
             <li className="flex items-center justify-between sm:mx-8 py-3 px-4 text-sm">
                <div className="cursor-pointer flex items-center" onClick={handleProfileNav}>
-                  <UserAvatar fullName={player.fullName} className=" h-5 w-5 flex-shrink-0" aria-hidden="true" />
+                  <UserAvatar fullName={player.fullName} className=" h-5 w-5 shrink-0" aria-hidden="true" />
                </div>
                <div className="cursor-pointer text-slate-600 hover:text-violet-500" onClick={handleProfileNav}>
                   {player.fullName}
@@ -31,7 +31,7 @@ export const RosterItem = ({ player, i, isWaitList }) => {
          <div className={i % 2 ? 'bg-rose-100' : 'bg-rose-50'}>
             <li className="flex items-center justify-between sm:mx-8 py-3 px-5 text-sm">
                <div className="cursor-pointer flex items-center" onClick={handleProfileNav}>
-                  <UserAvatar fullName={player.fullName} className=" h-5 w-5 flex-shrink-0" aria-hidden="true" />
+                  <UserAvatar fullName={player.fullName} className=" h-5 w-5 shrink-0" aria-hidden="true" />
                </div>
                <div className="cursor-pointer text-slate-600 hover:text-violet-500" onClick={handleProfileNav}>
                   {player.fullName}

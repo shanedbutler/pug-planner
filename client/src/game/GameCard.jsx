@@ -49,7 +49,7 @@ export const GameCard = ({ game, isPast, isLoading, setIsLoading }) => {
 
    if (!isLoading) {
       return (
-         <div className="my-5 overflow-hidden bg-white shadow rounded-md">
+         <div className="my-5 overflow-hidden bg-white shadow-sm rounded-md">
             <div className="px-4 py-5 sm:px-6">
                <div className="flex justify-between">
                   <div>
@@ -61,17 +61,17 @@ export const GameCard = ({ game, isPast, isLoading, setIsLoading }) => {
                   <div className="flex justify-end align-top">
                      {!isOpen ?
                         (isPast ? (
-                           <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-lime-100">
-                              <CheckIcon className="h-5 w-5 flex-shrink text-slate-600" aria-hidden="true" />
+                           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-lime-100">
+                              <CheckIcon className="h-5 w-5 shrink text-slate-600" aria-hidden="true" />
                            </div>
                         ) : (
-                           <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-violet-50">
-                              <LockOpenIcon className="h-5 w-5 flex-shrink text-slate-600" aria-hidden="true" />
+                           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-violet-50">
+                              <LockOpenIcon className="h-5 w-5 shrink text-slate-600" aria-hidden="true" />
                            </div>
                         ))
                         : (
-                           <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-red-50">
-                              <LockClosedIcon className="h-5 w-5 flex-shrink text-slate-600" aria-hidden="true" />
+                           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-50">
+                              <LockClosedIcon className="h-5 w-5 shrink text-slate-600" aria-hidden="true" />
                            </div>
                         )}
                   </div>
@@ -129,7 +129,7 @@ export const GameCard = ({ game, isPast, isLoading, setIsLoading }) => {
                         <ul>
                            <li className="flex items-center justify-end text-sm">
                               <button
-                                 className="rounded-md border border-transparent bg-rose-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm  hover:bg-rose-200 focus:bg-rose-200"
+                                 className="rounded-md border border-transparent bg-rose-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-xs  hover:bg-rose-200 focus:bg-rose-200"
                                  onClick={handleDetails}
                               >
                                  Details

@@ -164,7 +164,7 @@ export const Register = () => {
                         <div className="mt-5 md:col-span-2 md:mt-0">
                            <form onSubmit={handleSubmit}>
                               <div>
-                                 <div className="bg-white shadow rounded-md px-4 py-5 sm:p-6">
+                                 <div className="bg-white shadow-sm rounded-md px-4 py-5 sm:p-6">
                                     <div className="grid grid-cols-6 gap-6">
                                        <div className="col-span-6 sm:col-span-3">
                                           <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
@@ -177,7 +177,7 @@ export const Register = () => {
                                              autoComplete="given-name"
                                              required
                                              ref={firstNameRef}
-                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
+                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                           />
                                        </div>
 
@@ -192,7 +192,7 @@ export const Register = () => {
                                              autoComplete="family-name"
                                              required
                                              ref={lastNameRef}
-                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
+                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                           />
                                        </div>
 
@@ -210,7 +210,7 @@ export const Register = () => {
                                              autoComplete="email"
                                              required
                                              ref={emailRef}
-                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
+                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                           />
                                        </div>
 
@@ -224,7 +224,7 @@ export const Register = () => {
                                              id="phone"
                                              required
                                              ref={phoneRef}
-                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
+                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                              onBlur={(e) => validatePhone(phoneRef.current.value, 'user')}
                                           />
                                           {!isPhoneValid && (
@@ -242,7 +242,7 @@ export const Register = () => {
                                              name="password"
                                              id="password"
                                              autoComplete="email"
-                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
+                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                              onBlur={(e) => validatePassword(passwordRef.current.value)}
                                           />
                                           {!isPasswordValid && (
@@ -260,7 +260,7 @@ export const Register = () => {
                                           <Select
                                              id="position"
                                              name="position"
-                                             className="mt-1 rounded-md shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
+                                             className="mt-1 rounded-md shadow-xs focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                              options={positionOptions}
                                              onChange={handlePositionSelect}
                                           />
@@ -276,7 +276,7 @@ export const Register = () => {
                                           <Select
                                              id="secondary-position"
                                              name="secondary-position"
-                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
+                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                              options={positionOptions}
                                              onChange={handleSecondaryPositionSelect}
                                           />
@@ -292,7 +292,7 @@ export const Register = () => {
                                           <Select
                                              id="pronouns"
                                              name="pronouns"
-                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
+                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                              options={pronounOptions}
                                              onChange={handlePronounSelect}
                                           />
@@ -307,7 +307,7 @@ export const Register = () => {
                                              name="club"
                                              id="club"
                                              ref={clubRef}
-                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
+                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                           />
                                        </div>
 
@@ -324,7 +324,7 @@ export const Register = () => {
                                              id="emergency-contact-name"
                                              required
                                              ref={emergencyNameRef}
-                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
+                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                           />
                                        </div>
 
@@ -341,7 +341,7 @@ export const Register = () => {
                                              id="emergency-contact-phone"
                                              required
                                              ref={emergencyPhoneRef}
-                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
+                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-xs focus:border-violet-400 focus:ring-violet-400 sm:text-sm"
                                              onBlur={(e) => validatePhone(emergencyPhoneRef.current.value, 'emergency')}
                                           />
                                           {!isEmgPhoneValid && (
@@ -350,16 +350,16 @@ export const Register = () => {
                                        </div>
                                     </div>
                                  </div>
-                                 <div className="bg-gray-50 shadow rounded-md text-right -mt-2 py-6 px-3 sm:px-6">
+                                 <div className="bg-gray-50 shadow-sm rounded-md text-right -mt-2 py-6 px-3 sm:px-6">
                                     <button
-                                       className="rounded-md border border-transparent bg-rose-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-sm hover:bg-rose-200 focus:bg-rose-200"
+                                       className="rounded-md border border-transparent bg-rose-100 py-2 px-4 mr-3 text-sm font-medium text-black shadow-xs hover:bg-rose-200 focus:bg-rose-200"
                                        onClick={handleCancel}
                                     >
                                        Cancel
                                     </button>
                                     <button
                                        type="submit"
-                                       className="rounded-md border border-transparent bg-violet-100 py-2 px-4 text-sm font-medium text-black shadow-sm hover:bg-violet-200 focus:bg-violet-200"
+                                       className="rounded-md border border-transparent bg-violet-100 py-2 px-4 text-sm font-medium text-black shadow-xs hover:bg-violet-200 focus:bg-violet-200"
                                     >
                                        Register
                                     </button>

@@ -91,7 +91,7 @@ export const PlayerListItem = ({ player, i }) => {
             >
                <UserAvatar
                   fullName={player.fullName}
-                  className=" h-5 w-5 flex-shrink-0"
+                  className=" h-5 w-5 shrink-0"
                   aria-hidden="true"
                />
             </div>
@@ -106,22 +106,22 @@ export const PlayerListItem = ({ player, i }) => {
                   {isActive ? (
                      <button
                         title="Deactivate User"
-                        className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-2 pl-3 mb-2 text-sm font-medium text-black shadow-sm hover:bg-red-200"
+                        className="flex rounded-md border border-transparent bg-lime-200 py-2 pr-2 pl-3 mb-2 text-sm font-medium text-black shadow-xs hover:bg-red-200"
                         onClick={openDeactivateModal}
                      >
                         <CheckCircleIcon
-                           className="h-5 w-5 mr-1 flex-shrink text-slate-600"
+                           className="h-5 w-5 mr-1 shrink text-slate-600"
                            aria-hidden="true"
                         />
                      </button>
                   ) : (
                      <button
                         title="Activate User"
-                        className="flex rounded-md border border-transparent bg-red-200 py-2 pr-2 pl-3 mb-2 text-sm font-medium text-black shadow-sm hover:bg-lime-200"
+                        className="flex rounded-md border border-transparent bg-red-200 py-2 pr-2 pl-3 mb-2 text-sm font-medium text-black shadow-xs hover:bg-lime-200"
                         onClick={openActivateModal}
                      >
                         <XCircleIcon
-                           className="h-5 w-5 mr-1 flex-shrink text-slate-600"
+                           className="h-5 w-5 mr-1 shrink text-slate-600"
                            aria-hidden="true"
                         />
                      </button>
