@@ -4,7 +4,7 @@ import { supabase } from './supabaseUtils/supabaseClient';
 import { Login } from './auth/Login';
 import { Register } from './auth/Register';
 import { GameDetails } from './game/GameDetails';
-import { Dashboard } from './dashboard/Dashboard';
+import { Dashboard, dashboardLoader } from './dashboard/Dashboard';
 import { PlayerProfile } from './profile/PlayerProfile';
 import { PlayerEdit } from './profile/PlayerEdit';
 import { GameEdit } from './game/GameEdit';
@@ -54,6 +54,7 @@ export const App = () => {
         {
           path: 'dashboard',
           element: <Dashboard />,
+          loader: dashboardLoader,
         },
         {
           path: 'game/:id',
