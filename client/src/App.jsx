@@ -4,7 +4,6 @@ import { supabase } from './supabaseUtils/supabaseClient';
 import { Login } from './auth/Login';
 import { Register } from './auth/Register';
 import { GameDetails } from './game/GameDetails';
-import ProtectedRoute from './views/ProtectedRoute';
 import { Dashboard } from './dashboard/Dashboard';
 import { PlayerProfile } from './profile/PlayerProfile';
 import { PlayerEdit } from './profile/PlayerEdit';
@@ -16,6 +15,8 @@ import { gameByIdEditLoader, gameByIdLoader } from './managers/gameLoader';
 import { userProfileByIdLoader, userProfilesLoader } from './managers/userProfileLoader';
 import Unauthorized from './auth/Unauthorized';
 import Fallback from './auth/Fallback';
+import ProtectedLayout from './views/ProtectedLayout';
+import AdminLayout from './views/AdminLayout';
 
 export const App = () => {
   const [session, setSession] = useState(null);
@@ -44,9 +45,9 @@ export const App = () => {
       element: <Register />,
     },
     {
-      path: '/',
-      element: <ProtectedRoute />,
+      element: <ProtectedLayout />,
       hydrateFallbackElement: <Fallback />,
+      errorElement: <Unauthorized />,
       id: 'protected',
       loader: sessionLoader,
       children: [
@@ -74,8 +75,7 @@ export const App = () => {
           loader: userProfilesLoader,
         },
         {
-          path: '/',
-          element: <ProtectedRoute adminOnly />,
+          element: <AdminLayout />,
           id: 'protected-admin',
           children: [
             {
@@ -88,7 +88,7 @@ export const App = () => {
               element: <GameForm />,
             },
             {
-              path: 'players',
+              path: 'admin/players',
               element: <PlayerManagement />,
               loader: userProfilesLoader,
             },

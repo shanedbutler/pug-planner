@@ -150,7 +150,6 @@ export const PlayerEdit = ({ userId }) => {
       navigate(`/profile/${userId}`);
    };
 
-
    // TODO: Broken when moving to supabase
    useEffect(() => {
       // Get data responses from api and set to variables

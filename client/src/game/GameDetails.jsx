@@ -10,7 +10,7 @@ import { isPastDate } from '../utils/dateUtils';
 
 export const GameDetails = ({ isAdmin }) => {
    const { game } = useLoaderData();
-   const userProfile = useRouteLoaderData('protected').userProfile;
+   const { userProfile } = useRouteLoaderData('protected');
    const { id } = useParams();
 
    const navigate = useNavigate();

@@ -16,7 +16,6 @@ export const AppNav = ({ user }) => {
    const navToProfile = () => navigate(`/profile/${user.id}`);
    const handleLogout = async () => {
       try {
-         // Sign out the user
          await supabase.auth.signOut();
       } catch (error) {
          console.error(error);

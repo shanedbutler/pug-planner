@@ -1,3 +1,4 @@
+import { redirect } from "react-router-dom";
 import { supabase } from "../supabaseUtils/supabaseClient";
 
 export const sessionLoader = async () => {
@@ -7,7 +8,7 @@ export const sessionLoader = async () => {
   } = await supabase.auth.getSession();
 
   if (error || !session) {
-    throw new Response('Unauthorized', { status: 401 });
+    return redirect("/");
   }
 
   const { data: userProfile, error: profileError } = await supabase

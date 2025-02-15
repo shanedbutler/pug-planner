@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseUtils/supabaseClient';
 import { ForgotPasswordModal } from '../modals/ForgotPasswordModal';
@@ -9,18 +9,29 @@ export const Login = () => {
    const [modalOpen, setModalOpen] = useState(false);
    const navigate = useNavigate();
 
+      // Listen for auth state changes and navigate once a session is available
+      useEffect(() => {
+         const { data: { subscription } } = supabase.auth.onAuthStateChange(
+            (_event, session) => {
+               if (session) {
+                  navigate("/dashboard");
+               }
+            }
+         );
+         return () => subscription.unsubscribe();
+      }, [navigate]);
+
    const handleLogin = async (e) => {
       e.preventDefault();
       const { data, error } = await supabase.auth.signInWithPassword({
-         email: email,
-         password: password
+         email,
+         password
       });
       if (error) {
          console.error(error);
          alert("Login Failed");
       } else {
          console.log("Login successful");
-         navigate("/dashboard");
       }
    };
 
